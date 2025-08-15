@@ -2,6 +2,7 @@ import prisma from "@/lib/prisma";
 import { ReactElement } from "react";
 import { Feed } from "./feed";
 import { Post } from "./post";
+import { Header } from "./header";
 
 // Pull data from the database
 async function getPosts() {
@@ -33,8 +34,11 @@ export async function Content(): Promise<ReactElement>
 	}
 
 	return (
-		<Feed label="Public Feed">
-			{components}
-		</Feed>
+		<div>
+			<Header />
+			<Feed label="Public Feed">
+				{components}
+			</Feed>
+		</div>
 	);
 }
