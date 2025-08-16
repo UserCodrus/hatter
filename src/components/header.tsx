@@ -13,7 +13,7 @@ export async function Header(): Promise<ReactElement>
 		const img = session.user?.image;
 
 		return (
-			<div className="flex flex-row items-center gap-2">
+			<div className="flex flex-row items-center gap-2 p-2 w-full sticky top-0 bg-slate-400">
 				<div>{img && <Image src={img} alt="Icon" width={32} height={32} />}</div>
 				<div>{user}</div>
 			</div>

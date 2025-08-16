@@ -29,12 +29,12 @@ export async function Content(): Promise<ReactElement>
 	const components: ReactElement[] = [];
 	let key = 0;
 	for (const post of posts.props.content) {
-		components.push(<Post author={post.author?.name} title={post.title} content={post.content} key={key} />);
+		components.push(<Post author={post.author?.name} title={post.title} content={post.content} time={post.created} key={key} />);
 		++key;
 	}
 
 	return (
-		<div>
+		<div className="flex flex-col w-full items-center">
 			<Header />
 			<Feed label="Public Feed">
 				{components}
