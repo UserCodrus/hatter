@@ -1,15 +1,23 @@
 'use client';
 
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { ReactElement } from "react";
 
 export function NavigationButton(props: { label: string, target: string }): ReactElement
 {
 	const router = useRouter();
+	const path = usePathname();
+
+	const normal_style = "cursor-pointer p-1";
+	const disabled_style = "text-gray-700 p-1";
+
+	// Disable buttons that link to the current page
+	const disabled = path === props.target;
 
 	return (
 		<button
-			className="cursor-pointer p-1"
+			className={disabled ? disabled_style : normal_style}
+			disabled={disabled}
 			onClick={() => router.push(props.target)}
 		>{props.label}</button>
 	)
