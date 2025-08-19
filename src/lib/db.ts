@@ -91,3 +91,28 @@ export async function getAll()
 		revalidate: 10
 	};
 }
+
+/** Get a single post */
+export async function getPost(id: string)
+{
+	console.log(id);
+	
+	// Find posts matching the provided users
+	const content = await prisma.post.findUnique({
+		where: {
+			id: String(id)
+		},
+		include: {
+			author: {
+				select: { name: true },
+			},
+		},
+	});
+
+	console.log(content);
+
+	return {
+		props: { content },
+		revalidate: 10
+	};
+}

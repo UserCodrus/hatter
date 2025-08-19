@@ -1,4 +1,4 @@
-import { getAll, getPostHistory } from "@/lib/db";
+import { getAll, getPost, getPostHistory } from "@/lib/db";
 import { ReactElement } from "react";
 import { Post } from "./post";
 
@@ -11,7 +11,7 @@ export async function HistoryFeed(props: { label: string }): Promise<ReactElemen
 	const components: ReactElement[] = [];
 	let key = 0;
 	for (const post of posts.props.content) {
-		components.push(<Post author={post.author?.name} title={post.title} content={post.content} time={post.created} key={key} />);
+		components.push(<Post id={post.id} author={post.author?.name} title={post.title} content={post.content} time={post.created} key={key} />);
 		++key;
 	}
 
@@ -34,7 +34,7 @@ export async function GlobalFeed(props: { label: string }): Promise<ReactElement
 	const components: ReactElement[] = [];
 	let key = 0;
 	for (const post of posts.props.content) {
-		components.push(<Post author={post.author?.name} title={post.title} content={post.content} time={post.created} key={key} />);
+		components.push(<Post id={post.id} author={post.author?.name} title={post.title} content={post.content} time={post.created} key={key} />);
 		++key;
 	}
 
@@ -46,4 +46,26 @@ export async function GlobalFeed(props: { label: string }): Promise<ReactElement
 			</div>
 		</div>
 	);
+}
+
+/** A single post and its replies */
+export async function PostFeed(props: { id: string }): Promise<ReactElement>
+{
+	const post = (await getPost(props.id)).props.content;
+
+	if (post) {
+		return (
+			<div className="p-4 w-1/2">
+				<div className="flex flex-col gap-2">
+					<Post id={post.id} author={post.author?.name} title={post.title} content={post.content} time={post.created} />
+				</div>
+			</div>
+		);
+	} else {
+		return (
+			<div>
+				Post not found.
+			</div>
+		);
+	}
 }

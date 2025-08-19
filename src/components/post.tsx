@@ -1,7 +1,12 @@
+'use client';
+
+import { useRouter } from "next/navigation";
 import { ReactElement } from "react";
 
-export function Post(props: { title: string, author: string | null | undefined, time: Date, content: string | null }): ReactElement
+export function Post(props: { id: string, title: string, author: string | null | undefined, time: Date, content: string | null }): ReactElement
 {
+	const router = useRouter();
+
 	const author = props.author ? props.author : "Anonymous";
 	const content = props.content ? props.content : "This post is empty.";
 
@@ -13,7 +18,7 @@ export function Post(props: { title: string, author: string | null | undefined, 
 				<div className="text-lg font-bold">{props.title}</div>
 				<div className="text-sm">By {author} on {props.time.toLocaleString("default", date_format)}</div>
 			</div>
-			<p className="bg-slate-200 p-2 m-2">{content}</p>
+			<p className="bg-slate-200 p-2 m-2" onClick={() => router.push(`/post/${props.id}`)}>{content}</p>
 		</div>
 	);
 }
