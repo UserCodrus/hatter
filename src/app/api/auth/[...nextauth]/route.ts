@@ -3,4 +3,8 @@ import NextAuth from "next-auth";
 
 // Use nextauth for the signin page
 const handler = NextAuth(options);
-export { handler as GET, handler as POST };
+
+const GET = handler;
+const POST = handler;
+
+export { GET, POST };

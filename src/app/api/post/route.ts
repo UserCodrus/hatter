@@ -7,7 +7,7 @@ type PostData = {
 	content: string
 }
 
-export async function POST(req: Request, res: Response)
+export async function POST(req: Request)
 {
 	// Retrieve post info and the current server session
 	const data: PostData = await req.json();
@@ -27,5 +27,5 @@ export async function POST(req: Request, res: Response)
 		return Response.json(result);
 	}
 
-	return Response.json("Whoops.");
+	return new Response("User not found", { status: 511 });
 }
