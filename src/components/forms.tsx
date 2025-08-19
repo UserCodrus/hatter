@@ -1,14 +1,25 @@
 'use client';
 
-import { ReactElement, useState } from "react";
+import { FormEvent, ReactElement, useState } from "react";
 
 export function CreatePost(): ReactElement
 {
 	const [title, setTitle] = useState("");
 	const [content, setContent] = useState("");
 
-	async function submitForm() {
-
+	async function submitForm(e: FormEvent<HTMLFormElement>) {
+		e.preventDefault();
+		try {
+			const body = { title, content };
+			await fetch("/api/post", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify(body)
+			});
+		} catch (error) {
+			if (error instanceof Error)
+				console.error(error);
+		}
 	}
 
 	return (
