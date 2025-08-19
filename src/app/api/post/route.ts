@@ -1,13 +1,14 @@
 import { getServerSession } from "next-auth";
 import { options } from "@/lib/auth";
 import prisma from "@/lib/prisma";
+import { NextRequest } from "next/server";
 
 type PostData = {
 	title: string,
 	content: string
 }
 
-export async function POST(req: Request)
+export async function POST(req: NextRequest)
 {
 	// Retrieve post info and the current server session
 	const data: PostData = await req.json();
