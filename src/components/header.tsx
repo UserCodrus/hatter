@@ -23,7 +23,8 @@ export async function Header(): Promise<ReactElement>
 		];
 		left_components = [
 			<NavigationButton label="Home" target="/" key={1} />,
-			<NavigationButton label="Create" target="/create" key={2} />
+			<NavigationButton label="Posts" target="/history" key={2} />,
+			<NavigationButton label="Create" target="/create" key={3} />
 		];
 	}
 	return (

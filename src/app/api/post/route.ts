@@ -21,6 +21,7 @@ export async function POST(req: NextRequest)
 			data: {
 				title: data.title,
 				content: data.content,
+				published: true,
 				author: { connect: { email: email }}
 			},
 		});
