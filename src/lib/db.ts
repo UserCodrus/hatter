@@ -1,18 +1,40 @@
 import prisma from "@/lib/prisma";
 import { getServerSession } from "next-auth";
-import { options } from "./auth";
+import { AuthSession, options } from "./auth";
+
+/** Get the current alias for the user */
+export async function getAlias()
+{
+	const session = await getServerSession(options) as AuthSession;
+	const id = session?.user?.id;
+	if (id) {
+		const user_alias = await prisma.userAlias.findUnique({
+			where: {
+				userID: id
+			},
+			include: {
+				alias: true
+			}
+		});
+
+		return user_alias?.alias;
+	}
+
+	return null;
+}
 
 /** Get posts made by the current active user */
 export async function getPostHistory()
 {
-	const session = await getServerSession(options);
-	
-	const email = session?.user?.email;
-	if (email) {
+	// Get the user's current alias
+	const alias = await getAlias();
+	console.log(`Current alias: ${alias?.name}`);
+
+	if (alias?.id) {
 		const content = await prisma.post.findMany({
 			where: {
-				published: true,
-				author: { email: email }
+				authorId: alias?.id,
+				published: true
 			},
 			orderBy: {
 				created: "desc",
@@ -43,7 +65,7 @@ export async function getPosts(users: string[])
 	const filters = users.map((value) => {
 		return {
 			published: true,
-			author: { email: value }
+			authorId: value
 		}
 	});
 

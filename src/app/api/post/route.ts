@@ -1,7 +1,6 @@
-import { getServerSession } from "next-auth";
-import { options } from "@/lib/auth";
 import prisma from "@/lib/prisma";
 import { NextRequest } from "next/server";
+import { getAlias } from "@/lib/db";
 
 type PostData = {
 	title: string,
@@ -12,17 +11,16 @@ export async function POST(req: NextRequest)
 {
 	// Retrieve post info and the current server session
 	const data: PostData = await req.json();
-	const session = await getServerSession(options);
+	const alias = await getAlias();
 
-	const email = session?.user?.email;
-	if (email) {
+	if (alias) {
 		// Push the post data to the database
 		const result = await prisma.post.create({
 			data: {
 				title: data.title,
 				content: data.content,
 				published: true,
-				author: { connect: { email: email }}
+				author: { connect: { id: alias.id }}
 			},
 		});
 		
