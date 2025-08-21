@@ -12,7 +12,7 @@ datasource db {
 
 model Alias {
 	id			String		@id @default(cuid())
-	user		UserAlias[]
+	users		UserAlias[]
 	created		DateTime	@default(now())
 
 	tag			String		@unique
