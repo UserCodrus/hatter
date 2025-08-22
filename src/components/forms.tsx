@@ -46,7 +46,7 @@ export function CreatePost(): ReactElement
 				onChange={(e) => setContent(e.target.value)}
 			/>
 			<div className="flex items-center justify-center">
-				<input disabled={!content || !title} type="submit" value="Post" />
+				<input className="w-20 outline-1 bg-slate-300 cursor-pointer" disabled={!content || !title} type="submit" value="Post" />
 			</div>
 		</form>
 	);
@@ -58,14 +58,17 @@ export function CreateAlias(): ReactElement
 	const [tag, setTag] = useState("");
 	const [name, setName] = useState("");
 	const [bio, setBio] = useState("");
+	const [error, setError] = useState("");
 	const router = useRouter();
 
 	async function submitForm(e: FormEvent<HTMLFormElement>) {
 		e.preventDefault();
 
-		const success = await createAlias(tag.toLowerCase(), name, bio, null);
-		if (success)
+		const error = await createAlias(tag.toLowerCase(), name, bio, null);
+		if (error === null)
 			router.push("/history");
+		else
+			setError(error);
 	}
 
 	return (
@@ -98,8 +101,9 @@ export function CreateAlias(): ReactElement
 				onChange={(e) => setBio(e.target.value)}
 			/>
 			<div className="flex items-center justify-center">
-				<input className="w-20 outline-1 bg-slate-300" disabled={!tag || !name} type="submit" value="Create" />
+				<input className="w-20 outline-1 bg-slate-300 cursor-pointer" disabled={!tag || !name} type="submit" value="Create" />
 			</div>
+			{error && <div className="text-center text-red-800">{error}</div>}
 		</form>
 	);
 }

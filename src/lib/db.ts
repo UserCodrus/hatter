@@ -119,11 +119,11 @@ export async function resetAlias(debug_force = false)
 }
 
 /** Create a new alias for the current user */
-export async function createAlias(tag: string, name: string, bio: string | null, image: string | null): Promise<boolean>
+export async function createAlias(tag: string, name: string, bio: string | null, image: string | null): Promise<string | null>
 {
 	const session = await getServerSession(options) as AuthSession;
 	if (!session)
-		return false;
+		return "You are not currently signed in to an account.";
 
 	// Make sure the user doesn't alread have a UserAlias
 	const user = await prisma.userAlias.findUnique({
@@ -133,7 +133,7 @@ export async function createAlias(tag: string, name: string, bio: string | null,
 	});
 
 	if (user)
-		return false;
+		return "Your account is already registered.";
 
 	// Make sure the provided tag isn't taken
 	const alias_query = await prisma.alias.findMany({
@@ -143,7 +143,7 @@ export async function createAlias(tag: string, name: string, bio: string | null,
 	});
 
 	if (alias_query.length > 0)
-		return false;
+		return "The provided ID is already in use.";
 
 	// Generate a new alias and a useralias for the user
 	const new_alias = await prisma.alias.create({
@@ -164,7 +164,7 @@ export async function createAlias(tag: string, name: string, bio: string | null,
 	});
 
 	console.log(`New alias created for user ${session.user.email}`);
-	return true;
+	return null;
 }
 
 /** Get posts made by the current active user */
