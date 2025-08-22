@@ -28,17 +28,6 @@ export async function getAlias()
 				return user_alias.alias;
 			}
 		}
-
-		// Generate a user alias for new users
-		/*await prisma.userAlias.create({
-			data: {
-				userID: id,
-				expires: new Date(),
-			}
-		});
-
-		console.log(`New alias created for user ${session.user.email}`);
-		return null;*/
 	}
 
 	return null;
@@ -63,7 +52,7 @@ export async function resetAlias(debug_force = false)
 		if (user_alias) {
 			// Check for an expired alias
 			const now = new Date();
-			if (now > user_alias.expires || debug_force) {
+			if (now > user_alias.expires || user_alias.alias === null || debug_force) {
 				// Get all aliases made before the current reset period that don't have an active user alias
 				const reset_time = getLastReset();
 				const aliases = await prisma.alias.findMany({
@@ -127,6 +116,55 @@ export async function resetAlias(debug_force = false)
 	}
 
 	return null;
+}
+
+/** Create a new alias for the current user */
+export async function createAlias(tag: string, name: string, bio: string | null, image: string | null): Promise<boolean>
+{
+	const session = await getServerSession(options) as AuthSession;
+	if (!session)
+		return false;
+
+	// Make sure the user doesn't alread have a UserAlias
+	const user = await prisma.userAlias.findUnique({
+		where: {
+			userID: session.user.id
+		}
+	});
+
+	if (user)
+		return false;
+
+	// Make sure the provided tag isn't taken
+	const alias_query = await prisma.alias.findMany({
+		where: {
+			tag: tag
+		}
+	});
+
+	if (alias_query.length > 0)
+		return false;
+
+	// Generate a new alias and a useralias for the user
+	const new_alias = await prisma.alias.create({
+		data: {
+			tag: tag,
+			name: name,
+			bio: bio,
+			image: image,
+		}
+	});
+
+	const new_user = await prisma.userAlias.create({
+		data: {
+			userID: session.user.id,
+			aliasID: new_alias.id,
+			expires: getNextReset(),
+		}
+	});
+
+	console.log(`New alias created for user ${session.user.email}`);
+	return true;
 }
 
 /** Get posts made by the current active user */

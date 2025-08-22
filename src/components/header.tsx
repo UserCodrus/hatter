@@ -19,12 +19,13 @@ export async function Header(): Promise<ReactElement>
 		right_components = [
 			<div key={1}>{img && <Image src={img} alt="Icon" width={32} height={32} />}</div>,
 			<div key={2}>{user}</div>,
-			<LinkButton label="Sign Out" target="/api/auth/signout" key={3} />
+			<LinkButton label="Create Account" target="/signup" key={3} />,
+			<LinkButton label="Sign Out" target="/api/auth/signout" key={4} />
 		];
 		left_components = [
 			<NavigationButton label="Home" target="/" key={1} />,
 			<NavigationButton label="Posts" target="/history" key={2} />,
-			<NavigationButton label="Create" target="/create" key={3} />
+			<NavigationButton label="Create" target="/create" key={3} />,
 		];
 	}
 	return (
