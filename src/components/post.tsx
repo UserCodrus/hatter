@@ -1,13 +1,14 @@
 'use client';
 
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ReactElement } from "react";
 
-export function Post(props: { id: string, title: string, author: string | null | undefined, time: Date, content: string | null }): ReactElement
+export function Post(props: { id: string, title: string, author: string | null | undefined, authorID: string | null, time: Date, content: string | null }): ReactElement
 {
 	const router = useRouter();
 
-	const author = props.author ? props.author : "Anonymous";
+	const author = props.authorID ? <Link href={`/user/${props.authorID}`}>{props.author}</Link> : "?";
 	const content = props.content ? props.content : "This post is empty.";
 
 	let date_format: Intl.DateTimeFormatOptions = { month: "long", day: "numeric", year: "numeric", hour: "numeric", minute: "numeric" };

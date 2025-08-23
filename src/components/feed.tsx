@@ -3,15 +3,15 @@ import { ReactElement } from "react";
 import { Post } from "./post";
 
 /** A feed showing the posts made by the current user */
-export async function HistoryFeed(props: { label: string }): Promise<ReactElement>
+export async function HistoryFeed(props: { id: string, label: string }): Promise<ReactElement>
 {
-	const posts = await getPostHistory();
+	const posts = await getPostHistory(props.id);
 	
 	// Create a set of post components for each post in the feed
 	const components: ReactElement[] = [];
 	let key = 0;
 	for (const post of posts.props.content) {
-		components.push(<Post id={post.id} author={post.author?.name} title={post.title} content={post.content} time={post.created} key={key} />);
+		components.push(<Post id={post.id} author={post.author?.name} authorID={post.authorId} title={post.title} content={post.content} time={post.created} key={key} />);
 		++key;
 	}
 
@@ -34,7 +34,7 @@ export async function GlobalFeed(props: { label: string }): Promise<ReactElement
 	const components: ReactElement[] = [];
 	let key = 0;
 	for (const post of posts.props.content) {
-		components.push(<Post id={post.id} author={post.author?.name} title={post.title} content={post.content} time={post.created} key={key} />);
+		components.push(<Post id={post.id} author={post.author?.name} authorID={post.authorId} title={post.title} content={post.content} time={post.created} key={key} />);
 		++key;
 	}
 
@@ -57,7 +57,7 @@ export async function PostFeed(props: { id: string }): Promise<ReactElement>
 		return (
 			<div className="p-4 w-1/2">
 				<div className="flex flex-col gap-2">
-					<Post id={post.id} author={post.author?.name} title={post.title} content={post.content} time={post.created} />
+					<Post id={post.id} author={post.author?.name} authorID={post.authorId} title={post.title} content={post.content} time={post.created} />
 				</div>
 			</div>
 		);

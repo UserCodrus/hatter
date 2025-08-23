@@ -168,36 +168,25 @@ export async function createAlias(tag: string, name: string, bio: string | null,
 }
 
 /** Get posts made by the current active user */
-export async function getPostHistory()
+export async function getPostHistory(id: string)
 {
-	// Get the user's current alias
-	const alias = await getAlias();
-	console.log(`Current alias: ${alias?.name}`);
-
-	if (alias?.id) {
-		const content = await prisma.post.findMany({
-			where: {
-				authorId: alias?.id,
-				published: true,
+	const content = await prisma.post.findMany({
+		where: {
+			authorId: id,
+			published: true,
+		},
+		orderBy: {
+			created: "desc",
+		},
+		include: {
+			author: {
+				select: { name: true },
 			},
-			orderBy: {
-				created: "desc",
-			},
-			include: {
-				author: {
-					select: { name: true },
-				},
-			},
-		});
-
-		return {
-			props: { content },
-			revalidate: 10
-		};
-	}
+		},
+	});
 
 	return {
-		props: { content: [] },
+		props: { content },
 		revalidate: 10
 	};
 };
