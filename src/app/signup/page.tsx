@@ -1,11 +1,14 @@
 import { CreateAlias } from "@/components/forms";
 import { Header } from "@/components/header";
+import { getUser } from "@/lib/db";
 
-export default function Page()
+export default async function Page()
 {
+	const user_data = await getUser();
+
 	return (
 		<div className="flex flex-col items-center justify-items-center min-h-screen w-full">
-			<Header />
+			<Header user={user_data.user} alias={user_data.alias} />
 			<CreateAlias />
 		</div>
 	);

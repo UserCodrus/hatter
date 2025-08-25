@@ -2,8 +2,8 @@ import { getAll, getPost, getPostHistory } from "@/lib/db";
 import { ReactElement } from "react";
 import { Post } from "./post";
 
-/** A feed showing the posts made by the current user */
-export async function HistoryFeed(props: { id: string, label: string }): Promise<ReactElement>
+/** A feed showing the posts made by a single user */
+export async function UserFeed(props: { id: string, label: string }): Promise<ReactElement>
 {
 	const posts = await getPostHistory(props.id);
 	
@@ -48,7 +48,7 @@ export async function GlobalFeed(props: { label: string }): Promise<ReactElement
 	);
 }
 
-/** A single post and its replies */
+/** A feed showing a single post and its replies */
 export async function PostFeed(props: { id: string }): Promise<ReactElement>
 {
 	const post = (await getPost(props.id)).props.content;

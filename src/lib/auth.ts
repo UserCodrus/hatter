@@ -6,13 +6,15 @@ import { NextAuthOptions, Session } from "next-auth";
 import { AdapterUser } from "next-auth/adapters";
 import { JWT } from "next-auth/jwt";
 
+export type SessionUser = {
+	name?: string | null | undefined,
+	email?: string | null | undefined,
+	image?: string | null | undefined,
+	id: string
+}
+
 export interface AuthSession extends Session {
-	user: {
-		name?: string | null | undefined,
-		email?: string | null | undefined,
-		image?: string | null | undefined,
-		id: string
-	}
+	user: SessionUser
 }
 
 /** Options for NextAuth */

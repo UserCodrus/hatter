@@ -2,8 +2,45 @@
 
 import prisma from "@/lib/prisma";
 import { getServerSession } from "next-auth";
-import { AuthSession, options } from "./auth";
+import { AuthSession, options, SessionUser } from "./auth";
 import { getLastReset, getNextReset } from "./utils";
+import { Alias } from "@prisma/client";
+
+type UserData = {
+	user: SessionUser | null,
+	alias: Alias | null,
+	expired: boolean,
+}
+
+/** Get the current user data and alias */
+export async function getUser(): Promise<UserData>
+{
+	const session = await getServerSession(options) as AuthSession;
+	if (session) {
+		// Retrieve the user's alias if it exists
+		const user_alias = await prisma.userAlias.findUnique({
+			where: {
+				userID: session.user.id,
+			},
+			include: {
+				alias: true,
+			}
+		});
+		
+		const now = new Date();
+		return {
+			user: session.user,
+			alias: user_alias ? user_alias.alias : null,
+			expired: user_alias ? (user_alias.expires <= now) : true
+		}
+	}
+
+	return {
+		user: null,
+		alias: null,
+		expired: true,
+	};
+}
 
 /** Get the current alias for the user */
 export async function getAlias()

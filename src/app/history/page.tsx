@@ -1,17 +1,17 @@
 import { ResetAliasButton } from "@/components/buttons";
-import { HistoryFeed } from "@/components/feed";
+import { UserFeed } from "@/components/feed";
 import { Header } from "@/components/header";
-import { getAlias } from "@/lib/db";
+import { getAlias, getUser } from "@/lib/db";
 
 export default async function Home() {
-	const alias = await getAlias();
-	console.log(`Alias: ${alias?.name}`)
+	const user_data = await getUser();
+	console.log(`Alias: ${user_data?.alias?.name}`);
 	
 	return (
 		<div className="flex flex-col items-center justify-items-center min-h-screen w-full">
-			<Header />
+			<Header user={user_data.user} alias={user_data.alias} />
 			<ResetAliasButton />
-			{alias && <HistoryFeed id={alias.id} label="My Posts" />}
+			{user_data?.alias && <UserFeed id={user_data.alias.id} label="My Posts" />}
 		</div>
 	);
 }
