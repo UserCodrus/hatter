@@ -3,12 +3,13 @@
 import prisma from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { AuthSession, options, SessionUser } from "./auth";
-import { getLastReset, getNextReset } from "./utils";
+import { getLastReset, getNextReset, isOwner } from "./utils";
 import { Alias } from "@prisma/client";
 
 type UserData = {
 	user: SessionUser | null,
 	alias: Alias | null,
+	owned: boolean,
 	expired: boolean,
 }
 
@@ -31,6 +32,7 @@ export async function getUser(): Promise<UserData>
 		return {
 			user: session.user,
 			alias: user_alias ? user_alias.alias : null,
+			owned: isOwner(session.user, user_alias?.alias),
 			expired: user_alias ? (user_alias.expires <= now) : true
 		}
 	}
@@ -38,6 +40,7 @@ export async function getUser(): Promise<UserData>
 	return {
 		user: null,
 		alias: null,
+		owned: false,
 		expired: true,
 	};
 }
@@ -189,6 +192,7 @@ export async function createAlias(tag: string, name: string, bio: string | null,
 			name: name,
 			bio: bio,
 			image: image,
+			creatorID: session.user.id,
 		}
 	});
 
@@ -201,6 +205,46 @@ export async function createAlias(tag: string, name: string, bio: string | null,
 	});
 
 	console.log(`New alias created for user ${session.user.email}`);
+	return null;
+}
+
+/** Change an alias for the current user */
+export async function updateAlias(name: string, bio: string | null, image: string | null): Promise<string | null>
+{
+	const session = await getUser();
+	if (!session.user)
+		return "You are not currently signed in to an account.";
+
+	if (!session.alias)
+		return "You do not have an alias.";
+
+	// Make sure the provided alias belongs to the user
+	const alias_query = await prisma.alias.findUnique({
+		where: {
+			tag: session.alias.tag,
+		}
+	});
+
+	if (!alias_query)
+		return "You do not have an editable alias.";
+
+	if (!isOwner(session.user, alias_query))
+		return "Your current alias cannot be edited."
+
+	// Generate a new alias and a useralias for the user
+	const update = await prisma.alias.update({
+		where: {
+			tag: session.alias.tag,
+			creatorID: session.user.id,
+		},
+		data: {
+			name: name ? name :  session.alias.name,
+			bio: bio ? bio : session.alias.bio,
+			image: image ? image : session.alias.image,
+		}
+	});
+
+	console.log(`Updated alias ${update.tag}`);
 	return null;
 }
 

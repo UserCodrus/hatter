@@ -17,6 +17,7 @@ function UserComponent(props: {user: SessionUser | null, alias: Alias | null}): 
 			inner_components = <>
 				<div key={1}>{img && <Image src={img} alt="Icon" width={32} height={32} />}</div>
 				<div>{props.alias.name}</div>
+				<LinkButton label="Account Info" target={pages.signup} />
 				<LinkButton label="Sign Out" target={pages.api.signout} />
 			</>
 		} else {

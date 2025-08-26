@@ -13,6 +13,8 @@ datasource db {
 model Alias {
 	id			String		@id @default(cuid())
 	users		UserAlias[]
+	creator		User?		@relation(fields: [creatorID], references: [id])
+	creatorID	String?
 	created		DateTime	@default(now())
 
 	tag			String		@unique
@@ -50,6 +52,7 @@ model User {
 	emailVerified	DateTime?
 	image			String?
 	alias			UserAlias?	@relation
+	ownedAliases	Alias[]
 	accounts		Account[]
 	sessions		Session[]
 	@@map(name: "users")

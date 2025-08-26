@@ -1,6 +1,6 @@
 'use client';
 
-import { createAlias } from "@/lib/db";
+import { createAlias, updateAlias } from "@/lib/db";
 import { useRouter } from "next/navigation";
 import { FormEvent, ReactElement, useState } from "react";
 
@@ -100,8 +100,63 @@ export function CreateAlias(): ReactElement
 				value={bio}
 				onChange={(e) => setBio(e.target.value)}
 			/>
-			<div className="flex items-center justify-center">
+			<div className="flex items-center justify-center m-2">
 				<input className="w-20 outline-1 bg-slate-300 cursor-pointer" disabled={!tag || !name} type="submit" value="Create" />
+			</div>
+			{error && <div className="text-center text-red-800">{error}</div>}
+		</form>
+	);
+}
+
+/** A form that allows the user to update an owned alias */
+export function UpdateAlias(props: {tag: string, name: string, bio: string | null}): ReactElement
+{
+	const [name, setName] = useState("");
+	const [bio, setBio] = useState("");
+	const [error, setError] = useState("");
+	const router = useRouter();
+
+	async function submitForm(e: FormEvent<HTMLFormElement>) {
+		e.preventDefault();
+
+		const error = await updateAlias(name, bio, null);
+		if (error === null)
+			router.push("/history");
+		else
+			setError(error);
+	}
+
+	return (
+		<form className="flex flex-col p-4 gap-2 w-1/3 items-stretch" onSubmit={submitForm}>
+			<div className="flex flex-row items-center">
+				<label className="flex-1">ID</label>
+				<input
+					className="bg-white p-1 w-2/3 lowercase"
+					placeholder={""}
+					value={props.tag}
+					type="text"
+					disabled={true}
+				/>
+			</div>
+			<div className="flex flex-row items-center">
+				<label className="flex-1">Name</label>
+				<input
+					className="bg-white p-1 w-2/3"
+					placeholder={props.name}
+					value={name}
+					onChange={(e) => setName(e.target.value)}
+					type="text"
+				/>
+			</div>
+			<div className="text-center">Bio</div>
+			<textarea
+				className="bg-white p-1"
+				placeholder={props.bio ? props.bio : "Write your account's bio here"}
+				value={bio}
+				onChange={(e) => setBio(e.target.value)}
+			/>
+			<div className="flex items-center justify-center m-2">
+				<input className="w-20 outline-1 bg-slate-300 cursor-pointer" disabled={!name} type="submit" value="Update" />
 			</div>
 			{error && <div className="text-center text-red-800">{error}</div>}
 		</form>
