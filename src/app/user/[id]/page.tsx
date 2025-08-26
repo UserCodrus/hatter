@@ -2,7 +2,7 @@ import { UserFeed } from "@/components/feed";
 import { Header } from "@/components/header";
 import { getUser } from "@/lib/db";
 
-export default async function Home(props: { params: Promise<{ id: string }> })
+export default async function Page(props: { params: Promise<{ id: string }> })
 {
 	const params = await props.params;
 	const user_data = await getUser();

@@ -1,3 +1,19 @@
+/** URL leafs for each page of the app */
+export const pages = {
+	root: "/",
+	history: "/history",
+	create: "/create",
+	signup: "/signup",
+
+	user: (id: string) => `/user/${id}`,
+	post: (id: string) => `/post/${id}`,
+
+	api: {
+		signin: "/api/auth/signin",
+		signout: "/api/auth/signout",
+	}
+}
+
 /** Create a date object corresponding to midnight of the current day */
 export function midnight()
 {

@@ -2,7 +2,7 @@ import { GlobalFeed } from "@/components/feed";
 import { Header } from "@/components/header";
 import { getUser } from "@/lib/db";
 
-export default async function Home()
+export default async function Page()
 {
 	const user_data = await getUser();
 
