@@ -4,35 +4,43 @@ import { ReactElement } from "react";
 import { NavigationButton, LinkButton } from "./navigation";
 import { Alias } from "@prisma/client";
 import { pages } from "@/lib/utils";
+import { DropDownMenu } from "./menus";
 
 /** Displays a user's current status and gives them the option to sign in or out */
 function UserComponent(props: {user: SessionUser | null, alias: Alias | null}): ReactElement
 {
-	let inner_components = <LinkButton label="Sign In" target={pages.api.signin} />;
+	let main = <LinkButton label="Sign In" target={pages.api.signin} />;
+	let dropdown: ReactElement[] = [];
 	
 	if (props.user) {
 		if (props.alias) {
-			// Display the user's current alias
+			// Display the user's current alias as the dropdown element
 			const img = props.alias?.image;
-			inner_components = <>
+
+			main = <div className="flex flex-row items-center gap-2">
 				<div key={1}>{img && <Image src={img} alt="Icon" width={32} height={32} />}</div>
 				<div>{props.alias.name}</div>
-				<LinkButton label="Account Info" target={pages.signup} />
-				<LinkButton label="Sign Out" target={pages.api.signout} />
-			</>
+			</div>;
+
+			dropdown = [
+				<LinkButton label="Account Info" target={pages.signup} key={1} />,
+				<LinkButton label="Sign Out" target={pages.api.signout} key={2} />,
+			];
 		} else {
 			// Display a button to create an account if the user doesn't have an alias yet
-			inner_components = <>
-				<LinkButton label="Set Up Account" target={pages.signup} />
-				<LinkButton label="Sign Out" target={pages.api.signout} />
-			</>
+			dropdown = [
+				<LinkButton label="Set Up Account" target={pages.signup} key={1} />,
+				<LinkButton label="Sign Out" target={pages.api.signout} key={2} />,
+			];
 		}
 	}
 
 	return (
-		<div className="flex flex-row items-center gap-2">
-			{inner_components}
-		</div>
+		<DropDownMenu main={main}>
+			<div className="flex flex-col w-full gap-2">
+				{dropdown}
+			</div>
+		</DropDownMenu>
 	);
 }
 

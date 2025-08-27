@@ -13,14 +13,12 @@ export default async function Page()
 	// Send the user to the home page if they aren't logged in
 	if (!user_data.user)
 		redirect(pages.root);
-
-	
 	
 	return (
 		<div className="flex flex-col items-center justify-items-center min-h-screen w-full">
 			<Header user={user_data.user} alias={user_data.alias} />
 			<ResetAliasButton />
-			{user_data.alias && !user_data.expired && <UserFeed id={user_data.alias.id} label="My Posts" />}
+			{user_data.alias && <UserFeed id={user_data.alias.id} label="My Posts" />}
 		</div>
 	);
 }
