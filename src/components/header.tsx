@@ -5,6 +5,12 @@ import { NavigationButton, LinkButton, MenuItem } from "./navigation";
 import { Alias } from "@prisma/client";
 import { pages } from "@/lib/utils";
 import { DropDownMenu } from "./menus";
+import Avatar from "boring-avatars";
+
+const avatar_colors = [
+		"#99ff99",
+		"#009900"
+	]
 
 /** Displays a user's current status and gives them the option to sign in or out */
 function UserComponent(props: {user: SessionUser | null, alias: Alias | null}): ReactElement
@@ -18,8 +24,8 @@ function UserComponent(props: {user: SessionUser | null, alias: Alias | null}): 
 			const img = props.alias?.image;
 
 			main = <div className="flex flex-row items-center gap-2 text-center">
-				<div key={1}>{img && <Image src={img} alt="Icon" width={32} height={32} />}</div>
-				<div>{props.alias.name}</div>
+				<Avatar name={props.alias.id} colors={avatar_colors} variant="beam" size={32} square />
+				<div className="text-nowrap">{props.alias.name}</div>
 			</div>;
 
 			dropdown = [
@@ -59,7 +65,7 @@ function NavigationBar(props: {alias: Alias | null}): ReactElement
 export async function Header(props: {user: SessionUser | null, alias: Alias | null}): Promise<ReactElement>
 {
 	return (
-		<div className="flex flex-row items-center gap-2 p-2 w-full sticky top-0 bg-slate-400">
+		<div className="flex flex-row items-center gap-2 p-2 w-full sticky top-0 z-10 bg-slate-400">
 			<NavigationBar alias={props.alias} />
 			<UserComponent user={props.user} alias={props.alias} />
 		</div>
