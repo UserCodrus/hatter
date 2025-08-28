@@ -1,6 +1,7 @@
 import { getAll, getPost, getPostHistory } from "@/lib/db";
 import { ReactElement } from "react";
 import { Post } from "./post";
+import { notFound } from "next/navigation";
 
 /** A feed showing the posts made by a single user */
 export async function UserFeed(props: { id: string, label: string }): Promise<ReactElement>
@@ -53,19 +54,14 @@ export async function PostFeed(props: { id: string }): Promise<ReactElement>
 {
 	const post = (await getPost(props.id)).props.content;
 
-	if (post) {
-		return (
-			<div className="p-4 w-1/2">
-				<div className="flex flex-col gap-2">
-					<Post id={post.id} author={post.author?.name} authorID={post.authorId} title={post.title} content={post.content} time={post.created} />
-				</div>
+	if (post === null)
+		notFound();
+
+	return (
+		<div className="p-4 w-1/2">
+			<div className="flex flex-col gap-2">
+				<Post id={post.id} author={post.author?.name} authorID={post.authorId} title={post.title} content={post.content} time={post.created} />
 			</div>
-		);
-	} else {
-		return (
-			<div>
-				Post not found.
-			</div>
-		);
-	}
+		</div>
+	);
 }

@@ -45,6 +45,19 @@ export async function getUser(): Promise<UserData>
 	};
 }
 
+/** Get information about an alias */
+export async function getAliasData(id: string)
+{
+	return await prisma.alias.findUnique({
+		where: {
+			id: id,
+		},
+		include: {
+			followers: true,
+		},
+	});
+}
+
 /** Get the current alias for the user */
 export async function getAlias()
 {
@@ -248,7 +261,7 @@ export async function updateAlias(name: string, bio: string | null, image: strin
 	return null;
 }
 
-/** Get posts made by the current active user */
+/** Get posts made by a user */
 export async function getPostHistory(id: string)
 {
 	const content = await prisma.post.findMany({
@@ -271,6 +284,72 @@ export async function getPostHistory(id: string)
 		revalidate: 10
 	};
 };
+
+/** Get all the followers of a user */
+export async function getFollowers(id: string)
+{
+	const followers = await prisma.alias.findMany({
+		where: {
+			following: {
+				some: {
+					id: id
+				}
+			}
+		}
+	});
+
+	console.log(`Got followers for ${id}: ${followers.length}`);
+
+	return followers;
+}
+
+/** Get all the users a given user is following */
+export async function getFollowing(id: string)
+{
+	const following = await prisma.alias.findMany({
+		where: {
+			followers: {
+				some: {
+					id: id,
+				},
+			},
+		},
+	});
+
+	console.log(`Got following for ${id}: ${following.length}`);
+
+	return following;
+}
+
+/** Make the current user follow a given user */
+export async function toggleFollow(id: string)
+{
+	const user_data = await getUser();
+	if (user_data.alias) {
+		// Check to see if the user is already following the given alias
+		const following = await prisma.alias.findUnique({
+			where: {
+				id: id,
+				followers: {
+					some: {
+						id: user_data.alias.id
+					},
+				},
+			},
+		});
+		
+		// Add or remove a following connection depending on the results of the follower query
+		const connection = following === null ? { connect: { id: id } } : { disconnect: { id: id } };
+		await prisma.alias.update({
+			where: {
+				id: user_data.alias.id,
+			},
+			data: {
+				following: connection,
+			},
+		});
+	}
+}
 
 /** Get posts made by a set of users */
 export async function getPosts(users: string[])
@@ -344,8 +423,6 @@ export async function getPost(id: string)
 			},
 		},
 	});
-
-	console.log(content);
 
 	return {
 		props: { content },

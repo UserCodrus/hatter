@@ -1,15 +1,10 @@
 'use client';
 
 import { pages } from "@/lib/utils";
-import Avatar from "boring-avatars";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ReactElement } from "react";
-
-const avatar_colors = [
-		"#99ff99",
-		"#009900"
-	]
+import { UserAvatar } from "./info";
 
 export function Post(props: { id: string, title: string, author: string | null | undefined, authorID: string | null, time: Date, content: string | null }): ReactElement
 {
@@ -23,7 +18,7 @@ export function Post(props: { id: string, title: string, author: string | null |
 	return (
 		<div className="relative w-full min-w-[20vw] bg-slate-400 text-center">
 			<div className="absolute left-2 top-2">
-				<Avatar name={props.authorID ? props.authorID : "?"} colors={avatar_colors} variant="beam" size={56} square />
+				<UserAvatar id={props.authorID ? props.authorID : "?"} size={56} />
 			</div>
 			<div className="p-2">
 				<div className="text-lg font-bold">{props.title}</div>

@@ -1,16 +1,10 @@
 import { SessionUser } from "@/lib/auth";
-import Image from "next/image";
 import { ReactElement } from "react";
 import { NavigationButton, LinkButton, MenuItem } from "./navigation";
 import { Alias } from "@prisma/client";
 import { pages } from "@/lib/utils";
 import { DropDownMenu } from "./menus";
-import Avatar from "boring-avatars";
-
-const avatar_colors = [
-		"#99ff99",
-		"#009900"
-	]
+import { UserAvatar } from "./info";
 
 /** Displays a user's current status and gives them the option to sign in or out */
 function UserComponent(props: {user: SessionUser | null, alias: Alias | null}): ReactElement
@@ -24,7 +18,7 @@ function UserComponent(props: {user: SessionUser | null, alias: Alias | null}): 
 			const img = props.alias?.image;
 
 			main = <div className="flex flex-row items-center gap-2 text-center">
-				<Avatar name={props.alias.id} colors={avatar_colors} variant="beam" size={32} square />
+				<UserAvatar id={props.alias.id} size={32} />
 				<div className="text-nowrap">{props.alias.name}</div>
 			</div>;
 

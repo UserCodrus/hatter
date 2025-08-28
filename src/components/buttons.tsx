@@ -1,6 +1,6 @@
 'use client';
 
-import { resetAlias } from "@/lib/db";
+import { toggleFollow, resetAlias } from "@/lib/db";
 import { useRouter } from "next/navigation";
 import { ReactElement } from "react";
 
@@ -21,4 +21,15 @@ export function ResetAliasButton(): ReactElement
 			Reset Alias
 		</button>
 	)
+}
+
+export function FollowButton(props: {id: string}): ReactElement
+{
+	async function handleClick() {
+		await toggleFollow(props.id);
+	}
+
+	return (
+		<button onClick={() => handleClick()} className="bg-green-300 p-1 cursor-pointer">Follow</button>
+	);
 }

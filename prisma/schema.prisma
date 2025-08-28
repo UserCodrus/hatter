@@ -23,6 +23,9 @@ model Alias {
 	image		String?
 
 	posts		Post[]
+	likes		Post[]		@relation(name: "like")
+	following	Alias[]		@relation(name: "follow")
+	followers	Alias[]		@relation(name: "follow")
 }
 
 model UserAlias {
@@ -43,6 +46,11 @@ model Post {
 	authorId	String?
 	created		DateTime	@default(now())
 	updated		DateTime	@default(now())
+
+	liked		Alias[]		@relation(name: "like")
+	reply		Post?		@relation(name: "reply", fields: [replyID], references: [id])
+	replyID		String?
+	replies		Post[]		@relation(name: "reply")
 }
 
 model User {
