@@ -1,7 +1,6 @@
 import Avatar from "boring-avatars";
 import { ReactElement } from "react";
-import { FollowButton, UserName } from "./interactive";
-import { useRouter } from "next/router";
+import { FollowButton } from "./interactive";
 import { pages } from "@/lib/utils";
 import { Alias } from "@prisma/client";
 
@@ -13,6 +12,17 @@ const avatar_colors = [
 export function UserAvatar(props: {id: string, size: number}): ReactElement
 {
 	return <Avatar name={props.id} size={props.size} colors={avatar_colors} variant="beam" square />
+}
+
+/** Display a user's name and icon */
+export function UserName(props: {id: string, tag: string, name: string}): ReactElement
+{
+	return (
+		<a className="flex flex-row gap-2 items-center cursor-pointer" href={pages.user(props.tag)}>
+			<UserAvatar id={props.id} size={32} />
+			<div>{props.name}</div>
+		</a>
+	);
 }
 
 /** Display a user's full profile, including their name, icon and follower count */
@@ -41,7 +51,7 @@ export function UserList(props: {aliases: Alias[]}): ReactElement
 	const components: ReactElement[] = [];
 	let key = 0;
 	for (const alias of props.aliases) {
-		components.push(<UserName id={alias.id} name={alias.name} key={key} />);
+		components.push(<UserName id={alias.id} tag={alias.tag} name={alias.name} key={key} />);
 		++key;
 	}
 

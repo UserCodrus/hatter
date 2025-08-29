@@ -1,27 +1,30 @@
 'use client';
 
+import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { ReactElement } from "react";
 
 /** A low-profile navigation button that will be disabled if the link corresponds to the current page */
 export function NavigationButton(props: { label: string, target: string }): ReactElement
 {
-	const router = useRouter();
 	const path = usePathname();
-
-	const normal_style = "cursor-pointer p-1";
-	const disabled_style = "text-gray-700 p-1";
 
 	// Disable buttons that link to the current page
 	const disabled = path === props.target;
 
-	return (
-		<button
-			className={disabled ? disabled_style : normal_style}
-			disabled={disabled}
-			onClick={() => router.push(props.target)}
-		>{props.label}</button>
-	)
+	if (disabled) {
+		return (
+			<div className="text-gray-700 p-1">
+				{props.label}
+			</div>
+		);
+	} else {
+		return (
+			<Link href={props.target} className="p-1">
+				{props.label}
+			</Link>
+		);
+	}
 }
 
 /** A high-profile button that links to a different page */
@@ -41,8 +44,8 @@ export function LinkButton(props: { label: string, target: string }): ReactEleme
 export function MenuItem(props: {label: string, target: string}): ReactElement
 {
 	return (
-		<a className="hover:bg-amber-300" href={props.target}>
+		<Link className="hover:bg-amber-300" href={props.target}>
 			{props.label}
-		</a>
+		</Link>
 	)
 }

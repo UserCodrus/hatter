@@ -50,7 +50,7 @@ export async function getAliasData(id: string)
 {
 	return await prisma.alias.findUnique({
 		where: {
-			id: id,
+			tag: id,
 		},
 		include: {
 			followers: true,
@@ -275,7 +275,7 @@ export async function getPostHistory(id: string)
 		},
 		include: {
 			author: {
-				select: { name: true },
+				select: { name: true, tag: true },
 			},
 		},
 	});
@@ -372,7 +372,7 @@ export async function getPosts(users: string[])
 		},
 		include: {
 			author: {
-				select: { name: true },
+				select: { name: true, tag: true },
 			},
 		},
 	});
@@ -396,7 +396,7 @@ export async function getAll()
 		},
 		include: {
 			author: {
-				select: { name: true },
+				select: { name: true, tag: true },
 			},
 		},
 	});
@@ -419,7 +419,7 @@ export async function getPost(id: string)
 		},
 		include: {
 			author: {
-				select: { name: true },
+				select: { name: true, tag: true },
 			},
 		},
 	});

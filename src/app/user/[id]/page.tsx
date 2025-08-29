@@ -28,7 +28,7 @@ export default async function Page(props: { params: Promise<{ id: string }> })
 				</div>
 				<div className="p-2">
 					<div className="text-lg font-bold">Recent Posts</div>
-					<UserFeed id={params.id} />
+					<UserFeed id={alias.id} />
 				</div>
 			</div>
 		</div>

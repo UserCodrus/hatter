@@ -42,8 +42,8 @@ model Post {
 	title		String
 	content		String?
 	published	Boolean		@default(true)
-	author		Alias?		@relation(fields: [authorId], references: [id])
-	authorId	String?
+	author		Alias		@relation(fields: [authorId], references: [id])
+	authorId	String
 	created		DateTime	@default(now())
 	updated		DateTime	@default(now())
 

@@ -6,11 +6,11 @@ import { useRouter } from "next/navigation";
 import { ReactElement } from "react";
 import { UserAvatar } from "./info";
 
-export function Post(props: { id: string, title: string, author: string | null | undefined, authorID: string | null, time: Date, content: string | null }): ReactElement
+export function Post(props: { id: string, title: string, author: string | null | undefined, authorID: string | null, tag: string, time: Date, content: string | null }): ReactElement
 {
 	const router = useRouter();
 
-	const author = props.authorID ? <Link href={pages.user(props.authorID)}>{props.author}</Link> : "?";
+	const author = props.authorID ? <Link href={pages.user(props.tag)}>{props.author}</Link> : "?";
 	const content = props.content ? props.content : "This post is empty.";
 
 	let date_format: Intl.DateTimeFormatOptions = { month: "long", day: "numeric", year: "numeric", hour: "numeric", minute: "numeric" };
