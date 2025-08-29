@@ -3,7 +3,10 @@
 import { toggleFollow, resetAlias } from "@/lib/db";
 import { useRouter } from "next/navigation";
 import { ReactElement } from "react";
+import { UserAvatar } from "./info";
+import { pages } from "@/lib/utils";
 
+/** A button that triggers an alias reset for the user */
 export function ResetAliasButton(): ReactElement
 {
 	const router = useRouter();
@@ -23,6 +26,7 @@ export function ResetAliasButton(): ReactElement
 	)
 }
 
+/** A button that can follow or unfollow a user */
 export function FollowButton(props: {id: string}): ReactElement
 {
 	async function handleClick() {
@@ -31,5 +35,23 @@ export function FollowButton(props: {id: string}): ReactElement
 
 	return (
 		<button onClick={() => handleClick()} className="bg-green-300 p-1 cursor-pointer">Follow</button>
+	);
+}
+
+/** Display a user's name and icon */
+export function UserName(props: {id: string, name: string}): ReactElement
+{
+	'use client';
+	const router = useRouter();
+
+	function handleClick() {
+		router.push(pages.user(props.id));
+	}
+
+	return (
+		<div className="flex flex-row gap-2 items-center" onClick={() => handleClick()}>
+			<UserAvatar id={props.id} size={32} />
+			<div>{props.name}</div>
+		</div>
 	);
 }

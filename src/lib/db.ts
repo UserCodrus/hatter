@@ -54,6 +54,7 @@ export async function getAliasData(id: string)
 		},
 		include: {
 			followers: true,
+			following: true,
 		},
 	});
 }
@@ -304,8 +305,11 @@ export async function getFollowers(id: string)
 }
 
 /** Get all the users a given user is following */
-export async function getFollowing(id: string)
+export async function getFollowing(id: string | null | undefined)
 {
+	if (!id)
+		return null;
+
 	const following = await prisma.alias.findMany({
 		where: {
 			followers: {
