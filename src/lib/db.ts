@@ -299,8 +299,6 @@ export async function getFollowers(id: string)
 		}
 	});
 
-	console.log(`Got followers for ${id}: ${followers.length}`);
-
 	return followers;
 }
 
@@ -319,8 +317,6 @@ export async function getFollowing(id: string | null | undefined)
 			},
 		},
 	});
-
-	console.log(`Got following for ${id}: ${following.length}`);
 
 	return following;
 }

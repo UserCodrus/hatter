@@ -20,16 +20,33 @@ export default async function Page()
 
 	const following = await getFollowing(user_data.alias.id);
 	const followers = await getFollowers(user_data.alias.id);
+
+	const follower_component = (followers && followers.length > 0) ? <UserList aliases={followers} /> : <div>None</div>;
+	const following_component = (following && following.length > 0) ? <UserList aliases={following} /> : <div>None</div>;
+
 	return (
 		<div className="flex flex-col items-center justify-items-center min-h-screen w-full">
 			<Header user={user_data.user} alias={user_data.alias} />
+			<div className="layout-horizontal w-4/5">
+				<div className="flex flex-col gap-1 items-center p-2">
+					<UserProfile id={user_data.alias.id} name={user_data.alias.name} tag={user_data.alias.tag} followers={followers.length} />
+					<div className="flex flex-row justify-stretch gap-2 w-full">
+						<div className="flex flex-col grow-1">
+							<div className="font-bold">Following</div>
+							{following_component}
+						</div>
+						<div className="flex flex-col grow-1">
+							<div className="font-bold">Followers</div>
+							{follower_component}
+						</div>
+					</div>
+				</div>
+				<div className="p-2">
+					<div className="text-lg font-bold">Recent Posts</div>
+					<UserFeed id={user_data.alias.id} />
+				</div>
+			</div>
 			<ResetAliasButton />
-			<UserProfile id={user_data.alias.id} name={user_data.alias.name} tag={user_data.alias.tag} followers={followers.length} />
-			{following && following.length > 0 && <div>
-				<div className="text-center">Following</div>
-				<UserList aliases={following} />
-			</div>}
-			{user_data.alias && <UserFeed id={user_data.alias.id} label="My Posts" />}
 		</div>
 	);
 }

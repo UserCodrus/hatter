@@ -49,7 +49,7 @@ export function UserName(props: {id: string, name: string}): ReactElement
 	}
 
 	return (
-		<div className="flex flex-row gap-2 items-center" onClick={() => handleClick()}>
+		<div className="flex flex-row gap-2 items-center cursor-pointer" onClick={() => handleClick()}>
 			<UserAvatar id={props.id} size={32} />
 			<div>{props.name}</div>
 		</div>

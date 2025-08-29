@@ -13,15 +13,24 @@ export default async function Page(props: { params: Promise<{ id: string }> })
 	if (alias === null)
 		notFound();
 
+	const follower_component = (alias.following.length > 0) ? <UserList aliases={alias.following} /> : <div>None</div>;
+
 	return (
 		<div className="flex flex-col items-center justify-items-center min-h-screen w-full">
 			<Header user={user_data.user} alias={user_data.alias}  />
-			<UserProfile id={alias.id} name={alias.name} tag={alias.tag} followers={alias.followers.length} />
-			{alias.following.length > 0 && <div>
-				<div className="text-center">Following</div>
-				<UserList aliases={alias.following} />
-			</div>}
-			<UserFeed id={params.id} label="Post History" />
+			<div className="layout-horizontal w-4/5">
+				<div className="flex flex-col p-2 gap-1">
+					<UserProfile id={alias.id} name={alias.name} tag={alias.tag} followers={alias.followers.length} />
+					<div>
+						<div className="font-bold">Following</div>
+						{follower_component}
+					</div>
+				</div>
+				<div className="p-2">
+					<div className="text-lg font-bold">Recent Posts</div>
+					<UserFeed id={params.id} />
+				</div>
+			</div>
 		</div>
 	);
 }

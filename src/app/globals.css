@@ -24,3 +24,15 @@ body {
 	color: var(--foreground);
 	font-family: Arial, Helvetica, sans-serif;
 }
+
+@layer components {
+	.layout-horizontal {
+		display: grid;
+		grid-template-columns: 1fr 2fr;
+		grid-template-rows: 1fr;
+	}
+
+	.layout-vertical {
+		grid-template-rows: 1fr 2fr;
+	}
+}

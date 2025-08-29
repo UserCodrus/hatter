@@ -1,10 +1,20 @@
 import { getAll, getPost, getPostHistory } from "@/lib/db";
-import { ReactElement } from "react";
+import { ReactElement, ReactNode } from "react";
 import { Post } from "./post";
 import { notFound } from "next/navigation";
 
+/** The base layout for post feeds */
+function Feed(props: {children: ReactNode}): ReactElement
+{
+	return (
+		<div className="flex flex-col gap-2 w-full">
+			{props.children}
+		</div>
+	);
+}
+
 /** A feed showing the posts made by a single user */
-export async function UserFeed(props: { id: string, label: string }): Promise<ReactElement>
+export async function UserFeed(props: { id: string }): Promise<ReactElement>
 {
 	const posts = await getPostHistory(props.id);
 	
@@ -17,17 +27,14 @@ export async function UserFeed(props: { id: string, label: string }): Promise<Re
 	}
 
 	return (
-		<div className="p-4 w-1/2">
-			<div className="text-xl font-bold p-2">{props.label}</div>
-			<div className="flex flex-col gap-2">
-				{components}
-			</div>
-		</div>
+		<Feed>
+			{components}
+		</Feed>
 	);
 }
 
 /** A feed showing recent posts made on the app */
-export async function GlobalFeed(props: { label: string }): Promise<ReactElement>
+export async function GlobalFeed(): Promise<ReactElement>
 {
 	const posts = await getAll();
 	
@@ -40,12 +47,9 @@ export async function GlobalFeed(props: { label: string }): Promise<ReactElement
 	}
 
 	return (
-		<div className="p-4 w-1/2">
-			<div className="text-xl font-bold p-2">{props.label}</div>
-			<div className="flex flex-col gap-2">
-				{components}
-			</div>
-		</div>
+		<Feed>
+			{components}
+		</Feed>
 	);
 }
 
@@ -58,10 +62,8 @@ export async function PostFeed(props: { id: string }): Promise<ReactElement>
 		notFound();
 
 	return (
-		<div className="p-4 w-1/2">
-			<div className="flex flex-col gap-2">
-				<Post id={post.id} author={post.author?.name} authorID={post.authorId} title={post.title} content={post.content} time={post.created} />
-			</div>
-		</div>
+		<Feed>
+			<Post id={post.id} author={post.author?.name} authorID={post.authorId} title={post.title} content={post.content} time={post.created} />
+		</Feed>
 	);
 }

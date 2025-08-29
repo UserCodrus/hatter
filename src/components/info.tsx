@@ -19,9 +19,9 @@ export function UserAvatar(props: {id: string, size: number}): ReactElement
 export function UserProfile(props: {id: string, name: string, tag: string, followers: number}): ReactElement
 {
 	return (
-		<div className="flex flex-row gap-2 items-center">
+		<div className="flex flex-row gap-2 items-center w-full">
 			<UserAvatar id={props.id} size={64} />
-			<div className="flex flex-col">
+			<div className="flex flex-col grow-1">
 				<div className="font-bold">{props.name}</div>
 				<div>${props.tag}</div>
 			</div>

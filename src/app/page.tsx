@@ -9,7 +9,10 @@ export default async function Page()
 	return (
 		<div className="flex flex-col items-center justify-items-center min-h-screen w-full">
 			<Header user={user_data.user} alias={user_data.alias} />
-			<GlobalFeed label="Public Feed" />
+			<div className="flex flex-col w-4/5 p-2">
+				<div className="font-bold text-lg">Global Feed</div>
+				<GlobalFeed />
+			</div>
 		</div>
 	);
 }
