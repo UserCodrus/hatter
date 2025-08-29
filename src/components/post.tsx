@@ -24,7 +24,7 @@ export function Post(props: { id: string, title: string, author: string | null |
 				<div className="text-lg font-bold">{props.title}</div>
 				<div className="text-sm">By {author} on {props.time.toLocaleString("default", date_format)}</div>
 			</div>
-			<p className="bg-slate-200 p-2 m-2" onClick={() => router.push(pages.post(props.id))}>{content}</p>
+			<p className="bg-slate-200 p-2 m-2 whitespace-pre text-left" onClick={() => router.push(pages.post(props.id))}>{content}</p>
 		</div>
 	);
 }
