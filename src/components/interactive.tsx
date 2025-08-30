@@ -1,6 +1,6 @@
 'use client';
 
-import { toggleFollow, resetAlias } from "@/lib/db";
+import { toggleFollow, resetAlias, toggleLike } from "@/lib/db";
 import { useRouter } from "next/navigation";
 import { ReactElement } from "react";
 
@@ -33,5 +33,17 @@ export function FollowButton(props: {id: string}): ReactElement
 
 	return (
 		<button onClick={() => handleClick()} className="bg-green-300 p-1 cursor-pointer">Follow</button>
+	);
+}
+
+/** A button that can like or unlike a post */
+export function LikeButton(props: {id: string}): ReactElement
+{
+	async function handleClick() {
+		await toggleLike(props.id);
+	}
+
+	return (
+		<button onClick={() => handleClick()} className="cursor-pointer">Like</button>
 	);
 }

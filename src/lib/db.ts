@@ -277,6 +277,9 @@ export async function getPostHistory(id: string)
 			author: {
 				select: { name: true, tag: true },
 			},
+			liked: {
+				select: { tag: true },
+			},
 		},
 	});
 
@@ -351,6 +354,38 @@ export async function toggleFollow(id: string)
 	}
 }
 
+/** Make the current user like a given post */
+export async function toggleLike(id: string)
+{
+	const user_data = await getUser();
+	if (user_data.alias) {
+		// Check to see if the user has already liked the post
+		const liked = await prisma.post.findUnique({
+			where: {
+				id: id,
+				liked: {
+					some: {
+						id: user_data.alias.id,
+					},
+				},
+			},
+		});
+
+		console.log(`Liked status: ${liked !== null}`);
+		
+		// Add or remove a like connection depending on the results of the follower query
+		const connection = liked === null ? { connect: { id: user_data.alias.id } } : { disconnect: { id: user_data.alias.id } };
+		await prisma.post.update({
+			where: {
+				id: id,
+			},
+			data: {
+				liked: connection,
+			},
+		});
+	}
+}
+
 /** Get posts made by a set of users */
 export async function getPosts(users: string[])
 {
@@ -383,6 +418,33 @@ export async function getPosts(users: string[])
 	};
 }
 
+/** Get posts liked by a user */
+export async function getLiked(user: string)
+{
+	const content = await prisma.post.findMany({
+		where: {
+			liked: {
+				some: {
+					id: user,
+				},
+			},
+		},
+		orderBy: {
+			created: "desc",
+		},
+		include: {
+			author: {
+				select: { name: true, tag: true },
+			},
+			liked: {
+				select: { tag: true },
+			},
+		},
+	});
+
+	return content;
+}
+
 /** Get all posts */
 export async function getAll()
 {
@@ -397,6 +459,9 @@ export async function getAll()
 		include: {
 			author: {
 				select: { name: true, tag: true },
+			},
+			liked: {
+				select: { tag: true },
 			},
 		},
 	});
@@ -420,6 +485,9 @@ export async function getPost(id: string)
 		include: {
 			author: {
 				select: { name: true, tag: true },
+			},
+			liked: {
+				select: { tag: true },
 			},
 		},
 	});

@@ -1,4 +1,4 @@
-import { getAll, getPost, getPostHistory } from "@/lib/db";
+import { getAll, getLiked, getPost, getPostHistory } from "@/lib/db";
 import { ReactElement, ReactNode } from "react";
 import { Post } from "./post";
 import { notFound } from "next/navigation";
@@ -22,7 +22,27 @@ export async function UserFeed(props: { id: string }): Promise<ReactElement>
 	const components: ReactElement[] = [];
 	let key = 0;
 	for (const post of posts.props.content) {
-		components.push(<Post id={post.id} author={post.author?.name} authorID={post.authorId} tag={post.author.tag} title={post.title} content={post.content} time={post.created} key={key} />);
+		components.push(<Post id={post.id} author={post.author?.name} authorID={post.authorId} tag={post.author.tag} likes={post.liked.length} title={post.title} content={post.content} time={post.created} key={key} />);
+		++key;
+	}
+
+	return (
+		<Feed>
+			{components}
+		</Feed>
+	);
+}
+
+/** A feed showing posts a user has liked */
+export async function LikedFeed(props: { id: string }): Promise<ReactElement>
+{
+	const posts = await getLiked(props.id);
+	
+	// Create a set of post components for each post in the feed
+	const components: ReactElement[] = [];
+	let key = 0;
+	for (const post of posts) {
+		components.push(<Post id={post.id} author={post.author?.name} authorID={post.authorId} tag={post.author.tag} likes={post.liked.length} title={post.title} content={post.content} time={post.created} key={key} />);
 		++key;
 	}
 
@@ -42,7 +62,7 @@ export async function GlobalFeed(): Promise<ReactElement>
 	const components: ReactElement[] = [];
 	let key = 0;
 	for (const post of posts.props.content) {
-		components.push(<Post id={post.id} author={post.author?.name} authorID={post.authorId} tag={post.author.tag} title={post.title} content={post.content} time={post.created} key={key} />);
+		components.push(<Post id={post.id} author={post.author?.name} authorID={post.authorId} likes={post.liked.length} tag={post.author.tag} title={post.title} content={post.content} time={post.created} key={key} />);
 		++key;
 	}
 
@@ -63,7 +83,7 @@ export async function PostFeed(props: { id: string }): Promise<ReactElement>
 
 	return (
 		<Feed>
-			<Post id={post.id} author={post.author?.name} authorID={post.authorId} tag={post.author.tag} title={post.title} content={post.content} time={post.created} />
+			<Post id={post.id} author={post.author?.name} authorID={post.authorId} likes={post.liked.length} tag={post.author.tag} title={post.title} content={post.content} time={post.created} />
 		</Feed>
 	);
 }

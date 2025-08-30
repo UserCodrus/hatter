@@ -1,4 +1,4 @@
-import { UserFeed } from "@/components/feed";
+import { LikedFeed, UserFeed } from "@/components/feed";
 import { Header } from "@/components/header";
 import { UserList, UserProfile } from "@/components/info";
 import { getAliasData, getUser } from "@/lib/db";
@@ -26,9 +26,11 @@ export default async function Page(props: { params: Promise<{ id: string }> })
 						{follower_component}
 					</div>
 				</div>
-				<div className="p-2">
+				<div className="flex flex-col p-2">
 					<div className="text-lg font-bold">Recent Posts</div>
 					<UserFeed id={alias.id} />
+					<div className="text-lg font-bold">Liked Posts</div>
+					<LikedFeed id={alias.id} />
 				</div>
 			</div>
 		</div>

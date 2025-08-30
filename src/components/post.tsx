@@ -5,8 +5,9 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ReactElement } from "react";
 import { UserAvatar } from "./info";
+import { LikeButton } from "./interactive";
 
-export function Post(props: { id: string, title: string, author: string, authorID: string, tag: string, time: Date, content: string | null }): ReactElement
+export function Post(props: { id: string, title: string, author: string, authorID: string, likes: number, tag: string, time: Date, content: string | null }): ReactElement
 {
 	const router = useRouter();
 	const content = props.content ? props.content : "This post is empty.";
@@ -31,7 +32,7 @@ export function Post(props: { id: string, title: string, author: string, authorI
 			<div className="flex flex-row">
 				<div className="text-sm grow-1">{props.time.toLocaleString("default", date_format)}</div>
 				<div className="flex flex-row gap-2">
-					<div>Like</div>
+					<div className="bg-blue-200"><LikeButton id={props.id} /> +{props.likes}</div>
 					<div>Reply</div>
 				</div>
 			</div>
