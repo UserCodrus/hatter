@@ -23,7 +23,7 @@ model Alias {
 	image		String?
 
 	posts		Post[]
-	likes		Post[]		@relation(name: "like")
+	likes		Like[]
 	following	Alias[]		@relation(name: "follow")
 	followers	Alias[]		@relation(name: "follow")
 }
@@ -47,10 +47,19 @@ model Post {
 	created		DateTime	@default(now())
 	updated		DateTime	@default(now())
 
-	liked		Alias[]		@relation(name: "like")
 	reply		Post?		@relation(name: "reply", fields: [replyID], references: [id])
 	replyID		String?
 	replies		Post[]		@relation(name: "reply")
+	likes		Like[]		@relation
+}
+
+model Like {
+	time		DateTime	@default(now())
+	post		Post		@relation(fields: [postID], references: [id])
+	postID		String
+	user		Alias		@relation(fields: [userID], references: [id])
+	userID		String
+	@@id([postID, userID])
 }
 
 model User {

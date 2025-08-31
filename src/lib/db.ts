@@ -277,8 +277,10 @@ export async function getPostHistory(id: string)
 			author: {
 				select: { name: true, tag: true },
 			},
-			liked: {
-				select: { tag: true },
+			likes: {
+				select: {
+					user: { select: { tag: true } },
+				},
 			},
 		},
 	});
@@ -360,29 +362,35 @@ export async function toggleLike(id: string)
 	const user_data = await getUser();
 	if (user_data.alias) {
 		// Check to see if the user has already liked the post
-		const liked = await prisma.post.findUnique({
+		const liked = await prisma.like.findUnique({
 			where: {
-				id: id,
-				liked: {
-					some: {
-						id: user_data.alias.id,
-					},
+				postID_userID: {
+					userID: user_data.alias.id,
+					postID: id,
 				},
 			},
 		});
 
 		console.log(`Liked status: ${liked !== null}`);
 		
-		// Add or remove a like connection depending on the results of the follower query
-		const connection = liked === null ? { connect: { id: user_data.alias.id } } : { disconnect: { id: user_data.alias.id } };
-		await prisma.post.update({
-			where: {
-				id: id,
-			},
-			data: {
-				liked: connection,
-			},
-		});
+		// Add or remove a like entry
+		if (liked === null) {
+			await prisma.like.create({
+				data: {
+					userID: user_data.alias.id,
+					postID: id,
+				},
+			});
+		} else {
+			await prisma.like.delete({
+				where: {
+					postID_userID: {
+						userID: user_data.alias.id,
+						postID: id,
+					},
+				},
+			});
+		};
 	}
 }
 
@@ -421,23 +429,23 @@ export async function getPosts(users: string[])
 /** Get posts liked by a user */
 export async function getLiked(user: string)
 {
-	const content = await prisma.post.findMany({
+	const content = await prisma.like.findMany({
 		where: {
-			liked: {
-				some: {
-					id: user,
-				},
-			},
+			userID: user,
 		},
 		orderBy: {
-			created: "desc",
+			time: "desc",
 		},
-		include: {
-			author: {
-				select: { name: true, tag: true },
-			},
-			liked: {
-				select: { tag: true },
+		select: {
+			post: {
+				include: {
+					author: {
+						select: { name: true, tag: true },
+					},
+					_count: {
+						select: { likes: true },
+					},
+				},
 			},
 		},
 	});
@@ -460,8 +468,10 @@ export async function getAll()
 			author: {
 				select: { name: true, tag: true },
 			},
-			liked: {
-				select: { tag: true },
+			likes: {
+				select: {
+					user: { select: { tag: true } },
+				},
 			},
 		},
 	});
@@ -486,8 +496,10 @@ export async function getPost(id: string)
 			author: {
 				select: { name: true, tag: true },
 			},
-			liked: {
-				select: { tag: true },
+			likes: {
+				select: {
+					user: { select: { tag: true } },
+				},
 			},
 		},
 	});
