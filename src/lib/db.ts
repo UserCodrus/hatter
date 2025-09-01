@@ -361,6 +361,23 @@ export async function toggleLike(id: string)
 {
 	const user_data = await getUser();
 	if (user_data.alias) {
+		// Make sure the post exists and wasn't created by the user
+		const post = await prisma.post.findUnique({
+			where: {
+				id: id,
+			},
+		});
+
+		if (post === null) {
+			console.error(`Attempted to like an invalid post: ${id}`);
+			return;
+		}
+
+		if (post.authorId === user_data.alias.id) {
+			console.log(`User tried to like own post: ${id}`);
+			return;
+		}
+
 		// Check to see if the user has already liked the post
 		const liked = await prisma.like.findUnique({
 			where: {
@@ -370,8 +387,6 @@ export async function toggleLike(id: string)
 				},
 			},
 		});
-
-		console.log(`Liked status: ${liked !== null}`);
 		
 		// Add or remove a like entry
 		if (liked === null) {
