@@ -14,15 +14,15 @@ function Feed(props: {children: ReactNode}): ReactElement
 }
 
 /** A feed showing the posts made by a single user */
-export async function UserFeed(props: { id: string }): Promise<ReactElement>
+export async function UserFeed(props: { userID: string, viewerID: string | undefined }): Promise<ReactElement>
 {
-	const posts = await getPostHistory(props.id);
+	const posts = await getPostHistory(props.userID);
 	
 	// Create a set of post components for each post in the feed
 	const components: ReactElement[] = [];
 	let key = 0;
 	for (const post of posts.props.content) {
-		components.push(<Post post={post} author={post.author} likes={post.likes.length} key={key} />);
+		components.push(<Post post={post} author={post.author} activeUser={props.viewerID} likes={post.likes.length} key={key} />);
 		++key;
 	}
 
@@ -34,15 +34,15 @@ export async function UserFeed(props: { id: string }): Promise<ReactElement>
 }
 
 /** A feed showing posts a user has liked */
-export async function LikedFeed(props: { id: string }): Promise<ReactElement>
+export async function LikedFeed(props: { userID: string, viewerID: string | undefined }): Promise<ReactElement>
 {
-	const posts = await getLiked(props.id);
+	const posts = await getLiked(props.userID);
 	
 	// Create a set of post components for each post in the feed
 	const components: ReactElement[] = [];
 	let key = 0;
 	for (const result of posts) {
-		components.push(<Post post={result.post} author={result.post.author} likes={result.post._count.likes} key={key} />);
+		components.push(<Post post={result.post} author={result.post.author} activeUser={props.viewerID} likes={result.post._count.likes} key={key} />);
 		++key;
 	}
 
@@ -54,7 +54,7 @@ export async function LikedFeed(props: { id: string }): Promise<ReactElement>
 }
 
 /** A feed showing recent posts made on the app */
-export async function GlobalFeed(): Promise<ReactElement>
+export async function GlobalFeed(props: { viewerID: string | undefined }): Promise<ReactElement>
 {
 	const posts = await getAll();
 	
@@ -62,7 +62,7 @@ export async function GlobalFeed(): Promise<ReactElement>
 	const components: ReactElement[] = [];
 	let key = 0;
 	for (const post of posts.props.content) {
-		components.push(<Post post={post} author={post.author} likes={post.likes.length} key={key} />);
+		components.push(<Post post={post} author={post.author} activeUser={props.viewerID} likes={post.likes.length} key={key} />);
 	}
 
 	return (
@@ -73,16 +73,16 @@ export async function GlobalFeed(): Promise<ReactElement>
 }
 
 /** A feed showing a single post and its replies */
-export async function PostFeed(props: { id: string }): Promise<ReactElement>
+export async function PostFeed(props: { postID: string, viewerID: string | undefined }): Promise<ReactElement>
 {
-	const post = (await getPost(props.id)).props.content;
+	const post = (await getPost(props.postID)).props.content;
 
 	if (post === null)
 		notFound();
 
 	return (
 		<Feed>
-			<Post post={post} author={post.author} likes={post.likes.length} />
+			<Post post={post} author={post.author} activeUser={props.viewerID} likes={post.likes.length} />
 		</Feed>
 	);
 }

@@ -25,10 +25,10 @@ export function ResetAliasButton(): ReactElement
 }
 
 /** A button that can follow or unfollow a user */
-export function FollowButton(props: {id: string}): ReactElement
+export function FollowButton(props: {userID: string}): ReactElement
 {
 	async function handleClick() {
-		await toggleFollow(props.id);
+		await toggleFollow(props.userID);
 	}
 
 	return (
@@ -37,10 +37,10 @@ export function FollowButton(props: {id: string}): ReactElement
 }
 
 /** A button that can like or unlike a post */
-export function LikeButton(props: {id: string}): ReactElement
+export function LikeButton(props: {postID: string}): ReactElement
 {
 	async function handleClick() {
-		await toggleLike(props.id);
+		await toggleLike(props.postID);
 	}
 
 	return (

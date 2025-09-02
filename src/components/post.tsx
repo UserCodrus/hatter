@@ -13,12 +13,21 @@ type Author = {
 	tag: string
 }
 
-export function Post(props: { post: PostData, author: Author, likes: number }): ReactElement
+export function Post(props: { post: PostData, author: Author, likes: number, activeUser?: string }): ReactElement
 {
 	const router = useRouter();
 	const content = props.post.content ? props.post.content : "This post is empty.";
 
 	let date_format: Intl.DateTimeFormatOptions = { month: "long", day: "numeric", year: "numeric", hour: "numeric", minute: "numeric" };
+
+	// Create like and reply buttons based on whether or not the post was made by the active user
+	let like_button = <></>;
+	let reply_button = <></>;
+
+	if (props.post.authorId !== props.activeUser) {
+		like_button = <LikeButton postID={props.post.id} />;
+		let reply_button = <></>;
+	}
 
 	return (
 		<div className="flex flex-col p-2 gap-2 w-full min-w-[20vw] bg-slate-400">
@@ -38,7 +47,7 @@ export function Post(props: { post: PostData, author: Author, likes: number }): 
 			<div className="flex flex-row">
 				<div className="text-sm grow-1">{props.post.updated.toLocaleString("default", date_format)}</div>
 				<div className="flex flex-row gap-2">
-					<div className="bg-blue-200"><LikeButton id={props.post.id} /> +{props.likes}</div>
+					<div className="bg-blue-200">{like_button} +{props.likes}</div>
 					<div>Reply</div>
 				</div>
 			</div>

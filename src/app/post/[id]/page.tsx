@@ -10,7 +10,7 @@ export default async function Page(props: { params: Promise<{ id: string }> })
 	return (
 		<div className="flex flex-col items-center justify-items-center min-h-screen w-full">
 			<Header user={user_data.user} alias={user_data.alias}  />
-			<PostFeed id={params.id} />
+			<PostFeed postID={params.id} viewerID={user_data.alias?.id} />
 		</div>
 	);
 }

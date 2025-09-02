@@ -43,9 +43,9 @@ export default async function Page()
 				</div>
 				<div className="flex flex-col p-2">
 					<div className="text-lg font-bold">Recent Posts</div>
-					<UserFeed id={user_data.alias.id} />
+					<UserFeed userID={user_data.alias.id} viewerID={user_data.alias.id} />
 					<div className="text-lg font-bold">Liked Posts</div>
-					<LikedFeed id={user_data.alias.id} />
+					<LikedFeed userID={user_data.alias.id} viewerID={user_data.alias.id} />
 				</div>
 			</div>
 			<ResetAliasButton />

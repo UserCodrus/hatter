@@ -11,7 +11,7 @@ export default async function Page()
 			<Header user={user_data.user} alias={user_data.alias} />
 			<div className="flex flex-col w-4/5 p-2">
 				<div className="font-bold text-lg">Global Feed</div>
-				<GlobalFeed />
+				<GlobalFeed viewerID={user_data.alias?.id} />
 			</div>
 		</div>
 	);

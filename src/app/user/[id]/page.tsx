@@ -28,9 +28,9 @@ export default async function Page(props: { params: Promise<{ id: string }> })
 				</div>
 				<div className="flex flex-col p-2">
 					<div className="text-lg font-bold">Recent Posts</div>
-					<UserFeed id={alias.id} />
+					<UserFeed userID={alias.id} viewerID={user_data.alias?.id} />
 					<div className="text-lg font-bold">Liked Posts</div>
-					<LikedFeed id={alias.id} />
+					<LikedFeed userID={alias.id} viewerID={user_data.alias?.id} />
 				</div>
 			</div>
 		</div>

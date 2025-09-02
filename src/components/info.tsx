@@ -42,7 +42,7 @@ export function UserProfile(props: {id: string, name: string, tag: string, follo
 				{props.followers} Followers
 			</div>
 			<div>
-				<FollowButton id={props.id} />
+				<FollowButton userID={props.id} />
 			</div>
 		</div>
 	);
