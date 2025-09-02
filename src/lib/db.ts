@@ -471,6 +471,8 @@ export async function getLiked(user: string)
 /** Get all posts */
 export async function getAll()
 {
+	const user = await getUser();
+
 	// Find posts matching the provided users
 	const content = await prisma.post.findMany({
 		where: {
@@ -484,10 +486,18 @@ export async function getAll()
 				select: { name: true, tag: true },
 			},
 			likes: {
+				where: {
+					userID: user.alias?.id,
+				},
 				select: {
 					user: { select: { tag: true } },
 				},
 			},
+			_count: {
+				select: {
+					likes: true
+				}
+			}
 		},
 	});
 

@@ -3,6 +3,7 @@
 import { toggleFollow, resetAlias, toggleLike } from "@/lib/db";
 import { useRouter } from "next/navigation";
 import { ReactElement } from "react";
+import { Icon } from "./info";
 
 /** A button that triggers an alias reset for the user */
 export function ResetAliasButton(): ReactElement
@@ -37,13 +38,15 @@ export function FollowButton(props: {userID: string}): ReactElement
 }
 
 /** A button that can like or unlike a post */
-export function LikeButton(props: {postID: string}): ReactElement
+export function LikeButton(props: { postID: string, liked?: boolean }): ReactElement
 {
 	async function handleClick() {
 		await toggleLike(props.postID);
 	}
 
+	const icon = props.liked ? "tdesign--heart-filled" : "tdesign--heart";
+
 	return (
-		<button onClick={() => handleClick()} className="cursor-pointer">Like</button>
+		<button onClick={() => handleClick()} className="cursor-pointer"><Icon size={16} id={icon} /></button>
 	);
 }

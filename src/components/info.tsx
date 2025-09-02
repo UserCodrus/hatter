@@ -9,7 +9,7 @@ const avatar_colors = [
 	"#009900"
 ];
 
-export function UserAvatar(props: {image: string | null, size: number}): ReactElement
+export function UserAvatar(props: { image: string | null, size: number }): ReactElement
 {
 	if (props.image)
 		return <Avatar name={props.image} size={props.size} colors={avatar_colors} variant="beam" square />
@@ -18,7 +18,7 @@ export function UserAvatar(props: {image: string | null, size: number}): ReactEl
 }
 
 /** Display a user's name and icon */
-export function UserName(props: {id: string, tag: string, name: string}): ReactElement
+export function UserName(props: { id: string, tag: string, name: string }): ReactElement
 {
 	return (
 		<a className="flex flex-row gap-2 items-center cursor-pointer" href={pages.user(props.tag)}>
@@ -29,7 +29,7 @@ export function UserName(props: {id: string, tag: string, name: string}): ReactE
 }
 
 /** Display a user's full profile, including their name, icon and follower count */
-export function UserProfile(props: {id: string, name: string, tag: string, followers: number}): ReactElement
+export function UserProfile(props: { id: string, name: string, tag: string, followers: number }): ReactElement
 {
 	return (
 		<div className="flex flex-row gap-2 items-center w-full">
@@ -49,7 +49,7 @@ export function UserProfile(props: {id: string, name: string, tag: string, follo
 }
 
 /** A list of users */
-export function UserList(props: {aliases: Alias[]}): ReactElement
+export function UserList(props: { aliases: Alias[] }): ReactElement
 {
 	const components: ReactElement[] = [];
 	let key = 0;
@@ -62,5 +62,13 @@ export function UserList(props: {aliases: Alias[]}): ReactElement
 		<div className="flex flex-col gap-1">
 			{components}
 		</div>
+	);
+}
+
+/** An svg icon */
+export function Icon(props: { size: number, id: string }): ReactElement
+{
+	return (
+		<svg width={props.size} height={props.size}><use href={pages.icons + "#" + props.id} /></svg>
 	);
 }

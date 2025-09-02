@@ -8,6 +8,8 @@ export const pages = {
 	create: "/create",
 	signup: "/account",
 
+	icons: "/icons.svg",
+
 	user: (id: string) => `/user/${id}`,
 	post: (id: string) => `/post/${id}`,
 
