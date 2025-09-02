@@ -1,5 +1,5 @@
 import { ResetAliasButton } from "@/components/interactive";
-import { UserFeed } from "@/components/feed";
+import { LikedFeed, UserFeed } from "@/components/feed";
 import { Header } from "@/components/header";
 import { getFollowers, getFollowing, getUser } from "@/lib/db";
 import { pages } from "@/lib/utils";
@@ -41,9 +41,11 @@ export default async function Page()
 						</div>
 					</div>
 				</div>
-				<div className="p-2">
+				<div className="flex flex-col p-2">
 					<div className="text-lg font-bold">Recent Posts</div>
 					<UserFeed id={user_data.alias.id} />
+					<div className="text-lg font-bold">Liked Posts</div>
+					<LikedFeed id={user_data.alias.id} />
 				</div>
 			</div>
 			<ResetAliasButton />

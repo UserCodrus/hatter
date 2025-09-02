@@ -18,7 +18,7 @@ function UserComponent(props: {user: SessionUser | null, alias: Alias | null}): 
 			const img = props.alias?.image;
 
 			main = <div className="flex flex-row items-center gap-2 text-center">
-				<UserAvatar id={props.alias.id} size={32} />
+				<UserAvatar image={props.alias.id} size={32} />
 				<div className="text-nowrap">{props.alias.name}</div>
 			</div>;
 

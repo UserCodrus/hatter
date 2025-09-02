@@ -9,9 +9,12 @@ const avatar_colors = [
 	"#009900"
 ];
 
-export function UserAvatar(props: {id: string, size: number}): ReactElement
+export function UserAvatar(props: {image: string | null, size: number}): ReactElement
 {
-	return <Avatar name={props.id} size={props.size} colors={avatar_colors} variant="beam" square />
+	if (props.image)
+		return <Avatar name={props.image} size={props.size} colors={avatar_colors} variant="beam" square />
+	else
+		return <Avatar name={"default"} size={props.size} colors={avatar_colors} variant="beam" square />
 }
 
 /** Display a user's name and icon */
@@ -19,7 +22,7 @@ export function UserName(props: {id: string, tag: string, name: string}): ReactE
 {
 	return (
 		<a className="flex flex-row gap-2 items-center cursor-pointer" href={pages.user(props.tag)}>
-			<UserAvatar id={props.id} size={32} />
+			<UserAvatar image={props.name} size={32} />
 			<div>{props.name}</div>
 		</a>
 	);
@@ -30,7 +33,7 @@ export function UserProfile(props: {id: string, name: string, tag: string, follo
 {
 	return (
 		<div className="flex flex-row gap-2 items-center w-full">
-			<UserAvatar id={props.id} size={64} />
+			<UserAvatar image={props.name} size={64} />
 			<div className="flex flex-col grow-1">
 				<div className="font-bold">{props.name}</div>
 				<div>${props.tag}</div>

@@ -22,7 +22,7 @@ export async function UserFeed(props: { id: string }): Promise<ReactElement>
 	const components: ReactElement[] = [];
 	let key = 0;
 	for (const post of posts.props.content) {
-		components.push(<Post id={post.id} author={post.author?.name} authorID={post.authorId} tag={post.author.tag} likes={post.likes.length} title={post.title} content={post.content} time={post.created} key={key} />);
+		components.push(<Post post={post} author={post.author} likes={post.likes.length} key={key} />);
 		++key;
 	}
 
@@ -42,7 +42,7 @@ export async function LikedFeed(props: { id: string }): Promise<ReactElement>
 	const components: ReactElement[] = [];
 	let key = 0;
 	for (const result of posts) {
-		components.push(<Post id={result.post.id} author={result.post.author?.name} authorID={result.post.authorId} tag={result.post.author.tag} likes={result.post._count.likes} title={result.post.title} content={result.post.content} time={result.post.created} key={key} />);
+		components.push(<Post post={result.post} author={result.post.author} likes={result.post._count.likes} key={key} />);
 		++key;
 	}
 
@@ -62,8 +62,7 @@ export async function GlobalFeed(): Promise<ReactElement>
 	const components: ReactElement[] = [];
 	let key = 0;
 	for (const post of posts.props.content) {
-		components.push(<Post id={post.id} author={post.author?.name} authorID={post.authorId} likes={post.likes.length} tag={post.author.tag} title={post.title} content={post.content} time={post.created} key={key} />);
-		++key;
+		components.push(<Post post={post} author={post.author} likes={post.likes.length} key={key} />);
 	}
 
 	return (
@@ -83,7 +82,7 @@ export async function PostFeed(props: { id: string }): Promise<ReactElement>
 
 	return (
 		<Feed>
-			<Post id={post.id} author={post.author?.name} authorID={post.authorId} likes={post.likes.length} tag={post.author.tag} title={post.title} content={post.content} time={post.created} />
+			<Post post={post} author={post.author} likes={post.likes.length} />
 		</Feed>
 	);
 }
