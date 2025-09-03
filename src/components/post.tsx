@@ -21,12 +21,10 @@ export function Post(props: { post: PostData, author: Author, likes: number, lik
 	let date_format: Intl.DateTimeFormatOptions = { month: "long", day: "numeric", year: "numeric", hour: "numeric", minute: "numeric" };
 
 	// Create like and reply buttons based on whether or not the post was made by the active user
-	let like_button = <></>;
 	let reply_button = <></>;
 
 	const self_post = props.post.authorId === props.activeUser;
 	if (props.post.authorId !== props.activeUser) {
-		like_button = <LikeButton postID={props.post.id} liked={props.liked} self={self_post} />;
 		let reply_button = <></>;
 	}
 
@@ -48,7 +46,7 @@ export function Post(props: { post: PostData, author: Author, likes: number, lik
 			<div className="flex flex-row">
 				<div className="text-sm grow-1">{props.post.updated.toLocaleString("default", date_format)}</div>
 				<div className="flex flex-row gap-2">
-					<div className="bg-blue-200 flex flex-row items-center"><LikeButton postID={props.post.id} liked={props.liked} self={self_post} />+{props.likes}</div>
+					<div className="bg-blue-200 flex flex-row items-center"><LikeButton postID={props.post.id} likedPost={props.liked} likeCount={props.likes} selfPost={self_post} /></div>
 					<div>Reply</div>
 				</div>
 			</div>
