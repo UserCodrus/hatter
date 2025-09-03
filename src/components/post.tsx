@@ -46,7 +46,7 @@ export function Post(props: { post: PostData, author: Author, likes: number, lik
 			<div className="flex flex-row">
 				<div className="text-sm grow-1">{props.post.updated.toLocaleString("default", date_format)}</div>
 				<div className="flex flex-row gap-2">
-					<div className="bg-blue-200 flex flex-row items-center"><LikeButton postID={props.post.id} likedPost={props.liked} likeCount={props.likes} selfPost={self_post} /></div>
+					<div className="flex flex-row items-center"><LikeButton postID={props.post.id} likedPost={props.liked} likeCount={props.likes} selfPost={self_post} /></div>
 					<div>Reply</div>
 				</div>
 			</div>

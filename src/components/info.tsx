@@ -69,6 +69,6 @@ export function UserList(props: { aliases: Alias[] }): ReactElement
 export function Icon(props: { size: number, id: string }): ReactElement
 {
 	return (
-		<svg width={props.size} height={props.size}><use href={pages.icons + "#" + props.id} /></svg>
+		<svg width={props.size} height={props.size} className="text-green-700"><use href={pages.icons + "#" + props.id} /></svg>
 	);
 }
