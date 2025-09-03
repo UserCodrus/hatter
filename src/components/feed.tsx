@@ -22,7 +22,7 @@ export async function UserFeed(props: { userID: string, viewerID: string | undef
 	const components: ReactElement[] = [];
 	let key = 0;
 	for (const post of posts.props.content) {
-		components.push(<Post post={post} author={post.author} activeUser={props.viewerID} likes={post.likes.length} liked={post.likes.length > 0} key={key} />);
+		components.push(<Post post={post} author={post.author} activeUser={props.viewerID} likes={post._count.likes} liked={post.likes.length > 0} key={key} />);
 		++key;
 	}
 
@@ -42,7 +42,7 @@ export async function LikedFeed(props: { userID: string, viewerID: string | unde
 	const components: ReactElement[] = [];
 	let key = 0;
 	for (const result of posts) {
-		components.push(<Post post={result.post} author={result.post.author} activeUser={props.viewerID} likes={result.post._count.likes} liked={true} key={key} />);
+		components.push(<Post post={result.post} author={result.post.author} activeUser={props.viewerID} likes={result.post._count.likes} liked={result.post.likes.length > 0} key={key} />);
 		++key;
 	}
 
@@ -82,7 +82,7 @@ export async function PostFeed(props: { postID: string, viewerID: string | undef
 
 	return (
 		<Feed>
-			<Post post={post} author={post.author} activeUser={props.viewerID} likes={post.likes.length} liked={post.likes.length > 0} />
+			<Post post={post} author={post.author} activeUser={props.viewerID} likes={post._count.likes} liked={post.likes.length > 0} />
 		</Feed>
 	);
 }

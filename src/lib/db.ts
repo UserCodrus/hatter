@@ -265,6 +265,7 @@ export async function updateAlias(name: string, bio: string | null, image: strin
 /** Get posts made by a user */
 export async function getPostHistory(id: string)
 {
+	const user_data = await getUser();
 	const content = await prisma.post.findMany({
 		where: {
 			authorId: id,
@@ -278,10 +279,18 @@ export async function getPostHistory(id: string)
 				select: { name: true, tag: true },
 			},
 			likes: {
+				where: {
+					userID: user_data.alias?.id,
+				},
 				select: {
 					user: { select: { tag: true } },
 				},
 			},
+			_count: {
+				select: {
+					likes: true
+				}
+			}
 		},
 	});
 
@@ -444,6 +453,7 @@ export async function getPosts(users: string[])
 /** Get posts liked by a user */
 export async function getLiked(user: string)
 {
+	const user_data = await getUser();
 	const content = await prisma.like.findMany({
 		where: {
 			userID: user,
@@ -457,6 +467,14 @@ export async function getLiked(user: string)
 					author: {
 						select: { name: true, tag: true },
 					},
+					likes: {
+						where: {
+							userID: user_data.alias?.id,
+						},
+						select: {
+							user: { select: { tag: true } },
+						},
+					},
 					_count: {
 						select: { likes: true },
 					},
@@ -468,12 +486,10 @@ export async function getLiked(user: string)
 	return content;
 }
 
-/** Get all posts */
+/** Get all posts made on the app */
 export async function getAll()
 {
-	const user = await getUser();
-
-	// Find posts matching the provided users
+	const user_data = await getUser();
 	const content = await prisma.post.findMany({
 		where: {
 			published: true,
@@ -487,7 +503,7 @@ export async function getAll()
 			},
 			likes: {
 				where: {
-					userID: user.alias?.id,
+					userID: user_data.alias?.id,
 				},
 				select: {
 					user: { select: { tag: true } },
@@ -510,9 +526,7 @@ export async function getAll()
 /** Get a single post */
 export async function getPost(id: string)
 {
-	console.log(id);
-	
-	// Find posts matching the provided users
+	const user_data = await getUser();
 	const content = await prisma.post.findUnique({
 		where: {
 			id: String(id),
@@ -522,10 +536,18 @@ export async function getPost(id: string)
 				select: { name: true, tag: true },
 			},
 			likes: {
+				where: {
+					userID: user_data.alias?.id,
+				},
 				select: {
 					user: { select: { tag: true } },
 				},
 			},
+			_count: {
+				select: {
+					likes: true
+				}
+			}
 		},
 	});
 

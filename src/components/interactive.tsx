@@ -38,13 +38,13 @@ export function FollowButton(props: {userID: string}): ReactElement
 }
 
 /** A button that can like or unlike a post */
-export function LikeButton(props: { postID: string, liked?: boolean }): ReactElement
+export function LikeButton(props: { postID: string, liked?: boolean, self: boolean }): ReactElement
 {
 	async function handleClick() {
 		await toggleLike(props.postID);
 	}
 
-	const icon = props.liked ? "tdesign--heart-filled" : "tdesign--heart";
+	const icon = props.liked || props.self ? "tdesign--heart-filled" : "tdesign--heart";
 
 	return (
 		<button onClick={() => handleClick()} className="cursor-pointer"><Icon size={16} id={icon} /></button>
