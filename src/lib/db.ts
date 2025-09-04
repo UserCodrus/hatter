@@ -5,6 +5,7 @@ import { getServerSession } from "next-auth";
 import { AuthSession, options, SessionUser } from "./auth";
 import { getLastReset, getNextReset, isOwner } from "./utils";
 import { Alias } from "@prisma/client";
+import { prisma_post_query } from "./query";
 
 type UserData = {
 	user: SessionUser | null,
@@ -262,49 +263,6 @@ export async function updateAlias(name: string, bio: string | null, image: strin
 	return null;
 }
 
-/** Get posts made by a user */
-export async function getPostHistory(id: string)
-{
-	const user_data = await getUser();
-	const content = await prisma.post.findMany({
-		where: {
-			authorId: id,
-			published: true,
-		},
-		orderBy: {
-			created: "desc",
-		},
-		include: {
-			author: {
-				select: { name: true, tag: true },
-			},
-			likes: {
-				where: {
-					userID: user_data.alias?.id,
-				},
-				select: {
-					user: { select: { tag: true } },
-				},
-			},
-			_count: {
-				select: {
-					likes: true,
-					replies: {
-						where: {
-							authorId: user_data.alias?.id,
-						}
-					}
-				}
-			}
-		},
-	});
-
-	return {
-		props: { content },
-		revalidate: 10
-	};
-};
-
 /** Get all the followers of a user */
 export async function getFollowers(id: string)
 {
@@ -423,6 +381,43 @@ export async function toggleLike(id: string)
 	}
 }
 
+/** Get a single post */
+export async function getPost(id: string)
+{
+	const user_data = await getUser();
+	const content = await prisma.post.findUnique({
+		where: {
+			id: String(id),
+		},
+		include: prisma_post_query(user_data.alias?.id),
+	});
+
+	return {
+		props: { content },
+		revalidate: 10
+	};
+}
+
+/** Get all posts made on the app */
+export async function getAll()
+{
+	const user_data = await getUser();
+	const content = await prisma.post.findMany({
+		where: {
+			published: true,
+		},
+		orderBy: {
+			created: "desc",
+		},
+		include: prisma_post_query(user_data.alias?.id),
+	});
+
+	return {
+		props: { content },
+		revalidate: 10
+	};
+}
+
 /** Get posts made by a set of users */
 export async function getPosts(users: string[])
 {
@@ -444,29 +439,7 @@ export async function getPosts(users: string[])
 		orderBy: {
 			created: "desc",
 		},
-		include: {
-			author: {
-				select: { name: true, tag: true },
-			},
-			likes: {
-				where: {
-					userID: user_data.alias?.id,
-				},
-				select: {
-					user: { select: { tag: true } },
-				},
-			},
-			_count: {
-				select: {
-					likes: true,
-					replies: {
-						where: {
-							authorId: user_data.alias?.id,
-						}
-					}
-				}
-			}
-		},
+		include: prisma_post_query(user_data.alias?.id),
 	});
 
 	return {
@@ -488,113 +461,10 @@ export async function getLiked(user: string)
 		},
 		select: {
 			post: {
-				include: {
-					author: {
-						select: { name: true, tag: true },
-					},
-					likes: {
-						where: {
-							userID: user_data.alias?.id,
-						},
-						select: {
-							user: { select: { tag: true } },
-						},
-					},
-					_count: {
-						select: {
-							likes: true,
-							replies: {
-								where: {
-									authorId: user_data.alias?.id,
-								}
-							}
-						}
-					}
-				},
+				include: prisma_post_query(user_data.alias?.id),
 			},
 		},
 	});
 
 	return content;
-}
-
-/** Get all posts made on the app */
-export async function getAll()
-{
-	const user_data = await getUser();
-	const content = await prisma.post.findMany({
-		where: {
-			published: true,
-		},
-		orderBy: {
-			created: "desc",
-		},
-		include: {
-			author: {
-				select: { name: true, tag: true },
-			},
-			likes: {
-				where: {
-					userID: user_data.alias?.id,
-				},
-				select: {
-					user: { select: { tag: true } },
-				},
-			},
-			_count: {
-				select: {
-					likes: true,
-					replies: {
-						where: {
-							authorId: user_data.alias?.id,
-						}
-					}
-				}
-			}
-		},
-	});
-
-	return {
-		props: { content },
-		revalidate: 10
-	};
-}
-
-/** Get a single post */
-export async function getPost(id: string)
-{
-	const user_data = await getUser();
-	const content = await prisma.post.findUnique({
-		where: {
-			id: String(id),
-		},
-		include: {
-			author: {
-				select: { name: true, tag: true },
-			},
-			likes: {
-				where: {
-					userID: user_data.alias?.id,
-				},
-				select: {
-					user: { select: { tag: true } },
-				},
-			},
-			_count: {
-				select: {
-					likes: true,
-					replies: {
-						where: {
-							authorId: user_data.alias?.id,
-						}
-					}
-				}
-			}
-		},
-	});
-
-	return {
-		props: { content },
-		revalidate: 10
-	};
 }

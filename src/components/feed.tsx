@@ -1,4 +1,4 @@
-import { getAll, getLiked, getPost, getPostHistory } from "@/lib/db";
+import { getAll, getLiked, getPost, getPosts } from "@/lib/db";
 import { ReactElement, ReactNode } from "react";
 import { Post } from "./post";
 import { notFound } from "next/navigation";
@@ -16,13 +16,21 @@ function Feed(props: {children: ReactNode}): ReactElement
 /** A feed showing the posts made by a single user */
 export async function UserFeed(props: { userID: string, viewerID: string | undefined }): Promise<ReactElement>
 {
-	const posts = await getPostHistory(props.userID);
+	const posts = await getPosts([props.userID]);
 	
 	// Create a set of post components for each post in the feed
 	const components: ReactElement[] = [];
 	let key = 0;
 	for (const post of posts.props.content) {
-		components.push(<Post post={post} author={post.author} activeUser={props.viewerID} likes={post._count.likes} liked={post.likes.length > 0} replied={post._count.replies > 0} key={key} />);
+		components.push(<Post
+			post={post}
+			author={post.author}
+			activeUser={props.viewerID}
+			likes={post._count.likes}
+			liked={post.likes.length > 0}
+			replied={post._count.replies > 0}
+			key={key}
+		/>);
 		++key;
 	}
 
@@ -42,7 +50,15 @@ export async function LikedFeed(props: { userID: string, viewerID: string | unde
 	const components: ReactElement[] = [];
 	let key = 0;
 	for (const result of posts) {
-		components.push(<Post post={result.post} author={result.post.author} activeUser={props.viewerID} likes={result.post._count.likes} liked={result.post.likes.length > 0} replied={result.post._count.replies > 0} key={key} />);
+		components.push(<Post
+			post={result.post}
+			author={result.post.author}
+			activeUser={props.viewerID}
+			likes={result.post._count.likes}
+			liked={result.post.likes.length > 0}
+			replied={result.post._count.replies > 0}
+			key={key}
+		/>);
 		++key;
 	}
 
@@ -62,7 +78,15 @@ export async function GlobalFeed(props: { viewerID: string | undefined }): Promi
 	const components: ReactElement[] = [];
 	let key = 0;
 	for (const post of posts.props.content) {
-		components.push(<Post post={post} author={post.author} activeUser={props.viewerID} likes={post._count.likes} liked={post.likes.length > 0} replied={post._count.replies > 0} key={key} />);
+		components.push(<Post
+			post={post}
+			author={post.author}
+			activeUser={props.viewerID}
+			likes={post._count.likes}
+			liked={post.likes.length > 0}
+			replied={post._count.replies > 0}
+			key={key}
+		/>);
 	}
 
 	return (
@@ -82,7 +106,14 @@ export async function PostFeed(props: { postID: string, viewerID: string | undef
 
 	return (
 		<Feed>
-			<Post post={post} author={post.author} activeUser={props.viewerID} likes={post._count.likes} liked={post.likes.length > 0} replied={post._count.replies > 0} />
+			<Post
+				post={post}
+				author={post.author}
+				activeUser={props.viewerID}
+				likes={post._count.likes}
+				liked={post.likes.length > 0}
+				replied={post._count.replies > 0}
+			/>
 		</Feed>
 	);
 }
