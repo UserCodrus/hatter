@@ -4,7 +4,8 @@ import { getAlias } from "@/lib/db";
 
 type PostData = {
 	title: string,
-	content: string
+	content: string,
+	reply?: string,
 }
 
 export async function POST(req: NextRequest)
@@ -20,7 +21,8 @@ export async function POST(req: NextRequest)
 				title: data.title,
 				content: data.content,
 				published: true,
-				author: { connect: { id: alias.id }}
+				reply: data.reply ? { connect: { id: data.reply } } : undefined,
+				author: { connect: { id: alias.id } },
 			},
 		});
 		

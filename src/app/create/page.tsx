@@ -17,7 +17,9 @@ export default async function Page()
 	return (
 		<div className="flex flex-col items-center justify-items-center min-h-screen w-full">
 			<Header user={user_data.user} alias={user_data.alias} />
-			<CreatePost />
+			<div className="w-1/3">
+				<CreatePost />
+			</div>
 		</div>
 	);
 }

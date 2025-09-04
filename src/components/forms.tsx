@@ -4,8 +4,8 @@ import { createAlias, updateAlias } from "@/lib/db";
 import { useRouter } from "next/navigation";
 import { FormEvent, ReactElement, useState } from "react";
 
-/** A form that llows the user to submit a post */
-export function CreatePost(): ReactElement
+/** A form that allows the user to submit a post */
+export function CreatePost(props: { replyID?: string }): ReactElement
 {
 	const [title, setTitle] = useState("");
 	const [content, setContent] = useState("");
@@ -15,7 +15,8 @@ export function CreatePost(): ReactElement
 		e.preventDefault();
 		try {
 			// Submit the post data to the API
-			const body = { title, content };
+			const body = { title, content, reply: props.replyID };
+			console.log(body);
 			await fetch("/api/post", {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
@@ -31,7 +32,7 @@ export function CreatePost(): ReactElement
 	}
 
 	return (
-		<form className="flex flex-col p-4 gap-2 w-1/3" onSubmit={submitForm}>
+		<form className="flex flex-col p-4 gap-2" onSubmit={submitForm}>
 			<input
 				className="bg-white p-1"
 				placeholder={"Title"}

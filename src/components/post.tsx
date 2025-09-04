@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ReactElement } from "react";
 import { UserAvatar } from "./info";
-import { LikeButton } from "./interactive";
+import { LikeButton, ReplyButton } from "./interactive";
 import { Post as PostData } from "@prisma/client";
 
 type Author = {
@@ -19,14 +19,6 @@ export function Post(props: { post: PostData, author: Author, likes: number, lik
 	const content = props.post.content ? props.post.content : "This post is empty.";
 
 	let date_format: Intl.DateTimeFormatOptions = { month: "long", day: "numeric", year: "numeric", hour: "numeric", minute: "numeric" };
-
-	// Create like and reply buttons based on whether or not the post was made by the active user
-	let reply_button = <></>;
-
-	const self_post = props.post.authorId === props.activeUser;
-	if (props.post.authorId !== props.activeUser) {
-		let reply_button = <></>;
-	}
 
 	return (
 		<div className="flex flex-col p-2 gap-2 w-full min-w-[20vw] bg-slate-400">
@@ -46,8 +38,8 @@ export function Post(props: { post: PostData, author: Author, likes: number, lik
 			<div className="flex flex-row">
 				<div className="text-sm grow-1">{props.post.updated.toLocaleString("default", date_format)}</div>
 				<div className="flex flex-row gap-2">
-					<div className="flex flex-row items-center"><LikeButton postID={props.post.id} likedPost={props.liked} likeCount={props.likes} selfPost={self_post} /></div>
-					<div>Reply</div>
+					<ReplyButton postID={props.post.id} />
+					<LikeButton postID={props.post.id} likedPost={props.liked} likeCount={props.likes} selfPost={props.post.authorId === props.activeUser} />
 				</div>
 			</div>
 		</div>

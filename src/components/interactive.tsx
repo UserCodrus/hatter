@@ -4,6 +4,8 @@ import { toggleFollow, resetAlias, toggleLike } from "@/lib/db";
 import { useRouter } from "next/navigation";
 import { ReactElement, useState } from "react";
 import { Icon } from "./info";
+import { Modal } from "./menus";
+import { CreatePost } from "./forms";
 
 /** A button that triggers an alias reset for the user */
 export function ResetAliasButton(): ReactElement
@@ -61,6 +63,25 @@ export function LikeButton(props: { postID: string, likeCount: number, likedPost
 	const style = props.selfPost ? "" : " cursor-pointer";
 
 	return (
-		<button onClick={() => handleClick()} className={"flex flex-row items-center" + style}><Icon size={16} id={icon} />+{counter}</button>
+		<button onClick={() => handleClick()} className={"flex flex-row items-center text-green-800" + style}><Icon size={16} id={icon} />+{counter}</button>
+	);
+}
+
+/** A button that opens a modal box to compose a reply */
+export function ReplyButton(props: { postID: string, replied?: boolean }): ReactElement
+{
+	const [modal, setModal] = useState(false);
+
+	function handleClick() {
+		console.log(`Reply ID: ${props.postID}`);
+		if (!props.replied)
+			setModal(true);
+	}
+
+	return (
+		<>
+			{modal && <Modal onCancel={() => setModal(false)}><div className="bg-red-200 min-w-96 min-h-96"><CreatePost replyID={props.postID} /></div></Modal>}
+			<button onClick={() => handleClick()} className="cursor-pointer text-green-800" ><Icon size={16} id={props.replied ? "tdesign--chat-bubble-filled" : "tdesign--chat-bubble"} /></button>
+		</>
 	);
 }
