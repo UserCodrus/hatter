@@ -19,6 +19,7 @@ export function Post(props: { post: PostData, author: Author, likes: number, lik
 	const content = props.post.content ? props.post.content : "This post is empty.";
 
 	let date_format: Intl.DateTimeFormatOptions = { month: "long", day: "numeric", year: "numeric", hour: "numeric", minute: "numeric" };
+	const title = props.post.replyID ? `Reply to @${props.post.title}` : props.post.title;
 
 	return (
 		<div className="flex flex-col p-2 gap-2 w-full min-w-[20vw] bg-slate-400">
@@ -31,14 +32,14 @@ export function Post(props: { post: PostData, author: Author, likes: number, lik
 					<div className="text-sm">@{props.author.tag}</div>
 				</div>
 				<div className="flex flex-col grow-1 text-center">
-					<div className="text-lg font-bold">{props.post.title}</div>
+					<div className="text-lg font-bold">{title}</div>
 				</div>
 			</div>
 			<p className="bg-slate-200 p-2 whitespace-pre" onClick={() => router.push(pages.post(props.post.id))}>{content}</p>
 			<div className="flex flex-row">
 				<div className="text-sm grow-1">{props.post.updated.toLocaleString("default", date_format)}</div>
 				<div className="flex flex-row gap-2">
-					<ReplyButton postID={props.post.id} replied={props.replied} />
+					<ReplyButton postID={props.post.id} postContent={props.post.content} replied={props.replied} />
 					<LikeButton postID={props.post.id} likedPost={props.liked} likeCount={props.likes} selfPost={props.post.authorId === props.activeUser} />
 				</div>
 			</div>

@@ -405,6 +405,7 @@ export async function getAll()
 	const content = await prisma.post.findMany({
 		where: {
 			published: true,
+			replyID: null,
 		},
 		orderBy: {
 			created: "desc",
@@ -467,4 +468,22 @@ export async function getLiked(user: string)
 	});
 
 	return content;
+}
+
+/** Get the author of a post */
+export async function getAuthor(postID: string | null | undefined)
+{
+	if (!postID)
+		return undefined;
+	
+	const post = await prisma.post.findUnique({
+		where: {
+			id: postID,
+		},
+		select: {
+			author: true,
+		},
+	});
+
+	return post?.author;
 }

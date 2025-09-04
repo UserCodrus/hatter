@@ -1,6 +1,7 @@
 'use client';
 
 import { createAlias, updateAlias } from "@/lib/db";
+import { pages } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import { FormEvent, ReactElement, useState } from "react";
 
@@ -24,21 +25,25 @@ export function CreatePost(props: { replyID?: string }): ReactElement
 			});
 
 			// Redirect to the history feed
-			router.push("/history");
+			router.push(pages.history);
 		} catch (error) {
 			if (error instanceof Error)
 				console.error(error);
 		}
 	}
 
+	// Hide the title field if the post is a reply - the title will be set automatically when a reply post is created
+	const hide = props.replyID ? " hidden" : "";
+
 	return (
 		<form className="flex flex-col p-4 gap-2" onSubmit={submitForm}>
 			<input
-				className="bg-white p-1"
+				className={"bg-white p-1" + hide}
 				placeholder={"Title"}
 				value={title}
 				onChange={(e) => setTitle(e.target.value)}
 				type="text"
+				disabled={props.replyID ? true : false}
 			/>
 			<textarea
 				className="bg-white p-1"
@@ -47,7 +52,7 @@ export function CreatePost(props: { replyID?: string }): ReactElement
 				onChange={(e) => setContent(e.target.value)}
 			/>
 			<div className="flex items-center justify-center">
-				<input className="w-20 outline-1 bg-slate-300 cursor-pointer" disabled={!content || !title} type="submit" value="Post" />
+				<input className="w-20 outline-1 bg-slate-300 cursor-pointer" disabled={!content || (!title && !props.replyID)} type="submit" value="Post" />
 			</div>
 		</form>
 	);

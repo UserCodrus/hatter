@@ -68,7 +68,7 @@ export function LikeButton(props: { postID: string, likeCount: number, likedPost
 }
 
 /** A button that opens a modal box to compose a reply */
-export function ReplyButton(props: { postID: string, replied?: boolean }): ReactElement
+export function ReplyButton(props: { postID: string, postContent: string | null, replied?: boolean }): ReactElement
 {
 	const [modal, setModal] = useState(false);
 
@@ -80,7 +80,13 @@ export function ReplyButton(props: { postID: string, replied?: boolean }): React
 
 	return (
 		<>
-			{modal && <Modal onCancel={() => setModal(false)}><div className="bg-red-200 min-w-96 min-h-96"><CreatePost replyID={props.postID} /></div></Modal>}
+			{modal && <Modal onCancel={() => setModal(false)}>
+				<div className="flex flex-col items-center justify-center bg-background w-full p-4 gap-2 z-30">
+					<div className="text-lg font-bold text-center">Reply</div>
+					<div className="bg-white p-2 whitespace-pre">{props.postContent}</div>
+					<div className="w-full"><CreatePost replyID={props.postID} /></div>
+				</div>
+			</Modal>}
 			<button onClick={() => handleClick()} className="cursor-pointer text-green-800" ><Icon size={16} id={props.replied ? "tdesign--chat-bubble-filled" : "tdesign--chat-bubble"} /></button>
 		</>
 	);

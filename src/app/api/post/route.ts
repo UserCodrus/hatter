@@ -1,6 +1,6 @@
 import prisma from "@/lib/prisma";
 import { NextRequest } from "next/server";
-import { getAlias } from "@/lib/db";
+import { getAlias, getAuthor, getPost } from "@/lib/db";
 
 type PostData = {
 	title: string,
@@ -14,11 +14,15 @@ export async function POST(req: NextRequest)
 	const data: PostData = await req.json();
 	const alias = await getAlias();
 
+	// If the post is a reply, get the author of the post we are replying to
+	const reply_author = await getAuthor(data.reply);
+	console.log(`Replying: ${data.reply}, author: ${JSON.stringify(reply_author)}`)
+
 	if (alias) {
 		// Push the post data to the database
 		const result = await prisma.post.create({
 			data: {
-				title: data.title,
+				title: data.reply ? reply_author?.tag : data.title,
 				content: data.content,
 				published: true,
 				reply: data.reply ? { connect: { id: data.reply } } : undefined,
