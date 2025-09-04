@@ -13,7 +13,7 @@ type Author = {
 	tag: string
 }
 
-export function Post(props: { post: PostData, author: Author, likes: number, liked?: boolean, activeUser?: string }): ReactElement
+export function Post(props: { post: PostData, author: Author, likes: number, liked?: boolean, replied?: boolean, activeUser?: string }): ReactElement
 {
 	const router = useRouter();
 	const content = props.post.content ? props.post.content : "This post is empty.";
@@ -38,7 +38,7 @@ export function Post(props: { post: PostData, author: Author, likes: number, lik
 			<div className="flex flex-row">
 				<div className="text-sm grow-1">{props.post.updated.toLocaleString("default", date_format)}</div>
 				<div className="flex flex-row gap-2">
-					<ReplyButton postID={props.post.id} />
+					<ReplyButton postID={props.post.id} replied={props.replied} />
 					<LikeButton postID={props.post.id} likedPost={props.liked} likeCount={props.likes} selfPost={props.post.authorId === props.activeUser} />
 				</div>
 			</div>

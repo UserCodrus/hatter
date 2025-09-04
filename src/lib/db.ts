@@ -288,7 +288,12 @@ export async function getPostHistory(id: string)
 			},
 			_count: {
 				select: {
-					likes: true
+					likes: true,
+					replies: {
+						where: {
+							authorId: user_data.alias?.id,
+						}
+					}
 				}
 			}
 		},
@@ -421,6 +426,8 @@ export async function toggleLike(id: string)
 /** Get posts made by a set of users */
 export async function getPosts(users: string[])
 {
+	const user_data = await getUser();
+	
 	// Generate a set of search queries from the user list
 	const filters = users.map((value) => {
 		return {
@@ -441,6 +448,24 @@ export async function getPosts(users: string[])
 			author: {
 				select: { name: true, tag: true },
 			},
+			likes: {
+				where: {
+					userID: user_data.alias?.id,
+				},
+				select: {
+					user: { select: { tag: true } },
+				},
+			},
+			_count: {
+				select: {
+					likes: true,
+					replies: {
+						where: {
+							authorId: user_data.alias?.id,
+						}
+					}
+				}
+			}
 		},
 	});
 
@@ -476,8 +501,15 @@ export async function getLiked(user: string)
 						},
 					},
 					_count: {
-						select: { likes: true },
-					},
+						select: {
+							likes: true,
+							replies: {
+								where: {
+									authorId: user_data.alias?.id,
+								}
+							}
+						}
+					}
 				},
 			},
 		},
@@ -511,7 +543,12 @@ export async function getAll()
 			},
 			_count: {
 				select: {
-					likes: true
+					likes: true,
+					replies: {
+						where: {
+							authorId: user_data.alias?.id,
+						}
+					}
 				}
 			}
 		},
@@ -545,7 +582,12 @@ export async function getPost(id: string)
 			},
 			_count: {
 				select: {
-					likes: true
+					likes: true,
+					replies: {
+						where: {
+							authorId: user_data.alias?.id,
+						}
+					}
 				}
 			}
 		},
