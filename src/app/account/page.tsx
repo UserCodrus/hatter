@@ -1,5 +1,6 @@
 import { CreateAlias, UpdateAlias } from "@/components/forms";
 import { Header } from "@/components/header";
+import { ResetAliasButton } from "@/components/interactive";
 import { getUser } from "@/lib/db";
 import { getNextReset, pages } from "@/lib/utils";
 import { redirect } from "next/navigation";
@@ -34,6 +35,20 @@ function Update(props: {tag: string, name: string, bio: string | null}): ReactEl
 	);
 }
 
+/** Show a form for getting a new alias */
+function Expired(props: { expiration: Date }): ReactElement
+{
+	const date_format: Intl.DateTimeFormatOptions = { month: "long", day: "numeric", year: "numeric", hour: "numeric", minute: "numeric" };
+
+	return (
+		<div className="flex flex-col items-center gap-2 p-4">
+			<div>Your current account expired on {props.expiration.toLocaleString("default", date_format)}</div>
+			<div>Click the button below to get a new one.</div>
+			<div><ResetAliasButton /></div>
+		</div>
+	);
+}
+
 export default async function Page()
 {
 	const user_data = await getUser();
@@ -41,13 +56,14 @@ export default async function Page()
 	// Redirect if the user isn't logged in or has already signed up
 	if (!user_data.user)
 		redirect(pages.root);
-	if (user_data.user && user_data.alias && !user_data.owned)
+	if (user_data.user && user_data.alias && !user_data.expired && !user_data.owned)
 		redirect(pages.history);
 
 	return (
 		<div className="flex flex-col items-center justify-items-center min-h-screen w-full">
-			<Header user={user_data.user} alias={user_data.alias} />
-			{user_data.alias && <Update tag={user_data.alias.tag} name={user_data.alias.name} bio={user_data.alias.bio} />}
+			<Header user={user_data.user} alias={user_data.alias} expired={user_data.expired} />
+			{user_data.alias && user_data.expired && <Expired expiration={user_data.expires}/>}
+			{user_data.alias && !user_data.expired && <Update tag={user_data.alias.tag} name={user_data.alias.name} bio={user_data.alias.bio} />}
 			{!user_data.alias && <Signup />}
 		</div>
 	);

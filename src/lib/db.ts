@@ -12,6 +12,7 @@ type UserData = {
 	alias: Alias | null,
 	owned: boolean,
 	expired: boolean,
+	expires: Date
 }
 
 /** Get the current user data and alias */
@@ -34,7 +35,8 @@ export async function getUser(): Promise<UserData>
 			user: session.user,
 			alias: user_alias ? user_alias.alias : null,
 			owned: isOwner(session.user, user_alias?.alias),
-			expired: user_alias ? (user_alias.expires <= now) : true
+			expired: user_alias ? (user_alias.expires <= now) : true,
+			expires: user_alias ? user_alias.expires : new Date(),
 		}
 	}
 
@@ -43,6 +45,7 @@ export async function getUser(): Promise<UserData>
 		alias: null,
 		owned: false,
 		expired: true,
+		expires: new Date(),
 	};
 }
 
@@ -97,6 +100,22 @@ export async function getAlias()
 	}
 
 	return null;
+}
+
+export async function expireAlias()
+{
+	const session = await getServerSession(options) as AuthSession;
+	const id = session?.user?.id;
+	if (id) {
+		await prisma.userAlias.update({
+			where: {
+				userID: id,
+			},
+			data: {
+				expires: new Date()
+			}
+		});
+	}
 }
 
 /** Select a new alias for the user, if needed */

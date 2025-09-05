@@ -3,6 +3,7 @@ import { ReactElement } from "react";
 import { FollowButton } from "./interactive";
 import { pages } from "@/lib/utils";
 import { Alias } from "@prisma/client";
+import Link from "next/link";
 
 const avatar_colors = [
 	"#99ff99",
@@ -67,5 +68,15 @@ export function Icon(props: { size: number, id: string }): ReactElement
 {
 	return (
 		<svg width={props.size} height={props.size}><use href={pages.icons + "#" + props.id} /></svg>
+	);
+}
+
+/** A box that notifies the user that their alias is expired */
+export function AliasExpired(): ReactElement
+{
+	return (
+		<div className="p-4">
+			Your current account has expired. Go to the <Link href={pages.account}>account page</Link> to acquire a new one.
+		</div>
 	);
 }

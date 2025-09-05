@@ -1,6 +1,6 @@
 'use client';
 
-import { toggleFollow, resetAlias, toggleLike } from "@/lib/db";
+import { toggleFollow, resetAlias, toggleLike, expireAlias } from "@/lib/db";
 import { useRouter } from "next/navigation";
 import { ReactElement, useState } from "react";
 import { Icon } from "./info";
@@ -23,6 +23,26 @@ export function ResetAliasButton(): ReactElement
 			className="bg-red-300 p-2 cursor-pointer"
 		>
 			Reset Alias
+		</button>
+	)
+}
+
+/** A button that forces the user's alias to expire */
+export function ExpireAliasButton(): ReactElement
+{
+	const router = useRouter();
+
+	async function handleClick() {
+		await expireAlias();
+		router.push("/history");
+	}
+
+	return (
+		<button
+			onClick={() => handleClick()}
+			className="bg-red-300 p-2 cursor-pointer"
+		>
+			Expire Alias
 		</button>
 	)
 }

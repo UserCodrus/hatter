@@ -6,7 +6,7 @@ export const pages = {
 	root: "/",
 	history: "/history",
 	create: "/create",
-	signup: "/account",
+	account: "/account",
 
 	icons: "/icons.svg",
 
