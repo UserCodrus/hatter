@@ -28,26 +28,32 @@ export function ResetAliasButton(): ReactElement
 }
 
 /** A button that can follow or unfollow a user */
-export function FollowButton(props: { userID: string, followers: number, following: boolean }): ReactElement
+export function FollowButton(props: { userID: string, followers: number, following?: boolean, selfProfile: boolean }): ReactElement
 {
 	const [following, setFollowing] = useState(props.following ? true : false);
 	const [followers, setFollowers] = useState(props.followers);
 
 	async function handleClick() {
-		await toggleFollow(props.userID);
+		if (!props.selfProfile) {
+			await toggleFollow(props.userID);
 
-		setFollowing(!following);
-		if (following)
-				setFollowers(followers - 1);
-			else
-				setFollowers(followers + 1);
+			setFollowing(!following);
+			if (following)
+					setFollowers(followers - 1);
+				else
+					setFollowers(followers + 1);
+		}
 	}
+
+	// Set the icon to a filled style if the current user is following or its their own profile
+	const icon = following || props.selfProfile ? "tdesign--star-filled" : "tdesign--star";
+	const style = props.selfProfile ? "" : " cursor-pointer";
 
 	return (
 		<div className="flex flex-row gap-1">
 			<div>{followers} Followers</div>
-			<button onClick={() => handleClick()} className="cursor-pointer text-green-800">
-				<Icon size={16} id={following ? "tdesign--star-filled" : "tdesign--star"} />
+			<button onClick={() => handleClick()} className={"text-green-800" + style}>
+				<Icon size={16} id={icon} />
 			</button>
 		</div>
 	);

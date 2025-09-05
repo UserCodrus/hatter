@@ -19,7 +19,12 @@ export default async function Page(props: { params: Promise<{ id: string }> })
 			<Header user={user_data.user} alias={user_data.alias}  />
 			<div className="layout-horizontal w-4/5">
 				<div className="flex flex-col p-2 gap-1">
-					<UserProfile id={alias.id} name={alias.name} tag={alias.tag} followers={alias.followers.length} following={alias._count.followers > 0} />
+					<UserProfile
+						id={alias.id} name={alias.name} tag={alias.tag}
+						followers={alias.followers.length}
+						following={alias._count.followers > 0}
+						selfProfile={user_data.alias?.id === alias.id}
+					/>
 					<div>
 						<div className="font-bold">Following</div>
 						{follower_component}

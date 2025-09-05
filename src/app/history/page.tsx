@@ -29,7 +29,7 @@ export default async function Page()
 			<Header user={user_data.user} alias={user_data.alias} />
 			<div className="layout-horizontal w-4/5">
 				<div className="flex flex-col gap-1 items-center p-2">
-					<UserProfile id={user_data.alias.id} name={user_data.alias.name} tag={user_data.alias.tag} followers={followers.length} />
+					<UserProfile id={user_data.alias.id} name={user_data.alias.name} tag={user_data.alias.tag} followers={followers.length} selfProfile={true} />
 					<div className="flex flex-row justify-stretch gap-2 w-full">
 						<div className="flex flex-col grow-1">
 							<div className="font-bold">Following</div>
