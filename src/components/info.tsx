@@ -29,7 +29,7 @@ export function UserName(props: { id: string, tag: string, name: string }): Reac
 }
 
 /** Display a user's full profile, including their name, icon and follower count */
-export function UserProfile(props: { id: string, name: string, tag: string, followers: number }): ReactElement
+export function UserProfile(props: { id: string, name: string, tag: string, followers: number, following: boolean }): ReactElement
 {
 	return (
 		<div className="flex flex-row gap-2 items-center w-full">
@@ -39,10 +39,7 @@ export function UserProfile(props: { id: string, name: string, tag: string, foll
 				<div>${props.tag}</div>
 			</div>
 			<div>
-				{props.followers} Followers
-			</div>
-			<div>
-				<FollowButton userID={props.id} />
+				<FollowButton userID={props.id} followers={props.followers} following={props.following} />
 			</div>
 		</div>
 	);

@@ -28,14 +28,28 @@ export function ResetAliasButton(): ReactElement
 }
 
 /** A button that can follow or unfollow a user */
-export function FollowButton(props: {userID: string}): ReactElement
+export function FollowButton(props: { userID: string, followers: number, following: boolean }): ReactElement
 {
+	const [following, setFollowing] = useState(props.following ? true : false);
+	const [followers, setFollowers] = useState(props.followers);
+
 	async function handleClick() {
 		await toggleFollow(props.userID);
+
+		setFollowing(!following);
+		if (following)
+				setFollowers(followers - 1);
+			else
+				setFollowers(followers + 1);
 	}
 
 	return (
-		<button onClick={() => handleClick()} className="bg-green-300 p-1 cursor-pointer">Follow</button>
+		<div className="flex flex-row gap-1">
+			<div>{followers} Followers</div>
+			<button onClick={() => handleClick()} className="cursor-pointer text-green-800">
+				<Icon size={16} id={following ? "tdesign--star-filled" : "tdesign--star"} />
+			</button>
+		</div>
 	);
 }
 
@@ -63,7 +77,9 @@ export function LikeButton(props: { postID: string, likeCount: number, likedPost
 	const style = props.selfPost ? "" : " cursor-pointer";
 
 	return (
-		<button onClick={() => handleClick()} className={"flex flex-row items-center text-green-800" + style}><Icon size={16} id={icon} />+{counter}</button>
+		<button onClick={() => handleClick()} className={"flex flex-row items-center text-green-800" + style}>
+			<Icon size={16} id={icon} />+{counter}
+		</button>
 	);
 }
 
@@ -87,7 +103,9 @@ export function ReplyButton(props: { postID: string, postContent: string | null,
 					<div className="w-full"><CreatePost replyID={props.postID} /></div>
 				</div>
 			</Modal>}
-			<button onClick={() => handleClick()} className="cursor-pointer text-green-800" ><Icon size={16} id={props.replied ? "tdesign--chat-bubble-filled" : "tdesign--chat-bubble"} /></button>
+			<button onClick={() => handleClick()} className="cursor-pointer text-green-800" >
+				<Icon size={16} id={props.replied ? "tdesign--chat-bubble-filled" : "tdesign--chat-bubble"} />
+			</button>
 		</>
 	);
 }

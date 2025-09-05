@@ -14,13 +14,12 @@ export default async function Page(props: { params: Promise<{ id: string }> })
 		notFound();
 
 	const follower_component = (alias.following.length > 0) ? <UserList aliases={alias.following} /> : <div>None</div>;
-
 	return (
 		<div className="flex flex-col items-center justify-items-center min-h-screen w-full">
 			<Header user={user_data.user} alias={user_data.alias}  />
 			<div className="layout-horizontal w-4/5">
 				<div className="flex flex-col p-2 gap-1">
-					<UserProfile id={alias.id} name={alias.name} tag={alias.tag} followers={alias.followers.length} />
+					<UserProfile id={alias.id} name={alias.name} tag={alias.tag} followers={alias.followers.length} following={alias._count.followers > 0} />
 					<div>
 						<div className="font-bold">Following</div>
 						{follower_component}
