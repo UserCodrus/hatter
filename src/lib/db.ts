@@ -12,7 +12,9 @@ type UserData = {
 	alias: Alias | null,
 	owned: boolean,
 	expired: boolean,
-	expires: Date
+	expires: Date,
+	admin?: boolean,
+	mod?: boolean,
 }
 
 /** Get the current user data and alias */
@@ -20,23 +22,27 @@ export async function getUser(): Promise<UserData>
 {
 	const session = await getServerSession(options) as AuthSession;
 	if (session) {
-		// Retrieve the user's alias if it exists
-		const user_alias = await prisma.userAlias.findUnique({
+		const user = await prisma.user.findUnique({
 			where: {
-				userID: session.user.id,
+				id: session.user.id,
 			},
 			include: {
-				alias: true,
+				alias: {
+					include: { alias: true },
+				},
+				permissions: true,
 			}
 		});
 		
 		const now = new Date();
 		return {
 			user: session.user,
-			alias: user_alias ? user_alias.alias : null,
-			owned: isOwner(session.user, user_alias?.alias),
-			expired: user_alias ? (user_alias.expires <= now) : true,
-			expires: user_alias ? user_alias.expires : new Date(),
+			alias: user?.alias ? user?.alias.alias : null,
+			owned: isOwner(session.user, user?.alias?.alias),
+			expired: user?.alias ? (user.alias.expires <= now) : true,
+			expires: user?.alias ? user.alias.expires : new Date(),
+			admin: user?.permissions?.admin,
+			mod: user?.permissions?.moderator,
 		}
 	}
 

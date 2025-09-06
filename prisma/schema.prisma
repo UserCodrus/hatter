@@ -62,6 +62,13 @@ model Like {
 	@@id([postID, userID])
 }
 
+model Permissions {
+	id				String		@id
+	user			User		@relation(fields: [id], references: [id])
+	admin			Boolean		@default(false)
+	moderator		Boolean		@default(false)
+}
+
 model User {
 	id				String		@id @default(cuid())
 	name			String?
@@ -72,6 +79,7 @@ model User {
 	ownedAliases	Alias[]
 	accounts		Account[]
 	sessions		Session[]
+	permissions		Permissions?
 	@@map(name: "users")
 }
 
