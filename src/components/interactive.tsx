@@ -34,13 +34,13 @@ export function ExpireAliasButton(): ReactElement
 
 	async function handleClick() {
 		await expireAlias();
-		router.push("/history");
+		router.refresh();
 	}
 
 	return (
 		<button
 			onClick={() => handleClick()}
-			className="bg-red-300 p-2 cursor-pointer"
+			className="hover:bg-red-500 cursor-pointer"
 		>
 			Expire Alias
 		</button>

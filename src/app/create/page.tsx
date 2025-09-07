@@ -14,7 +14,7 @@ export default async function Page()
 
 	return (
 		<div className="flex flex-col items-center justify-items-center min-h-screen w-full">
-			<Header user={user_data.user} alias={user_data.alias} expired={user_data.expired} />
+			<Header user={user_data.user} alias={user_data.alias} admin={user_data.admin} expired={user_data.expired} />
 			<div className="w-1/3">
 				<CreatePost />
 			</div>

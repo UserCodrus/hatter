@@ -22,7 +22,7 @@ export function Post(props: { post: PostData, author: Author, likes: number, lik
 	const title = props.post.replyID ? `Reply to @${props.post.title}` : props.post.title;
 
 	return (
-		<div className="flex flex-col p-2 gap-2 w-full min-w-[20vw] bg-slate-400">
+		<div className="flex flex-col p-2 gap-2 w-full min-w-[20vw] bg-slate-400 relative">
 			<div className="flex flex-row items-center gap-2">
 				<div>
 					<UserAvatar image={props.author.name} size={48} />

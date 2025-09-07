@@ -20,7 +20,7 @@ export default async function Page(props: { params: Promise<{ id: string }> })
 	const follower_component = (alias.following.length > 0) ? <UserList aliases={alias.following} /> : <div>None</div>;
 	return (
 		<div className="flex flex-col items-center justify-items-center min-h-screen w-full">
-			<Header user={user_data.user} alias={user_data.alias} expired={user_data.expired}  />
+			<Header user={user_data.user} alias={user_data.alias} admin={user_data.admin} expired={user_data.expired}  />
 			<div className="layout-horizontal w-4/5">
 				<div className="flex flex-col p-2 gap-1">
 					<UserProfile

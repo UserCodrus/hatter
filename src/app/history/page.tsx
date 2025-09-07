@@ -26,7 +26,7 @@ export default async function Page()
 
 	return (
 		<div className="flex flex-col items-center justify-items-center min-h-screen w-full">
-			<Header user={user_data.user} alias={user_data.alias} expired={user_data.expired} />
+			<Header user={user_data.user} alias={user_data.alias} admin={user_data.admin} expired={user_data.expired} />
 			<div className="layout-horizontal w-4/5">
 				<div className="flex flex-col gap-1 items-center p-2">
 					<UserProfile id={user_data.alias.id} name={user_data.alias.name} tag={user_data.alias.tag} followers={followers.length} selfProfile={true} />
@@ -48,8 +48,6 @@ export default async function Page()
 					<LikedFeed userID={user_data.alias.id} viewerID={user_data.alias.id} />
 				</div>
 			</div>
-			<ResetAliasButton />
-			<ExpireAliasButton />
 		</div>
 	);
 }
