@@ -14,9 +14,9 @@ function Feed(props: {children: ReactNode}): ReactElement
 }
 
 /** A feed showing the posts made by a single user */
-export async function UserFeed(props: { userID: string, viewerID: string | undefined }): Promise<ReactElement>
+export async function UserFeed(props: { currentUser: string | undefined, userID: string, viewerID: string | undefined }): Promise<ReactElement>
 {
-	const posts = await getPosts([props.userID]);
+	const posts = await getPosts([props.userID], props.currentUser);
 	
 	// Create a set of post components for each post in the feed
 	const components: ReactElement[] = [];
@@ -42,7 +42,7 @@ export async function UserFeed(props: { userID: string, viewerID: string | undef
 }
 
 /** A feed showing posts a user has liked */
-export async function LikedFeed(props: { userID: string, viewerID: string | undefined }): Promise<ReactElement>
+export async function LikedFeed(props: { currentUser: string | undefined, userID: string, viewerID: string | undefined }): Promise<ReactElement>
 {
 	const posts = await getLiked(props.userID);
 	
@@ -70,9 +70,9 @@ export async function LikedFeed(props: { userID: string, viewerID: string | unde
 }
 
 /** A feed showing recent posts made on the app */
-export async function GlobalFeed(props: { viewerID: string | undefined }): Promise<ReactElement>
+export async function GlobalFeed(props: { currentUser: string | undefined, viewerID: string | undefined }): Promise<ReactElement>
 {
-	const posts = await getAll();
+	const posts = await getAll(props.currentUser);
 	
 	// Create a set of post components for each post in the feed
 	const components: ReactElement[] = [];
@@ -97,9 +97,9 @@ export async function GlobalFeed(props: { viewerID: string | undefined }): Promi
 }
 
 /** A feed showing a single post and its replies */
-export async function PostFeed(props: { postID: string, viewerID: string | undefined }): Promise<ReactElement>
+export async function PostFeed(props: { currentUser: string | undefined, postID: string, viewerID: string | undefined }): Promise<ReactElement>
 {
-	const post = (await getPost(props.postID)).props.content;
+	const post = (await getPost(props.postID, props.currentUser)).props.content;
 
 	if (post === null)
 		notFound();

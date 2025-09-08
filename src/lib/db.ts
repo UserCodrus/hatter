@@ -418,14 +418,13 @@ export async function toggleLike(id: string)
 }
 
 /** Get a single post */
-export async function getPost(id: string)
+export async function getPost(postID: string, currentUser?: string)
 {
-	const user_data = await getUser();
 	const content = await prisma.post.findUnique({
 		where: {
-			id: String(id),
+			id: String(postID),
 		},
-		include: prisma_post_query(user_data.alias?.id),
+		include: prisma_post_query(currentUser),
 	});
 
 	return {
@@ -435,9 +434,8 @@ export async function getPost(id: string)
 }
 
 /** Get all posts made on the app */
-export async function getAll()
+export async function getAll(currentUser: string | undefined)
 {
-	const user_data = await getUser();
 	const content = await prisma.post.findMany({
 		where: {
 			published: true,
@@ -446,7 +444,7 @@ export async function getAll()
 		orderBy: {
 			created: "desc",
 		},
-		include: prisma_post_query(user_data.alias?.id),
+		include: prisma_post_query(currentUser),
 	});
 
 	return {
@@ -456,10 +454,8 @@ export async function getAll()
 }
 
 /** Get posts made by a set of users */
-export async function getPosts(users: string[])
+export async function getPosts(users: string[], currentUser?: string)
 {
-	const user_data = await getUser();
-	
 	// Generate a set of search queries from the user list
 	const filters = users.map((value) => {
 		return {
@@ -476,7 +472,7 @@ export async function getPosts(users: string[])
 		orderBy: {
 			created: "desc",
 		},
-		include: prisma_post_query(user_data.alias?.id),
+		include: prisma_post_query(currentUser),
 	});
 
 	return {
@@ -486,19 +482,18 @@ export async function getPosts(users: string[])
 }
 
 /** Get posts liked by a user */
-export async function getLiked(user: string)
+export async function getLiked(targetUser: string, currentUser?: string)
 {
-	const user_data = await getUser();
 	const content = await prisma.like.findMany({
 		where: {
-			userID: user,
+			userID: targetUser,
 		},
 		orderBy: {
 			time: "desc",
 		},
 		select: {
 			post: {
-				include: prisma_post_query(user_data.alias?.id),
+				include: prisma_post_query(currentUser),
 			},
 		},
 	});

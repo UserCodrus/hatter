@@ -13,7 +13,7 @@ export default async function Page()
 			{user_data.expired && <AliasExpired />}
 			<div className="flex flex-col w-2/3 p-2">
 				<div className="font-bold text-lg">Global Feed</div>
-				<GlobalFeed viewerID={user_data.alias?.id} />
+				<GlobalFeed currentUser={user_data.alias?.id} viewerID={user_data.alias?.id} />
 			</div>
 		</div>
 	);

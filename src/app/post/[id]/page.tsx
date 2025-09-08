@@ -16,7 +16,7 @@ export default async function Page(props: { params: Promise<{ id: string }> })
 		<div className="flex flex-col items-center justify-items-center min-h-screen w-full">
 			<Header user={user_data.user} alias={user_data.alias} admin={user_data.admin} expired={user_data.expired}  />
 			<div className="p-2 w-2/3">
-				<PostFeed postID={params.id} viewerID={user_data.alias?.id} />
+				<PostFeed currentUser={user_data.alias?.id} postID={params.id} viewerID={user_data.alias?.id} />
 			</div>
 		</div>
 	);
