@@ -28,6 +28,7 @@ export async function UserFeed(props: { currentUser: string | undefined, userID:
 			activeUser={props.viewerID}
 			likes={post._count.likes}
 			liked={post.likes.length > 0}
+			replies={post.replies.length}
 			replied={post._count.replies > 0}
 			key={key}
 		/>);
@@ -56,6 +57,7 @@ export async function LikedFeed(props: { currentUser: string | undefined, userID
 			activeUser={props.viewerID}
 			likes={result.post._count.likes}
 			liked={result.post.likes.length > 0}
+			replies={result.post.replies.length}
 			replied={result.post._count.replies > 0}
 			key={key}
 		/>);
@@ -84,6 +86,7 @@ export async function GlobalFeed(props: { currentUser: string | undefined, viewe
 			activeUser={props.viewerID}
 			likes={post._count.likes}
 			liked={post.likes.length > 0}
+			replies={post.replies.length}
 			replied={post._count.replies > 0}
 			key={key}
 		/>);
@@ -112,6 +115,7 @@ export async function PostFeed(props: { currentUser: string | undefined, postID:
 				activeUser={props.viewerID}
 				likes={post._count.likes}
 				liked={post.likes.length > 0}
+				replies={post.replies.length}
 				replied={post._count.replies > 0}
 			/>
 		</Feed>
