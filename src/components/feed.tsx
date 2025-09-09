@@ -1,4 +1,4 @@
-import { getAll, getLiked, getPost, getPosts } from "@/lib/db";
+import { getAll, getLiked, getPost, getPosts, getReplies } from "@/lib/db";
 import { ReactElement, ReactNode } from "react";
 import { Post } from "./post";
 import { notFound } from "next/navigation";
@@ -80,7 +80,7 @@ export async function GlobalFeed(props: { currentUser: string | undefined, viewe
 	const components: ReactElement[] = [];
 	let key = 0;
 	for (const post of posts.props.content) {
-		const component = <Post
+		const post_component = <Post
 			post={post}
 			author={post.author}
 			activeUser={props.viewerID}
@@ -88,29 +88,41 @@ export async function GlobalFeed(props: { currentUser: string | undefined, viewe
 			liked={post.likes.length > 0}
 			replies={post._count.replies}
 			replied={post.replies.length > 0}
-			key={key}
+			key={post._count.replies > 0 ? undefined : key}
 		/>
 
-		components.push(component);
-		/*if (post.replies.length === 0) {
-			components.push(component);
+		if (post._count.replies === 0) {
+			components.push(post_component);
 		} else {
-			const replies = getReplies();
+			// Get all the replies to each post
+			const replies = await getReplies(post.id, props.currentUser);
+
 			const reply_components: ReactElement[] = [];
-			for (const reply of post.replies) {
-				// Create a set of reply components
+			let secondary_key = 0;
+			for (const reply of replies.props.content) {
 				reply_components.push(<Post
 					post={reply}
-					author={reply.}
+					author={reply.author}
 					activeUser={props.viewerID}
-					likes={post._count.likes}
-					liked={post.likes.length > 0}
-					replies={post.replies.length}
-					replied={post._count.replies > 0}
-					key={key}
+					likes={reply._count.likes}
+					liked={reply.likes.length > 0}
+					replies={reply.replies.length}
+					replied={reply._count.replies > 0}
+					isReply={true}
+					key={secondary_key}
 				/>);
+				++secondary_key;
 			}
-		}*/
+
+			components.push(<div className="flex flex-col gap-2" key={key}>
+				{post_component}
+				<div className="flex flex-col gap-2">
+					{reply_components}
+				</div>
+			</div>);
+		}
+
+		++key;
 	}
 
 	return (
@@ -128,6 +140,26 @@ export async function PostFeed(props: { currentUser: string | undefined, postID:
 	if (post === null)
 		notFound();
 
+	// Get all the replies to the post
+	const reply_components: ReactElement[] = [];
+	if (post._count.replies > 0) {
+		let replies = await getReplies(post.id, props.currentUser);
+		let key = 1;
+		for (const reply of replies.props.content) {
+			reply_components.push(<Post
+				post={reply}
+				author={reply.author}
+				activeUser={props.viewerID}
+				likes={reply._count.likes}
+				liked={reply.likes.length > 0}
+				replies={reply.replies.length}
+				replied={reply._count.replies > 0}
+				isReply={true}
+				key={key}
+			/>);
+		}
+	}
+
 	return (
 		<Feed>
 			<Post
@@ -138,7 +170,9 @@ export async function PostFeed(props: { currentUser: string | undefined, postID:
 				liked={post.likes.length > 0}
 				replies={post._count.replies}
 				replied={post.replies.length > 0}
+				key={0}
 			/>
+			{reply_components}
 		</Feed>
 	);
 }

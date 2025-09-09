@@ -13,7 +13,7 @@ type Author = {
 	tag: string
 }
 
-export function Post(props: { post: PostData, author: Author, likes: number, liked?: boolean, replies: number, replied?: boolean, activeUser?: string }): ReactElement
+export function Post(props: { post: PostData, author: Author, likes: number, liked?: boolean, replies: number, replied?: boolean, isReply?: boolean, activeUser?: string }): ReactElement
 {
 	const router = useRouter();
 	const content = props.post.content ? props.post.content : "This post is empty.";
@@ -21,8 +21,10 @@ export function Post(props: { post: PostData, author: Author, likes: number, lik
 	let date_format: Intl.DateTimeFormatOptions = { month: "long", day: "numeric", year: "numeric", hour: "numeric", minute: "numeric" };
 	const title = props.post.replyID ? `Reply to @${props.post.title}` : props.post.title;
 
+	const width_style = props.isReply ? " w-[95%] self-end" : " w-full";
+
 	return (
-		<div className="flex flex-col p-2 gap-2 w-full min-w-[20vw] bg-slate-400 relative">
+		<div className={"flex flex-col p-2 gap-2 bg-slate-400 relative" + width_style}>
 			<div className="flex flex-row items-center gap-2">
 				<div>
 					<UserAvatar image={props.author.name} size={48} />

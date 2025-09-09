@@ -481,6 +481,26 @@ export async function getPosts(users: string[], currentUser?: string)
 	};
 }
 
+/** Get all the replies to a given post */
+export async function getReplies(postID: string, currentUser?: string)
+{
+	const content = await prisma.post.findMany({
+		where: {
+			published: true,
+			replyID: postID,
+		},
+		orderBy: {
+			created: "desc",
+		},
+		include: prisma_post_query(currentUser),
+	});
+
+	return {
+		props: { content },
+		revalidate: 10
+	};
+}
+
 /** Get posts liked by a user */
 export async function getLiked(targetUser: string, currentUser?: string)
 {
