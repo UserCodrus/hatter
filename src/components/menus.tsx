@@ -23,7 +23,7 @@ export function DropDownMenu(props: { main: ReactNode, children: ReactNode }): R
 export function Modal(props: { onCancel: Function, children: ReactNode }): ReactElement
 {
 	return (
-		<div className="fixed modal-background top-0 left-0 flex flex-row items-center justify-center min-w-screen min-h-screen" onClick={() => props.onCancel()}>
+		<div className="fixed modal-background top-0 left-0 flex flex-row items-center justify-center min-w-screen min-h-screen z-10" onClick={() => props.onCancel()}>
 			<div onClick={(e) => e.stopPropagation()} className="flex items-center w-1/3">
 				{props.children}
 			</div>

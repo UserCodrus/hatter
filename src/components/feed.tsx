@@ -28,8 +28,8 @@ export async function UserFeed(props: { currentUser: string | undefined, userID:
 			activeUser={props.viewerID}
 			likes={post._count.likes}
 			liked={post.likes.length > 0}
-			replies={post.replies.length}
-			replied={post._count.replies > 0}
+			replies={post._count.replies}
+			replied={post.replies.length > 0}
 			key={key}
 		/>);
 		++key;
@@ -57,8 +57,8 @@ export async function LikedFeed(props: { currentUser: string | undefined, userID
 			activeUser={props.viewerID}
 			likes={result.post._count.likes}
 			liked={result.post.likes.length > 0}
-			replies={result.post.replies.length}
-			replied={result.post._count.replies > 0}
+			replies={result.post._count.replies}
+			replied={result.post.replies.length > 0}
 			key={key}
 		/>);
 		++key;
@@ -80,16 +80,37 @@ export async function GlobalFeed(props: { currentUser: string | undefined, viewe
 	const components: ReactElement[] = [];
 	let key = 0;
 	for (const post of posts.props.content) {
-		components.push(<Post
+		const component = <Post
 			post={post}
 			author={post.author}
 			activeUser={props.viewerID}
 			likes={post._count.likes}
 			liked={post.likes.length > 0}
-			replies={post.replies.length}
-			replied={post._count.replies > 0}
+			replies={post._count.replies}
+			replied={post.replies.length > 0}
 			key={key}
-		/>);
+		/>
+
+		components.push(component);
+		/*if (post.replies.length === 0) {
+			components.push(component);
+		} else {
+			const replies = getReplies();
+			const reply_components: ReactElement[] = [];
+			for (const reply of post.replies) {
+				// Create a set of reply components
+				reply_components.push(<Post
+					post={reply}
+					author={reply.}
+					activeUser={props.viewerID}
+					likes={post._count.likes}
+					liked={post.likes.length > 0}
+					replies={post.replies.length}
+					replied={post._count.replies > 0}
+					key={key}
+				/>);
+			}
+		}*/
 	}
 
 	return (
@@ -115,8 +136,8 @@ export async function PostFeed(props: { currentUser: string | undefined, postID:
 				activeUser={props.viewerID}
 				likes={post._count.likes}
 				liked={post.likes.length > 0}
-				replies={post.replies.length}
-				replied={post._count.replies > 0}
+				replies={post._count.replies}
+				replied={post.replies.length > 0}
 			/>
 		</Feed>
 	);

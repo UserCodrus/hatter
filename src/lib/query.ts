@@ -32,17 +32,32 @@ const like_data = (alias: string | undefined): Prisma.Post$likesArgs => {
 
 /**
  * A portion of a prisma post query
+ * Queries rply relations with the user's current alias to determine if the user has replied to a post
+ * */
+const reply_data = (alias: string | undefined): Prisma.Post$repliesArgs => {
+	return {
+		where: {
+			authorId: alias
+		},
+		select: {
+			author: {
+				select: {
+					tag: true
+				}
+			}
+		},
+	}
+}
+
+/**
+ * A portion of a prisma post query
  * Counts the number of likes a post has and the number of times the active user has replied to the post
  * */
 const count_data = (alias: string | undefined): Prisma.PostCountOutputTypeDefaultArgs => {
 	return {
 		select: {
 			likes: true,
-			replies: {
-				where: {
-					authorId: alias,
-				}
-			}
+			replies: true,
 		}
 	}
 }
@@ -52,13 +67,7 @@ export const prisma_post_query = (alias: string | undefined): Prisma.PostInclude
 	return {
 		author: author_data,
 		likes: like_data(alias),
-		replies: {
-			include: {
-				author: author_data,
-				likes: like_data(alias),
-				_count: count_data(alias),
-			}
-		},
+		replies: reply_data(alias),
 		_count: count_data(alias),
 	}
 }
