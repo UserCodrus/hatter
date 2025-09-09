@@ -420,23 +420,18 @@ export async function toggleLike(id: string)
 /** Get a single post */
 export async function getPost(postID: string, currentUser?: string)
 {
-	const content = await prisma.post.findUnique({
+	return await prisma.post.findUnique({
 		where: {
 			id: String(postID),
 		},
 		include: prisma_post_query(currentUser),
 	});
-
-	return {
-		props: { content },
-		revalidate: 10
-	};
 }
 
 /** Get all posts made on the app */
 export async function getAll(currentUser: string | undefined)
 {
-	const content = await prisma.post.findMany({
+	return await prisma.post.findMany({
 		where: {
 			published: true,
 			replyID: null,
@@ -446,11 +441,6 @@ export async function getAll(currentUser: string | undefined)
 		},
 		include: prisma_post_query(currentUser),
 	});
-
-	return {
-		props: { content },
-		revalidate: 10
-	};
 }
 
 /** Get posts made by a set of users */
@@ -465,7 +455,7 @@ export async function getPosts(users: string[], currentUser?: string)
 	});
 
 	// Find posts matching the provided users
-	const content = await prisma.post.findMany({
+	return await prisma.post.findMany({
 		where: {
 			OR: filters,
 		},
@@ -474,17 +464,12 @@ export async function getPosts(users: string[], currentUser?: string)
 		},
 		include: prisma_post_query(currentUser),
 	});
-
-	return {
-		props: { content },
-		revalidate: 10
-	};
 }
 
 /** Get all the replies to a given post */
 export async function getReplies(postID: string, currentUser?: string)
 {
-	const content = await prisma.post.findMany({
+	return await prisma.post.findMany({
 		where: {
 			published: true,
 			replyID: postID,
@@ -494,17 +479,12 @@ export async function getReplies(postID: string, currentUser?: string)
 		},
 		include: prisma_post_query(currentUser),
 	});
-
-	return {
-		props: { content },
-		revalidate: 10
-	};
 }
 
 /** Get posts liked by a user */
 export async function getLiked(targetUser: string, currentUser?: string)
 {
-	const content = await prisma.like.findMany({
+	return await prisma.like.findMany({
 		where: {
 			userID: targetUser,
 		},
@@ -517,8 +497,6 @@ export async function getLiked(targetUser: string, currentUser?: string)
 			},
 		},
 	});
-
-	return content;
 }
 
 /** Get the author of a post */

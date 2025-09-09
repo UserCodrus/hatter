@@ -21,7 +21,7 @@ export async function UserFeed(props: { currentUser: string | undefined, userID:
 	// Create a set of post components for each post in the feed
 	const components: ReactElement[] = [];
 	let key = 0;
-	for (const post of posts.props.content) {
+	for (const post of posts) {
 		components.push(<Post
 			post={post}
 			author={post.author}
@@ -79,7 +79,7 @@ export async function GlobalFeed(props: { currentUser: string | undefined, viewe
 	// Create a set of post components for each post in the feed
 	const components: ReactElement[] = [];
 	let key = 0;
-	for (const post of posts.props.content) {
+	for (const post of posts) {
 		const post_component = <Post
 			post={post}
 			author={post.author}
@@ -99,7 +99,7 @@ export async function GlobalFeed(props: { currentUser: string | undefined, viewe
 
 			const reply_components: ReactElement[] = [];
 			let secondary_key = 0;
-			for (const reply of replies.props.content) {
+			for (const reply of replies) {
 				reply_components.push(<Post
 					post={reply}
 					author={reply.author}
@@ -135,7 +135,7 @@ export async function GlobalFeed(props: { currentUser: string | undefined, viewe
 /** A feed showing a single post and its replies */
 export async function PostFeed(props: { currentUser: string | undefined, postID: string, viewerID: string | undefined }): Promise<ReactElement>
 {
-	const post = (await getPost(props.postID, props.currentUser)).props.content;
+	const post = await getPost(props.postID, props.currentUser);
 
 	if (post === null)
 		notFound();
@@ -145,7 +145,7 @@ export async function PostFeed(props: { currentUser: string | undefined, postID:
 	if (post._count.replies > 0) {
 		let replies = await getReplies(post.id, props.currentUser);
 		let key = 1;
-		for (const reply of replies.props.content) {
+		for (const reply of replies) {
 			reply_components.push(<Post
 				post={reply}
 				author={reply.author}
