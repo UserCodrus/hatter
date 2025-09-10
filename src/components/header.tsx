@@ -16,9 +16,8 @@ function UserComponent(props: { user: SessionUser | null, alias: Alias | null, a
 	if (props.user) {
 		if (props.alias) {
 			// Display the user's current alias as the dropdown element
-			const img = props.alias?.image;
 			main = <div className="flex flex-row items-center gap-2 text-center">
-				<UserAvatar image={props.alias.id} size={32} />
+				<UserAvatar icon={props.alias.icon} colors={[props.alias.colorA, props.alias.colorB]} size={32} />
 				<div className="text-nowrap">{props.alias.name}</div>
 				{props.expired && <div className="text-red-700"><Icon size={16} id={"tdesign--notification-error-filled"} /></div>}
 			</div>;

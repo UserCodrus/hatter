@@ -10,31 +10,28 @@ const avatar_colors = [
 	"#009900"
 ];
 
-export function UserAvatar(props: { image: string | null, size: number }): ReactElement
+export function UserAvatar(props: { icon: string, colors: string[], size: number }): ReactElement
 {
-	if (props.image)
-		return <Avatar name={props.image} size={props.size} colors={avatar_colors} variant="beam" square />
-	else
-		return <Avatar name={"default"} size={props.size} colors={avatar_colors} variant="beam" square />
+	return <Avatar name={props.icon} size={props.size} colors={props.colors} variant="beam" square />
 }
 
 /** Display a user's name and icon */
-export function UserName(props: { id: string, tag: string, name: string }): ReactElement
+export function UserName(props: { id: string, tag: string, name: string, icon: string, colors: string[] }): ReactElement
 {
 	return (
 		<a className="flex flex-row gap-2 items-center cursor-pointer" href={pages.user(props.tag)}>
-			<UserAvatar image={props.name} size={32} />
+			<UserAvatar icon={props.icon} colors={props.colors} size={32} />
 			<div>{props.name}</div>
 		</a>
 	);
 }
 
 /** Display a user's full profile, including their name, icon and follower count */
-export function UserProfile(props: { id: string, name: string, tag: string, followers: number, following?: boolean, selfProfile: boolean }): ReactElement
+export function UserProfile(props: { id: string, name: string, tag: string, icon: string, colors: string[], followers: number, following?: boolean, selfProfile: boolean }): ReactElement
 {
 	return (
 		<div className="flex flex-row gap-2 items-center w-full">
-			<UserAvatar image={props.name} size={64} />
+			<UserAvatar icon={props.icon} colors={props.colors} size={64} />
 			<div className="flex flex-col grow-1">
 				<div className="font-bold">{props.name}</div>
 				<div>${props.tag}</div>
@@ -52,7 +49,7 @@ export function UserList(props: { aliases: Alias[] }): ReactElement
 	const components: ReactElement[] = [];
 	let key = 0;
 	for (const alias of props.aliases) {
-		components.push(<UserName id={alias.id} tag={alias.tag} name={alias.name} key={key} />);
+		components.push(<UserName id={alias.id} tag={alias.tag} icon={alias.icon} colors={[alias.colorA, alias.colorB]} name={alias.name} key={key} />);
 		++key;
 	}
 

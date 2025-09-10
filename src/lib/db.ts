@@ -210,7 +210,7 @@ export async function resetAlias(debug_force = false)
 }
 
 /** Create a new alias for the current user */
-export async function createAlias(tag: string, name: string, bio: string | null, image: string | null): Promise<string | null>
+export async function createAlias(tag: string, name: string, bio: string | null, image: string): Promise<string | null>
 {
 	const session = await getServerSession(options) as AuthSession;
 	if (!session)
@@ -242,7 +242,9 @@ export async function createAlias(tag: string, name: string, bio: string | null,
 			tag: tag,
 			name: name,
 			bio: bio,
-			image: image,
+			icon: image,
+			colorA: "#ffffff",
+			colorB: "#000000",
 			creatorID: session.user.id,
 		}
 	});
@@ -291,7 +293,7 @@ export async function updateAlias(name: string, bio: string | null, image: strin
 		data: {
 			name: name ? name :  session.alias.name,
 			bio: bio ? bio : session.alias.bio,
-			image: image ? image : session.alias.image,
+			icon: image ? image : session.alias.icon,
 		}
 	});
 

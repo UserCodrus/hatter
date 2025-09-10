@@ -8,6 +8,9 @@ const author_data: Prisma.AliasDefaultArgs = {
 	select: {
 		name: true,
 		tag: true,
+		icon: true,
+		colorA: true,
+		colorB: true,
 	}
 }
 

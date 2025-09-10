@@ -20,7 +20,10 @@ model Alias {
 	tag			String		@unique
 	name		String
 	bio			String?
-	image		String?
+
+	icon		String
+	colorA		String
+	colorB		String
 
 	posts		Post[]
 	likes		Like[]

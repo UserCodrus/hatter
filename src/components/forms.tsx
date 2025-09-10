@@ -70,7 +70,7 @@ export function CreateAlias(): ReactElement
 	async function submitForm(e: FormEvent<HTMLFormElement>) {
 		e.preventDefault();
 
-		const error = await createAlias(tag.toLowerCase(), name, bio, null);
+		const error = await createAlias(tag.toLowerCase(), name, bio, tag);
 		if (error === null)
 			router.push("/history");
 		else
