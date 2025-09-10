@@ -124,6 +124,19 @@ export async function expireAlias()
 	}
 }
 
+export async function unregisterUser()
+{
+	const session = await getServerSession(options) as AuthSession;
+	const id = session?.user?.id;
+	if (id) {
+		await prisma.userAlias.delete({
+			where: {
+				userID: id,
+			},
+		});
+	}
+}
+
 /** Select a new alias for the user, if needed */
 export async function resetAlias(debug_force = false)
 {
@@ -210,7 +223,7 @@ export async function resetAlias(debug_force = false)
 }
 
 /** Create a new alias for the current user */
-export async function createAlias(tag: string, name: string, bio: string | null, image: string): Promise<string | null>
+export async function createAlias(tag: string, name: string, bio: string | null, icon: string, colorA: string, colorB: string): Promise<string | null>
 {
 	const session = await getServerSession(options) as AuthSession;
 	if (!session)
@@ -242,9 +255,9 @@ export async function createAlias(tag: string, name: string, bio: string | null,
 			tag: tag,
 			name: name,
 			bio: bio,
-			icon: image,
-			colorA: "#ffffff",
-			colorB: "#000000",
+			icon: icon,
+			colorA: colorA,
+			colorB: colorB,
 			creatorID: session.user.id,
 		}
 	});

@@ -51,3 +51,16 @@ export function isOwner(user: SessionUser, alias: Alias | null | undefined): boo
 
 	return user.id === alias.creatorID;
 }
+
+/** Generate a random color string */
+export function randomColor(): string
+{
+	const letters = "0123456789abcdef";
+	let color = "#";
+
+	for (let i = 0; i < 6; ++i) {
+		color += letters[Math.floor(Math.random() * letters.length)];
+	}
+
+	return color;
+}

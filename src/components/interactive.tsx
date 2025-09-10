@@ -1,6 +1,6 @@
 'use client';
 
-import { toggleFollow, resetAlias, toggleLike, expireAlias } from "@/lib/db";
+import { toggleFollow, resetAlias, toggleLike, expireAlias, unregisterUser } from "@/lib/db";
 import { useRouter } from "next/navigation";
 import { ReactElement, useState } from "react";
 import { Icon } from "./info";
@@ -43,6 +43,26 @@ export function ExpireAliasButton(): ReactElement
 			className="hover:bg-red-500 cursor-pointer"
 		>
 			Expire Alias
+		</button>
+	)
+}
+
+/** A button that removes the user's registration */
+export function UnregisterUserButton(): ReactElement
+{
+	const router = useRouter();
+
+	async function handleClick() {
+		await unregisterUser();
+		router.refresh();
+	}
+
+	return (
+		<button
+			onClick={() => handleClick()}
+			className="hover:bg-red-500 cursor-pointer"
+		>
+			Unregister
 		</button>
 	)
 }
@@ -115,7 +135,6 @@ export function ReplyButton(props: { postID: string, postContent: string | null,
 	const [modal, setModal] = useState(false);
 
 	function handleClick() {
-		console.log(`Reply ID: ${props.postID}`);
 		if (!props.replied)
 			setModal(true);
 	}

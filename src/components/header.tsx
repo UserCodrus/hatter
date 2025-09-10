@@ -5,7 +5,7 @@ import { Alias } from "@prisma/client";
 import { pages } from "@/lib/utils";
 import { DropDownMenu } from "./menus";
 import { Icon, UserAvatar } from "./info";
-import { ExpireAliasButton } from "./interactive";
+import { ExpireAliasButton, UnregisterUserButton } from "./interactive";
 
 /** Displays a user's current status and gives them the option to sign in or out */
 function UserComponent(props: { user: SessionUser | null, alias: Alias | null, admin?: boolean, expired: boolean }): ReactElement
@@ -30,6 +30,7 @@ function UserComponent(props: { user: SessionUser | null, alias: Alias | null, a
 			// Add admin options to the menu
 			if (props.admin) {
 				dropdown.push(<ExpireAliasButton key={3} />);
+				dropdown.push(<UnregisterUserButton key={4} />);
 			}
 		} else {
 			// Display a button to create an account if the user doesn't have an alias yet

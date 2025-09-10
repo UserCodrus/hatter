@@ -16,7 +16,6 @@ export async function POST(req: NextRequest)
 
 	// If the post is a reply, get the author of the post we are replying to
 	const reply_author = await getAuthor(data.reply);
-	console.log(`Replying: ${data.reply}, author: ${JSON.stringify(reply_author)}`)
 
 	if (alias) {
 		// Push the post data to the database

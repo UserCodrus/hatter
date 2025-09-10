@@ -29,7 +29,13 @@ export default async function Page()
 			<Header user={user_data.user} alias={user_data.alias} admin={user_data.admin} expired={user_data.expired} />
 			<div className="layout-horizontal w-4/5">
 				<div className="flex flex-col gap-1 items-center p-2">
-					<UserProfile id={user_data.alias.id} name={user_data.alias.name} tag={user_data.alias.tag} followers={followers.length} selfProfile={true} />
+					<UserProfile
+						id={user_data.alias.id}
+						name={user_data.alias.name}
+						tag={user_data.alias.tag}
+						icon={user_data.alias.icon} colors={[user_data.alias.colorA, user_data.alias.colorB]}
+						followers={followers.length} selfProfile={true}
+					/>
 					<div className="flex flex-row justify-stretch gap-2 w-full">
 						<div className="flex flex-col grow-1">
 							<div className="font-bold">Following</div>
