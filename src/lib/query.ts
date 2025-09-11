@@ -11,6 +11,7 @@ const author_data: Prisma.AliasDefaultArgs = {
 		icon: true,
 		colorA: true,
 		colorB: true,
+		style: true,
 	}
 }
 

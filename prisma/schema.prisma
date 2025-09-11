@@ -24,6 +24,7 @@ model Alias {
 	icon		String
 	colorA		String
 	colorB		String
+	style		String
 
 	posts		Post[]
 	likes		Like[]

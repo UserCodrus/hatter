@@ -25,7 +25,7 @@ export default async function Page(props: { params: Promise<{ id: string }> })
 				<div className="flex flex-col p-2 gap-1">
 					<UserProfile
 						id={alias.id} name={alias.name} tag={alias.tag}
-						icon={alias.icon} colors={[alias.colorA, alias.colorB]}
+						icon={alias.icon} colors={[alias.colorA, alias.colorB]} style={alias.style}
 						followers={alias.followers.length}
 						following={alias._count.followers > 0}
 						selfProfile={user_data.alias?.id === alias.id}

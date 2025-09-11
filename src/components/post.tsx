@@ -14,6 +14,7 @@ type Author = {
 	icon: string,
 	colorA: string,
 	colorB: string,
+	style: string,
 }
 
 export function Post(props: { post: PostData, author: Author, likes: number, liked?: boolean, replies: number, replied?: boolean, isReply?: boolean, activeUser?: string }): ReactElement
@@ -30,7 +31,7 @@ export function Post(props: { post: PostData, author: Author, likes: number, lik
 		<div className={"flex flex-col p-2 gap-2 bg-slate-400 relative" + width_style}>
 			<div className="flex flex-row items-center gap-2">
 				<div>
-					<UserAvatar icon={props.author.icon} colors={[props.author.colorA, props.author.colorB]} size={48} />
+					<UserAvatar icon={props.author.icon} colors={[props.author.colorA, props.author.colorB]} style={props.author.style} size={48} />
 				</div>
 				<div className="flex flex-col">
 					<Link href={pages.user(props.author.tag)}>{props.author.name}</Link>

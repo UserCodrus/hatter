@@ -258,6 +258,7 @@ export async function createAlias(tag: string, name: string, bio: string | null,
 			icon: icon,
 			colorA: colorA,
 			colorB: colorB,
+			style: style,
 			creatorID: session.user.id,
 		}
 	});
