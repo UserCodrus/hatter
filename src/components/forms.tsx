@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { FormEvent, ReactElement, useState } from "react";
 import { Modal } from "./menus";
 import { UserAvatar } from "./info";
+import { AvatarSelector } from "./interactive";
 
 /** A form that allows the user to submit a post */
 export function CreatePost(props: { replyID?: string }): ReactElement
@@ -66,18 +67,44 @@ type AvatarSettings = {
 	colorB: string,
 };
 
+const num_avatars = 40;
+
 /** A modal popup that gives the user a set of icons to choose from */
-function SelectAvatar(props: { currentAvatar: AvatarSettings, selectCallback: (settings: AvatarSettings) => void }): ReactElement
+function SelectAvatar(props: { currentAvatar: AvatarSettings, salt: number, selectCallback: (settings: AvatarSettings) => void }): ReactElement
 {
 	const [avatar, setAvatar] = useState<AvatarSettings>(props.currentAvatar);
 
+	// Pass the selected avatar back to the create alias form
 	function submit() {
 		props.selectCallback(avatar);
 	}
 
+	function selectIcon(new_icon: string) {
+		setAvatar({
+			...avatar,
+			icon: new_icon,
+		});
+	}
+
+	// Create buttons to select different avatar styles
+	const components: ReactElement[] = [];
+	let key = 0;
+	for (let i = 0; i < num_avatars; ++i) {
+		const icon = (i === 0) ? props.currentAvatar.icon : props.currentAvatar.icon.concat((props.salt / i).toString());
+		components.push(<AvatarSelector
+			icon={icon} selected={icon === avatar.icon}
+			colors={[avatar.colorA, avatar.colorB]}
+			onSelect={selectIcon}
+			style="beam" key={key} />);
+		++key;
+	}
+
 	return (
-		<div className="bg-yellow-700 flex flex-row justify-center w-full p-4" onClick={() => submit()}>
-			<UserAvatar icon={avatar.icon} colors={[avatar.colorA, avatar.colorB]} size={64} />
+		<div className="bg-slate-600 flex flex-col justify-center items-center w-full p-4 gap-4">
+			<button onClick={() => submit()}>Accept</button>
+			<div className="flex flex-row justify-center gap-2 flex-wrap">
+				{components}
+			</div>
 		</div>
 	);
 }
@@ -97,6 +124,8 @@ export function CreateAlias(props: { defaultAvatar: AvatarSettings }): ReactElem
 	async function submitForm(e: FormEvent<HTMLFormElement>) {
 		e.preventDefault();
 
+		console.log("submit form");
+
 		const error = await createAlias(tag.toLowerCase(), name, bio, avatar.icon, avatar.colorA, avatar.colorB);
 		if (error === null)
 			router.push("/history");
@@ -113,7 +142,7 @@ export function CreateAlias(props: { defaultAvatar: AvatarSettings }): ReactElem
 	return (
 		<form className="flex flex-col p-4 gap-2 w-1/3 items-stretch" onSubmit={submitForm}>
 			{iconModal && <Modal onCancel={() => setIconModal(false)}>
-				<SelectAvatar currentAvatar={avatar} selectCallback={selectAvatar} />
+				<SelectAvatar currentAvatar={avatar} salt={Date.now()} selectCallback={selectAvatar} />
 			</Modal>}
 			<div className="flex flex-row items-center">
 				<div className="flex-1">Icon (click to change)</div>

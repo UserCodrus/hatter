@@ -2,10 +2,11 @@
 
 import { toggleFollow, resetAlias, toggleLike, expireAlias, unregisterUser } from "@/lib/db";
 import { useRouter } from "next/navigation";
-import { ReactElement, useState } from "react";
+import { MouseEvent, ReactElement, useState } from "react";
 import { Icon } from "./info";
 import { Modal } from "./menus";
 import { CreatePost } from "./forms";
+import Avatar from "boring-avatars";
 
 /** A button that triggers an alias reset for the user */
 export function ResetAliasButton(): ReactElement
@@ -152,5 +153,26 @@ export function ReplyButton(props: { postID: string, postContent: string | null,
 				<Icon size={16} id={props.replied ? "tdesign--chat-bubble-filled" : "tdesign--chat-bubble"} />{props.replyCount}
 			</button>
 		</>
+	);
+}
+
+type AvatarStyle = "pixel" | "bauhaus" | "ring" | "beam" | "sunset" | "marble" | "geometric" | "abstract";
+
+/** A button for selecting an avatar icon */
+export function AvatarSelector(props: { icon: string, colors: string[], style: AvatarStyle, selected: boolean, onSelect: (icon: string) => void }): ReactElement
+{
+	function handleClick(e: MouseEvent) {
+		e.preventDefault();
+
+		if (!props.selected)
+			props.onSelect(props.icon);
+	}
+
+	const style = props.selected ? " bg-white" : " cursor-pointer"
+
+	return (
+		<button onClick={(e) => handleClick(e)} className={"bg-slate-400 p-2" + style}>
+			<Avatar name={props.icon} colors={props.colors} variant={props.style} size={64} square />
+		</button>
 	);
 }
