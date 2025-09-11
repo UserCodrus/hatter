@@ -1,13 +1,12 @@
 'use client';
 
 import { createAlias, updateAlias } from "@/lib/db";
-import { pages, randomColor } from "@/lib/utils";
+import { pages } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import { FormEvent, ReactElement, useState } from "react";
-import { Modal } from "./menus";
+import { DropDownMenu, Modal } from "./menus";
 import { UserAvatar } from "./info";
-import { AvatarSelector, ColorSelector } from "./interactive";
-import { HexColorInput, HexColorPicker } from "react-colorful";
+import { AvatarSelector, ColorSelector, MenuButton } from "./interactive";
 
 /** A form that allows the user to submit a post */
 export function CreatePost(props: { replyID?: string }): ReactElement
@@ -66,9 +65,16 @@ type AvatarSettings = {
 	icon: string,
 	colorA: string,
 	colorB: string,
+	style: string,
 };
 
 const num_avatars = 70;
+const avatar_options = [
+	"pixel",
+	"bauhaus",
+	"beam",
+	"marble",
+] as const;
 
 /** A modal popup that gives the user a set of icons to choose from */
 function SelectAvatar(props: { currentAvatar: AvatarSettings, salt: number, selectCallback: (settings: AvatarSettings) => void }): ReactElement
@@ -101,6 +107,13 @@ function SelectAvatar(props: { currentAvatar: AvatarSettings, salt: number, sele
 		});
 	}
 
+	function setStyle(new_style: string) {
+		setAvatar({
+			...avatar,
+			style: new_style,
+		});
+	}
+
 	// Create buttons to select different avatar styles
 	const components: ReactElement[] = [];
 	let key = 0;
@@ -110,7 +123,16 @@ function SelectAvatar(props: { currentAvatar: AvatarSettings, salt: number, sele
 			icon={icon} selected={icon === avatar.icon}
 			colors={[avatar.colorA, avatar.colorB]}
 			onSelect={selectIcon}
-			style="beam" key={key} />);
+			style={avatar.style as any} key={key} />);
+		++key;
+	}
+
+	// Create components for the dropdown menu
+	const dropdown_main = <div className="bg-white p-1 min-w-20 text-center">{avatar.style}</div>
+	const dropdown: ReactElement[] = [];
+	key = 0;
+	for (const option of avatar_options) {
+		dropdown.push(<MenuButton label={option} onClick={() => setStyle(option)} key={key} />);
 		++key;
 	}
 
@@ -123,7 +145,17 @@ function SelectAvatar(props: { currentAvatar: AvatarSettings, salt: number, sele
 			<div className="flex flex-row justify-center gap-2 flex-wrap max-h-[50vh] overflow-auto">
 				{components}
 			</div>
-			<button onClick={() => submit()} className="bg-slate-200 p-1 cursor-pointer">Accept</button>
+			<div className="flex flex-row justify-evenly items-center w-full">
+				<div className="flex flex-row gap-2 items-center">
+					<div>Style:</div>
+					<DropDownMenu main={dropdown_main} above>
+						<div className="flex flex-col gap-2 p-2 bg-slate-500 text-center">
+							{dropdown}
+						</div>
+					</DropDownMenu>
+				</div>
+				<button onClick={() => submit()} className="bg-slate-200 p-1 cursor-pointer">Accept</button>
+			</div>
 		</div>
 	);
 }
@@ -145,7 +177,7 @@ export function CreateAlias(props: { defaultAvatar: AvatarSettings }): ReactElem
 
 		console.log("submit form");
 
-		const error = await createAlias(tag.toLowerCase(), name, bio, avatar.icon, avatar.colorA, avatar.colorB);
+		const error = await createAlias(tag.toLowerCase(), name, bio, avatar.icon, avatar.colorA, avatar.colorB, avatar.style);
 		if (error === null)
 			router.push("/history");
 		else
@@ -167,7 +199,7 @@ export function CreateAlias(props: { defaultAvatar: AvatarSettings }): ReactElem
 				<div className="flex-1">Icon (click to change)</div>
 				<div className="flex justify-center w-2/3">
 					<button className="cursor-pointer" onClick={(e) => {e.preventDefault(); setIconModal(true);}}>
-						<UserAvatar icon={avatar.icon} colors={[avatar.colorA, avatar.colorB]} size={64} />
+						<UserAvatar icon={avatar.icon} colors={[avatar.colorA, avatar.colorB]} style={avatar.style} size={64} />
 					</button>
 				</div>
 			</div>

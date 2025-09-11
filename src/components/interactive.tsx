@@ -188,3 +188,18 @@ export function ColorSelector(props: { color: string, onChange: (new_color: stri
 		</div>
 	);
 }
+
+/** A button used inside of a drop down menu */
+export function MenuButton(props: { label: string, onClick: Function }): ReactElement
+{
+	function handleClick(e: MouseEvent) {
+		e.preventDefault();
+		props.onClick();
+	}
+
+	return (
+		<button className="hover:bg-amber-300" onClick={(e) => handleClick(e)}>
+			{props.label}
+		</button>
+	)
+}

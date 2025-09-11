@@ -10,9 +10,9 @@ const avatar_colors = [
 	"#009900"
 ];
 
-export function UserAvatar(props: { icon: string, colors: string[], size: number }): ReactElement
+export function UserAvatar(props: { icon: string, colors: string[], style?: string, size: number }): ReactElement
 {
-	return <Avatar name={props.icon} size={props.size} colors={props.colors} variant="beam" square />
+	return <Avatar name={props.icon} size={props.size} colors={props.colors} variant={props.style ? props.style as any : "beam"} square />
 }
 
 /** Display a user's name and icon */

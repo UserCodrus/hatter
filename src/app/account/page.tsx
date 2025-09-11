@@ -13,6 +13,7 @@ function Signup(): ReactElement
 		icon: Date.now().toString(),
 		colorA: randomColor(),
 		colorB: randomColor(),
+		style: "beam",
 	}
 
 	const expires = getNextReset();

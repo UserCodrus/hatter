@@ -1,18 +1,26 @@
 'use client';
 
-import { ReactElement, ReactNode, useState } from "react";
+import { MouseEvent, ReactElement, ReactNode, useState } from "react";
 
 /** A dropdown menu that displays when the user hovers over its main element */
-export function DropDownMenu(props: { main: ReactNode, children: ReactNode }): ReactElement
+export function DropDownMenu(props: { above?: boolean, className?: string, main: ReactNode, children: ReactNode }): ReactElement
 {
 	const [open, setOpen] = useState(false);
 
+	function handleClick(e: MouseEvent) {
+		e.preventDefault();
+		setOpen(false);
+	}
+
+	const position_style = props.above ? " bottom-full" : "";
+	const additional_style = props.className ? " " + props.className : "";
+
 	return (
-		<div className="relative" onMouseLeave={() => setOpen(false)}>
+		<div className={"relative origin-top" + additional_style} onMouseLeave={() => setOpen(false)}>
 			<div onMouseOver={() => setOpen(true)}>
 				{props.main}
 			</div>
-			{open && <div className="absolute z-10 w-full">
+			{open && <div className={"absolute z-10 w-full" + position_style} onClick={(e) => handleClick(e)}>
 				{props.children}
 			</div>}
 		</div>

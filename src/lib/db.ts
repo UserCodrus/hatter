@@ -223,7 +223,7 @@ export async function resetAlias(debug_force = false)
 }
 
 /** Create a new alias for the current user */
-export async function createAlias(tag: string, name: string, bio: string | null, icon: string, colorA: string, colorB: string): Promise<string | null>
+export async function createAlias(tag: string, name: string, bio: string | null, icon: string, colorA: string, colorB: string, style: string): Promise<string | null>
 {
 	const session = await getServerSession(options) as AuthSession;
 	if (!session)

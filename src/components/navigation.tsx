@@ -41,7 +41,7 @@ export function LinkButton(props: { label: string, target: string }): ReactEleme
 }
 
 /** A link used inside of a drop down menu  */
-export function MenuItem(props: {label: string, target: string}): ReactElement
+export function MenuItem(props: { label: string, target: string }): ReactElement
 {
 	return (
 		<Link className="hover:bg-amber-300" href={props.target}>
