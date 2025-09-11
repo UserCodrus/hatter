@@ -7,6 +7,7 @@ import { Icon } from "./info";
 import { Modal } from "./menus";
 import { CreatePost } from "./forms";
 import Avatar from "boring-avatars";
+import { HexColorInput, HexColorPicker } from "react-colorful";
 
 /** A button that triggers an alias reset for the user */
 export function ResetAliasButton(): ReactElement
@@ -171,8 +172,19 @@ export function AvatarSelector(props: { icon: string, colors: string[], style: A
 	const style = props.selected ? " bg-white" : " cursor-pointer"
 
 	return (
-		<button onClick={(e) => handleClick(e)} className={"bg-slate-400 p-2" + style}>
+		<button onClick={(e) => handleClick(e)} className={"bg-slate-400 p-1" + style}>
 			<Avatar name={props.icon} colors={props.colors} variant={props.style} size={64} square />
 		</button>
+	);
+}
+
+/** A component that allows the user to select a color */
+export function ColorSelector(props: { color: string, onChange: (new_color: string) => void }): ReactElement
+{
+	return (
+		<div className="flex flex-col gap-2 items-center">
+			<HexColorPicker color={props.color} onChange={props.onChange} />
+			<HexColorInput color={props.color} onChange={props.onChange} prefixed className="text-white text-center w-1/2" />
+		</div>
 	);
 }

@@ -6,7 +6,8 @@ import { useRouter } from "next/navigation";
 import { FormEvent, ReactElement, useState } from "react";
 import { Modal } from "./menus";
 import { UserAvatar } from "./info";
-import { AvatarSelector } from "./interactive";
+import { AvatarSelector, ColorSelector } from "./interactive";
+import { HexColorInput, HexColorPicker } from "react-colorful";
 
 /** A form that allows the user to submit a post */
 export function CreatePost(props: { replyID?: string }): ReactElement
@@ -67,7 +68,7 @@ type AvatarSettings = {
 	colorB: string,
 };
 
-const num_avatars = 40;
+const num_avatars = 70;
 
 /** A modal popup that gives the user a set of icons to choose from */
 function SelectAvatar(props: { currentAvatar: AvatarSettings, salt: number, selectCallback: (settings: AvatarSettings) => void }): ReactElement
@@ -86,6 +87,20 @@ function SelectAvatar(props: { currentAvatar: AvatarSettings, salt: number, sele
 		});
 	}
 
+	function setColorA(new_color: string) {
+		setAvatar({
+			...avatar,
+			colorA: new_color,
+		});
+	}
+
+	function setColorB(new_color: string) {
+		setAvatar({
+			...avatar,
+			colorB: new_color,
+		});
+	}
+
 	// Create buttons to select different avatar styles
 	const components: ReactElement[] = [];
 	let key = 0;
@@ -101,10 +116,14 @@ function SelectAvatar(props: { currentAvatar: AvatarSettings, salt: number, sele
 
 	return (
 		<div className="bg-slate-600 flex flex-col justify-center items-center w-full p-4 gap-4">
-			<button onClick={() => submit()}>Accept</button>
-			<div className="flex flex-row justify-center gap-2 flex-wrap">
+			<div className="flex flex-row justify-evenly w-full">
+				<ColorSelector color={avatar.colorA} onChange={setColorA} />
+				<ColorSelector color={avatar.colorB} onChange={setColorB} />
+			</div>
+			<div className="flex flex-row justify-center gap-2 flex-wrap max-h-[50vh] overflow-auto">
 				{components}
 			</div>
+			<button onClick={() => submit()} className="bg-slate-200 p-1 cursor-pointer">Accept</button>
 		</div>
 	);
 }
