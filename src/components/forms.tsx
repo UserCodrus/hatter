@@ -60,49 +60,66 @@ export function CreatePost(props: { replyID?: string }): ReactElement
 	);
 }
 
+type AvatarSettings = {
+	icon: string,
+	colorA: string,
+	colorB: string,
+};
+
 /** A modal popup that gives the user a set of icons to choose from */
-function IconSelector(): ReactElement
+function SelectAvatar(props: { currentAvatar: AvatarSettings, selectCallback: (settings: AvatarSettings) => void }): ReactElement
 {
+	const [avatar, setAvatar] = useState<AvatarSettings>(props.currentAvatar);
+
+	function submit() {
+		props.selectCallback(avatar);
+	}
+
 	return (
-		<div>
-			Hi.
+		<div className="bg-yellow-700 flex flex-row justify-center w-full p-4" onClick={() => submit()}>
+			<UserAvatar icon={avatar.icon} colors={[avatar.colorA, avatar.colorB]} size={64} />
 		</div>
 	);
 }
 
 /** A form that allows the user to create a new alias */
-export function CreateAlias(): ReactElement
+export function CreateAlias(props: { defaultAvatar: AvatarSettings }): ReactElement
 {
 	const [tag, setTag] = useState("");
 	const [name, setName] = useState("");
 	const [bio, setBio] = useState("");
-	const [icon, setIcon] = useState(Date.now().toString());
-	const [colorA, setColorA] = useState(randomColor());
-	const [colorB, setColorB] = useState(randomColor());
+	const [avatar, setAvatar] = useState<AvatarSettings>(props.defaultAvatar);
 	const [iconModal, setIconModal] = useState(false);
 	const [error, setError] = useState("");
 	const router = useRouter();
 
+	// Call the server function to create the new alias
 	async function submitForm(e: FormEvent<HTMLFormElement>) {
 		e.preventDefault();
 
-		const error = await createAlias(tag.toLowerCase(), name, bio, icon, colorA, colorB);
+		const error = await createAlias(tag.toLowerCase(), name, bio, avatar.icon, avatar.colorA, avatar.colorB);
 		if (error === null)
 			router.push("/history");
 		else
 			setError(error);
 	}
 
+	// Set the user's current avatar from the avatar selection modal
+	function selectAvatar(avatar: AvatarSettings) {
+		setAvatar(avatar);
+		setIconModal(false);
+	}
+
 	return (
 		<form className="flex flex-col p-4 gap-2 w-1/3 items-stretch" onSubmit={submitForm}>
 			{iconModal && <Modal onCancel={() => setIconModal(false)}>
-				<IconSelector />
+				<SelectAvatar currentAvatar={avatar} selectCallback={selectAvatar} />
 			</Modal>}
 			<div className="flex flex-row items-center">
 				<div className="flex-1">Icon (click to change)</div>
 				<div className="flex justify-center w-2/3">
 					<button className="cursor-pointer" onClick={(e) => {e.preventDefault(); setIconModal(true);}}>
-						<UserAvatar icon={icon} colors={[colorA, colorB]} size={64} />
+						<UserAvatar icon={avatar.icon} colors={[avatar.colorA, avatar.colorB]} size={64} />
 					</button>
 				</div>
 			</div>

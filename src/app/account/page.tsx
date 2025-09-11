@@ -2,13 +2,19 @@ import { CreateAlias, UpdateAlias } from "@/components/forms";
 import { Header } from "@/components/header";
 import { ResetAliasButton } from "@/components/interactive";
 import { getUser } from "@/lib/db";
-import { getNextReset, pages } from "@/lib/utils";
+import { getNextReset, pages, randomColor } from "@/lib/utils";
 import { redirect } from "next/navigation";
 import { ReactElement } from "react";
 
 /** Show the signup form when the user needs to create an account */
 function Signup(): ReactElement
 {
+	const default_avatar = {
+		icon: Date.now().toString(),
+		colorA: randomColor(),
+		colorB: randomColor(),
+	}
+
 	const expires = getNextReset();
 	return (
 		<div className="flex flex-col items-center w-full">
@@ -17,7 +23,7 @@ function Signup(): ReactElement
 				<p>Your alias will be available until {expires.toLocaleString()}.</p>
 				<p>A different user will receive your alias at this time and you will be unable to change the information below.</p>
 			</div>
-			<CreateAlias />
+			<CreateAlias defaultAvatar={default_avatar} />
 		</div>
 	);
 }
