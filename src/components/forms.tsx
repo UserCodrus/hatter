@@ -3,7 +3,7 @@
 import { createAlias, updateAlias } from "@/lib/db";
 import { pages } from "@/lib/utils";
 import { useRouter } from "next/navigation";
-import { FormEvent, ReactElement, useState } from "react";
+import { FormEvent, ReactElement, useRef, useState } from "react";
 import { DropDownMenu, Modal } from "./menus";
 import { UserAvatar } from "./info";
 import { AvatarSelector, ColorSelector, MenuButton } from "./interactive";
@@ -12,14 +12,20 @@ import { AvatarSelector, ColorSelector, MenuButton } from "./interactive";
 export function CreatePost(props: { replyID?: string }): ReactElement
 {
 	const [title, setTitle] = useState("");
+	const [media, setMedia] = useState("");
+	const [validMedia, setValidMedia] = useState(false);
 	const [content, setContent] = useState("");
+
+	const ref = useRef(null);
 	const router = useRouter();
 
 	async function submitForm(e: FormEvent<HTMLFormElement>) {
 		e.preventDefault();
 		try {
+			const media_link = validMedia ? media : undefined;
+
 			// Submit the post data to the API
-			const body = { title, content, reply: props.replyID };
+			const body = { title, content, media: media_link, reply: props.replyID };
 			console.log(body);
 			await fetch("/api/post", {
 				method: "POST",
@@ -35,18 +41,45 @@ export function CreatePost(props: { replyID?: string }): ReactElement
 		}
 	}
 
+	function imageLoad() {
+		if (!validMedia)
+			setValidMedia(true);
+	}
+
+	function imageError() {
+		if (validMedia)
+			setValidMedia(false);
+	}
+
 	// Hide the title field if the post is a reply - the title will be set automatically when a reply post is created
-	const hide = props.replyID ? " hidden" : "";
+	const hide_title = props.replyID ? " hidden" : "";
+	const hide_media = validMedia ? "" : " hidden";
 
 	return (
 		<form className="flex flex-col p-4 gap-2" onSubmit={submitForm}>
 			<input
-				className={"bg-white p-1" + hide}
+				className={"bg-white p-1" + hide_title}
 				placeholder={"Title"}
 				value={title}
 				onChange={(e) => setTitle(e.target.value)}
 				type="text"
 				disabled={props.replyID ? true : false}
+			/>
+			<div className="flex flex-row w-full justify-center">
+				<img
+					className={"max-w-2/3" + hide_media}
+					src={media ? media : undefined}
+					onLoad={() => imageLoad()}
+					onError={() => imageError()}
+					ref={ref}
+				/>
+			</div>
+			<input
+				className="bg-white p-1"
+				placeholder={"Image or Video URL"}
+				value={media}
+				onChange={(e) => setMedia(e.target.value)}
+				type="text"
 			/>
 			<textarea
 				className="bg-white p-1"
@@ -55,7 +88,7 @@ export function CreatePost(props: { replyID?: string }): ReactElement
 				onChange={(e) => setContent(e.target.value)}
 			/>
 			<div className="flex items-center justify-center">
-				<input className="w-20 outline-1 bg-slate-300 cursor-pointer" disabled={!content || (!title && !props.replyID)} type="submit" value="Post" />
+				<input className="w-20 outline-1 bg-slate-300 cursor-pointer" disabled={(!content && !validMedia) || (!title && !props.replyID)} type="submit" value="Post" />
 			</div>
 		</form>
 	);

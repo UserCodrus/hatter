@@ -7,6 +7,7 @@ import { ReactElement } from "react";
 import { UserAvatar } from "./info";
 import { LikeButton, ReplyButton } from "./interactive";
 import { Post as PostData } from "@prisma/client";
+import Image from "next/image";
 
 type Author = {
 	name: string,
@@ -41,7 +42,10 @@ export function Post(props: { post: PostData, author: Author, likes: number, lik
 					<div className="text-lg font-bold">{title}</div>
 				</div>
 			</div>
-			<p className="bg-slate-200 p-2 whitespace-pre" onClick={() => router.push(pages.post(props.post.id))}>{content}</p>
+			<div className="flex flex-col bg-slate-200 p-2 whitespace-pre">
+				{props.post.media && <div className="w-full flex flex-col items-center"><img className="max-w-4/5 p-1 bg-white" src={props.post.media} alt={props.post.media} /></div>}
+				<p className="flex-1" onClick={() => router.push(pages.post(props.post.id))}>{content}</p>
+			</div>
 			<div className="flex flex-row">
 				<div className="text-sm grow-1">{props.post.updated.toLocaleString("default", date_format)}</div>
 				<div className="flex flex-row gap-2">

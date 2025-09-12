@@ -5,6 +5,7 @@ import { getAlias, getAuthor, getPost } from "@/lib/db";
 type PostData = {
 	title: string,
 	content: string,
+	media?: string,
 	reply?: string,
 }
 
@@ -23,6 +24,7 @@ export async function POST(req: NextRequest)
 			data: {
 				title: data.reply ? reply_author?.tag : data.title,
 				content: data.content,
+				media: data.media,
 				published: true,
 				reply: data.reply ? { connect: { id: data.reply } } : undefined,
 				author: { connect: { id: alias.id } },

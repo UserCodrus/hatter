@@ -45,6 +45,7 @@ model Post {
 	id			String		@id @default(cuid())
 	title		String?
 	content		String?
+	media		String?
 	published	Boolean		@default(true)
 	author		Alias		@relation(fields: [authorId], references: [id])
 	authorId	String
