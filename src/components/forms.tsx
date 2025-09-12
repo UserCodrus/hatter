@@ -22,7 +22,7 @@ export function CreatePost(props: { replyID?: string }): ReactElement
 	async function submitForm(e: FormEvent<HTMLFormElement>) {
 		e.preventDefault();
 		try {
-			const media_link = validMedia ? media : undefined;
+			const media_link = media//validMedia ? media : undefined;
 
 			// Submit the post data to the API
 			const body = { title, content, media: media_link, reply: props.replyID };
@@ -42,11 +42,13 @@ export function CreatePost(props: { replyID?: string }): ReactElement
 	}
 
 	function imageLoad() {
+		console.log("valid image")
 		if (!validMedia)
 			setValidMedia(true);
 	}
 
 	function imageError() {
+		console.log("invalid image")
 		if (validMedia)
 			setValidMedia(false);
 	}
