@@ -27,7 +27,7 @@ export function UserName(props: { id: string, tag: string, name: string, icon: s
 }
 
 /** Display a user's full profile, including their name, icon and follower count */
-export function UserProfile(props: { id: string, name: string, tag: string, icon: string, colors: string[], style: string, followers: number, following?: boolean, selfProfile: boolean }): ReactElement
+export function UserProfile(props: { id: string, name: string, tag: string, icon: string, colors: string[], style: string, followers: number, following?: boolean, selfProfile: boolean, activeUser: boolean }): ReactElement
 {
 	return (
 		<div className="flex flex-row gap-2 items-center w-full">
@@ -37,7 +37,7 @@ export function UserProfile(props: { id: string, name: string, tag: string, icon
 				<div>@{props.tag}</div>
 			</div>
 			<div>
-				<FollowButton userID={props.id} followers={props.followers} following={props.following} selfProfile={props.selfProfile} />
+				<FollowButton userID={props.id} followers={props.followers} following={props.following} selfProfile={props.selfProfile} disabled={!props.activeUser} />
 			</div>
 		</div>
 	);
@@ -65,15 +65,5 @@ export function Icon(props: { size: number, id: string }): ReactElement
 {
 	return (
 		<svg width={props.size} height={props.size}><use href={pages.icons + "#" + props.id} /></svg>
-	);
-}
-
-/** A box that notifies the user that their alias is expired */
-export function AliasExpired(): ReactElement
-{
-	return (
-		<div className="p-4">
-			Your current account has expired. Go to the <Link href={pages.account}>account page</Link> to acquire a new one.
-		</div>
 	);
 }

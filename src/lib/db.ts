@@ -56,10 +56,22 @@ export async function getUser(): Promise<UserData>
 }
 
 /** Get information about an alias */
-export async function getAliasData(id: string)
+export async function getAliasData(id: string, currentUser?: string)
 {
 	// Get data for the alias
-	const user_alias = await getAlias();
+	let count_query;
+	if (currentUser) {
+		count_query = {
+			select: {
+				followers: {
+					where: {
+						id: currentUser,
+					},
+				},
+			},
+		}
+	}
+
 	return await prisma.alias.findUnique({
 		where: {
 			tag: id,
@@ -67,15 +79,7 @@ export async function getAliasData(id: string)
 		include: {
 			followers: true,
 			following: true,
-			_count: {
-				select: {
-					followers: {
-						where: {
-							id: user_alias?.id,
-						},
-					},
-				},
-			},
+			_count: count_query,
 		},
 	});
 }

@@ -70,13 +70,13 @@ export function UnregisterUserButton(): ReactElement
 }
 
 /** A button that can follow or unfollow a user */
-export function FollowButton(props: { userID: string, followers: number, following?: boolean, selfProfile: boolean }): ReactElement
+export function FollowButton(props: { userID: string, followers: number, following?: boolean, selfProfile: boolean, disabled: boolean }): ReactElement
 {
 	const [following, setFollowing] = useState(props.following ? true : false);
 	const [followers, setFollowers] = useState(props.followers);
 
 	async function handleClick() {
-		if (!props.selfProfile) {
+		if (!props.selfProfile && !props.disabled) {
 			await toggleFollow(props.userID);
 
 			setFollowing(!following);
@@ -89,7 +89,7 @@ export function FollowButton(props: { userID: string, followers: number, followi
 
 	// Set the icon to a filled style if the current user is following or its their own profile
 	const icon = following || props.selfProfile ? "tdesign--star-filled" : "tdesign--star";
-	const style = props.selfProfile ? "" : " cursor-pointer";
+	const style = props.selfProfile || props.disabled ? "" : " cursor-pointer";
 
 	return (
 		<div className="flex flex-row gap-1">
@@ -102,14 +102,14 @@ export function FollowButton(props: { userID: string, followers: number, followi
 }
 
 /** A button that can like or unlike a post */
-export function LikeButton(props: { postID: string, likeCount: number, likedPost?: boolean, selfPost: boolean }): ReactElement
+export function LikeButton(props: { postID: string, likeCount: number, likedPost?: boolean, selfPost: boolean, disabled?: boolean }): ReactElement
 {
 	const [liked, setLiked] = useState(props.likedPost ? true : false);
 	const [counter, setCounter] = useState(props.likeCount);
 
 	// Mark the post as liked on the server and toggle the visible state of the like counter when clicked
 	async function handleClick() {
-		if (!props.selfPost) {
+		if (!props.selfPost && !props.disabled) {
 			await toggleLike(props.postID);
 
 			setLiked(!liked);
@@ -122,7 +122,7 @@ export function LikeButton(props: { postID: string, likeCount: number, likedPost
 
 	// Set the icon to a filled heart if the user has liked the post or the user posted it themselves
 	const icon = liked || props.selfPost ? "tdesign--heart-filled" : "tdesign--heart";
-	const style = props.selfPost ? "" : " cursor-pointer";
+	const style = props.selfPost || props.disabled ? "" : " cursor-pointer";
 
 	return (
 		<button onClick={() => handleClick()} className={"flex flex-row items-center text-green-800" + style}>
@@ -132,14 +132,16 @@ export function LikeButton(props: { postID: string, likeCount: number, likedPost
 }
 
 /** A button that opens a modal box to compose a reply */
-export function ReplyButton(props: { postID: string, postContent: string | null, replyCount: number, replied?: boolean }): ReactElement
+export function ReplyButton(props: { postID: string, postContent: string | null, replyCount: number, replied?: boolean, disabled?: boolean }): ReactElement
 {
 	const [modal, setModal] = useState(false);
 
 	function handleClick() {
-		if (!props.replied)
+		if (!props.replied && !props.disabled)
 			setModal(true);
 	}
+
+	const style = props.disabled ? "" : " cursor-pointer";
 
 	return (
 		<>
@@ -150,7 +152,7 @@ export function ReplyButton(props: { postID: string, postContent: string | null,
 					<div className="w-full"><CreatePost replyID={props.postID} /></div>
 				</div>
 			</Modal>}
-			<button onClick={() => handleClick()} className="flex flex-row items-center gap-2 cursor-pointer text-green-800" >
+			<button onClick={() => handleClick()} className={"flex flex-row items-center gap-2 text-green-800" + style} >
 				<Icon size={16} id={props.replied ? "tdesign--chat-bubble-filled" : "tdesign--chat-bubble"} />{props.replyCount}
 			</button>
 		</>

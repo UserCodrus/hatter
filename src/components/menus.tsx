@@ -3,7 +3,7 @@
 import { MouseEvent, ReactElement, ReactNode, useState } from "react";
 
 /** A dropdown menu that displays when the user hovers over its main element */
-export function DropDownMenu(props: { above?: boolean, className?: string, main: ReactNode, children: ReactNode }): ReactElement
+export function DropDownMenu(props: { above?: boolean, disabled?: boolean, className?: string, main: ReactNode, children: ReactNode }): ReactElement
 {
 	const [open, setOpen] = useState(false);
 
@@ -20,7 +20,7 @@ export function DropDownMenu(props: { above?: boolean, className?: string, main:
 			<div onMouseOver={() => setOpen(true)}>
 				{props.main}
 			</div>
-			{open && <div className={"absolute z-10 w-full" + position_style} onClick={(e) => handleClick(e)}>
+			{open && !props.disabled && <div className={"absolute z-10 w-full" + position_style} onClick={(e) => handleClick(e)}>
 				{props.children}
 			</div>}
 		</div>

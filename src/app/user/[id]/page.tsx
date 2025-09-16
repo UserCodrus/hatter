@@ -2,17 +2,13 @@ import { LikedFeed, UserFeed } from "@/components/feed";
 import { Header } from "@/components/header";
 import { UserList, UserProfile } from "@/components/info";
 import { getAliasData, getUser } from "@/lib/db";
-import { pages } from "@/lib/utils";
-import { notFound, redirect } from "next/navigation";
+import { notFound } from "next/navigation";
 
 export default async function Page(props: { params: Promise<{ id: string }> })
 {
 	const params = await props.params;
 	const user_data = await getUser();
-	const alias = await getAliasData(params.id);
-
-	if (user_data.expired)
-		redirect(pages.root);
+	const alias = await getAliasData(params.id, user_data.alias?.id);
 
 	if (alias === null)
 		notFound();
@@ -27,8 +23,9 @@ export default async function Page(props: { params: Promise<{ id: string }> })
 						id={alias.id} name={alias.name} tag={alias.tag}
 						icon={alias.icon} colors={[alias.colorA, alias.colorB]} style={alias.style}
 						followers={alias.followers.length}
-						following={alias._count.followers > 0}
+						following={alias._count ? alias._count.followers > 0 : false}
 						selfProfile={user_data.alias?.id === alias.id}
+						activeUser={user_data.alias !== null}
 					/>
 					<div>
 						<div className="font-bold">Following</div>

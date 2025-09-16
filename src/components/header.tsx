@@ -42,11 +42,11 @@ function UserComponent(props: { user: SessionUser | null, alias: Alias | null, a
 	}
 
 	return (
-			<DropDownMenu main={main}>
-				<div className="flex flex-col gap-2 p-2 bg-slate-500 text-center">
-					{dropdown}
-				</div>
-			</DropDownMenu>
+		<DropDownMenu main={main} disabled={props.user === null}>
+			<div className="flex flex-col gap-2 p-2 bg-slate-500 text-center">
+				{dropdown}
+			</div>
+		</DropDownMenu>
 	);
 }
 
