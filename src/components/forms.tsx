@@ -245,7 +245,7 @@ export function CreateAlias(props: { defaultAvatar: AvatarSettings }): ReactElem
 					placeholder={""}
 					value={tag}
 					onChange={(e) => setTag(e.target.value)}
-					type="text"
+					type="text" pattern="^([a-zA-Z]+)$"
 				/>
 			</div>
 			<div className="flex flex-row items-center">

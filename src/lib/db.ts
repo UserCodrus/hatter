@@ -239,6 +239,13 @@ export async function createAlias(tag: string, name: string, bio: string | null,
 	if (user)
 		return "Your account is already registered.";
 
+	// Make sure inputs are valid
+	if (!/^([a-zA-Z]+)$/.test(tag))
+		return "The provided tag is invalid.";
+
+	//if (!/^[A-Za-z\s]+$/.test(name))
+		//return "The provided name is invalid.";
+
 	// Make sure the provided tag isn't taken
 	const alias_query = await prisma.alias.findMany({
 		where: {
