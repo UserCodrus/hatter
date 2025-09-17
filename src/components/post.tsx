@@ -7,7 +7,6 @@ import { ReactElement } from "react";
 import { UserAvatar } from "./info";
 import { LikeButton, ReplyButton } from "./interactive";
 import { Post as PostData } from "@prisma/client";
-import Image from "next/image";
 
 type Author = {
 	name: string,
@@ -18,18 +17,25 @@ type Author = {
 	style: string,
 }
 
-export function Post(props: { post: PostData, author: Author, likes: number, liked?: boolean, replies: number, replied?: boolean, isReply?: boolean, activeUser?: string }): ReactElement
+export function Post(props: { post: PostData, author: Author, likes: number, liked?: boolean, replies: number, replied?: boolean, inline?: boolean, activeUser?: string }): ReactElement
 {
 	const router = useRouter();
 	const content = props.post.content ? props.post.content : "This post is empty.";
 
 	let date_format: Intl.DateTimeFormatOptions = { month: "long", day: "numeric", year: "numeric", hour: "numeric", minute: "numeric" };
-	const title = props.post.replyID ? `Reply to @${props.post.title}` : props.post.title;
+	
+	// Change the title
+	let title = props.post.title;
+	if (props.inline) {
+		title = "";
+	} else if (props.post.replyID) {
+		title = `Reply to @${props.post.title}`;
+	}
 
-	const width_style = props.isReply ? " w-[95%] self-end" : " w-full";
+	//const width_style = props.isReply ? " w-[95%] self-end" : " w-full";
 
 	return (
-		<div className={"flex flex-col p-2 gap-2 bg-slate-400 relative" + width_style}>
+		<div className={"flex flex-col p-2 gap-2 bg-slate-400 relative w-full"}>
 			<div className="flex flex-row items-center gap-2">
 				<div>
 					<UserAvatar icon={props.author.icon} colors={[props.author.colorA, props.author.colorB]} style={props.author.style} size={48} />
@@ -42,9 +48,9 @@ export function Post(props: { post: PostData, author: Author, likes: number, lik
 					<div className="text-lg font-bold">{title}</div>
 				</div>
 			</div>
-			<div className="flex flex-col bg-slate-200 p-2 whitespace-pre" onClick={() => router.push(pages.post(props.post.id))}>
+			<div className="flex flex-col bg-slate-200 p-2 whitespace-pre cursor-pointer" onClick={() => router.push(pages.post(props.post.id))}>
 				{props.post.media && <div className="w-full flex flex-col items-center"><img className="max-w-4/5 p-1 bg-white" src={props.post.media} alt={props.post.media} /></div>}
-				<p className="flex-1">{content}</p>
+				<p className="flex-1 text-wrap">{content}</p>
 			</div>
 			<div className="flex flex-row">
 				<div className="text-sm grow-1">{props.post.updated.toLocaleString("default", date_format)}</div>

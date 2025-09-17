@@ -74,9 +74,11 @@ export async function LikedFeed(props: { currentUser: string | undefined, userID
 /** A feed showing recent posts made on the app */
 export async function GlobalFeed(props: { currentUser: string | undefined, viewerID: string | undefined }): Promise<ReactElement>
 {
-	const posts = await getAll(props.currentUser);
+	// The maximum number of replies allowed below each post
+	const num_replies = 3;
 	
 	// Create a set of post components for each post in the feed
+	const posts = await getAll(props.currentUser);
 	const components: ReactElement[] = [];
 	let key = 0;
 	for (const post of posts) {
@@ -94,7 +96,7 @@ export async function GlobalFeed(props: { currentUser: string | undefined, viewe
 		if (post._count.replies === 0) {
 			components.push(post_component);
 		} else {
-			// Get all the replies to each post
+			// Add replies below the post
 			const replies = await getReplies(post.id, props.currentUser);
 
 			const reply_components: ReactElement[] = [];
@@ -108,15 +110,19 @@ export async function GlobalFeed(props: { currentUser: string | undefined, viewe
 					liked={reply.likes.length > 0}
 					replies={reply.replies.length}
 					replied={reply._count.replies > 0}
-					isReply={true}
 					key={secondary_key}
+					inline
 				/>);
 				++secondary_key;
+
+				// Put a cap on the number of replies shown
+				if (reply_components.length >= num_replies)
+					break;
 			}
 
-			components.push(<div className="flex flex-col gap-2" key={key}>
+			components.push(<div className="flex flex-col" key={key}>
 				{post_component}
-				<div className="flex flex-col gap-2">
+				<div className="flex flex-col">
 					{reply_components}
 				</div>
 			</div>);
@@ -154,7 +160,7 @@ export async function PostFeed(props: { currentUser: string | undefined, postID:
 				liked={reply.likes.length > 0}
 				replies={reply.replies.length}
 				replied={reply._count.replies > 0}
-				isReply={true}
+				inline={true}
 				key={key}
 			/>);
 		}
@@ -172,6 +178,7 @@ export async function PostFeed(props: { currentUser: string | undefined, postID:
 				replied={post.replies.length > 0}
 				key={0}
 			/>
+			<div className="font-bold text-lg">Replies</div>
 			{reply_components}
 		</Feed>
 	);

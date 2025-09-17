@@ -53,7 +53,7 @@ export default async function Page()
 		<div className="flex flex-col items-center justify-items-center min-h-screen w-full">
 			<Header user={user_data.user} alias={user_data.alias} admin={user_data.admin} expired={user_data.expired} />
 			{notification_component}
-			<div className="flex flex-col w-2/3 p-2">
+			<div className="flex flex-col w-200 max-w-9/10 p-2">
 				<div className="font-bold text-lg">Global Feed</div>
 				<GlobalFeed currentUser={user_data.alias?.id} viewerID={user_data.expired ? undefined : user_data.alias?.id} />
 			</div>
