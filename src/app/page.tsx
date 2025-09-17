@@ -55,7 +55,7 @@ export default async function Page()
 			{notification_component}
 			<div className="flex flex-col w-2/3 p-2">
 				<div className="font-bold text-lg">Global Feed</div>
-				<GlobalFeed currentUser={user_data.alias?.id} viewerID={user_data.alias?.id} />
+				<GlobalFeed currentUser={user_data.alias?.id} viewerID={user_data.expired ? undefined : user_data.alias?.id} />
 			</div>
 		</div>
 	);

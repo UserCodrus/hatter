@@ -34,7 +34,7 @@ export default async function Page()
 						name={user_data.alias.name}
 						tag={user_data.alias.tag}
 						icon={user_data.alias.icon} colors={[user_data.alias.colorA, user_data.alias.colorB]} style={user_data.alias.style}
-						followers={followers.length} selfProfile={true}
+						followers={followers.length} selfProfile={true} activeUser={true}
 					/>
 					<div className="flex flex-row justify-stretch gap-2 w-full">
 						<div className="flex flex-col grow-1">

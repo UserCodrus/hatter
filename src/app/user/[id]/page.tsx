@@ -25,7 +25,7 @@ export default async function Page(props: { params: Promise<{ id: string }> })
 						followers={alias.followers.length}
 						following={alias._count ? alias._count.followers > 0 : false}
 						selfProfile={user_data.alias?.id === alias.id}
-						activeUser={user_data.alias !== null}
+						activeUser={user_data.alias !== null && !user_data.expired}
 					/>
 					<div>
 						<div className="font-bold">Following</div>
@@ -34,9 +34,9 @@ export default async function Page(props: { params: Promise<{ id: string }> })
 				</div>
 				<div className="flex flex-col p-2">
 					<div className="text-lg font-bold">Recent Posts</div>
-					<UserFeed currentUser={user_data.alias?.id} userID={alias.id} viewerID={user_data.alias?.id} />
+					<UserFeed currentUser={user_data.alias?.id} userID={alias.id} viewerID={user_data.expired ? undefined : user_data.alias?.id} />
 					<div className="text-lg font-bold">Liked Posts</div>
-					<LikedFeed currentUser={user_data.alias?.id} userID={alias.id} viewerID={user_data.alias?.id} />
+					<LikedFeed currentUser={user_data.alias?.id} userID={alias.id} viewerID={user_data.expired ? undefined : user_data.alias?.id} />
 				</div>
 			</div>
 		</div>
