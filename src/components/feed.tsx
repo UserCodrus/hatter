@@ -13,6 +13,16 @@ function Feed(props: {children: ReactNode}): ReactElement
 	);
 }
 
+/** A wrapper component for feed layouts */
+export function FeedWrapper(props: {children: ReactNode}): ReactElement
+{
+	return (
+		<div className="flex flex-col p-2 w-200 max-w-[90vw]">
+			{props.children}
+		</div>
+	)
+}
+
 /** A feed showing the posts made by a single user */
 export async function UserFeed(props: { currentUser: string | undefined, userID: string, viewerID: string | undefined }): Promise<ReactElement>
 {

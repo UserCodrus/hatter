@@ -1,4 +1,4 @@
-import { PostFeed } from "@/components/feed";
+import { FeedWrapper, PostFeed } from "@/components/feed";
 import { Header } from "@/components/header";
 import { getUser } from "@/lib/db";
 
@@ -10,9 +10,9 @@ export default async function Page(props: { params: Promise<{ id: string }> })
 	return (
 		<div className="flex flex-col items-center justify-items-center min-h-screen w-full">
 			<Header user={user_data.user} alias={user_data.alias} admin={user_data.admin} expired={user_data.expired}  />
-			<div className="p-2 w-200 max-w-9/10">
+			<FeedWrapper>
 				<PostFeed currentUser={user_data.alias?.id} postID={params.id} viewerID={user_data.expired ? undefined : user_data.alias?.id} />
-			</div>
+			</FeedWrapper>
 		</div>
 	);
 }

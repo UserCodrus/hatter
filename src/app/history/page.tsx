@@ -1,5 +1,5 @@
 import { ExpireAliasButton, ResetAliasButton } from "@/components/interactive";
-import { LikedFeed, UserFeed } from "@/components/feed";
+import { FeedWrapper, LikedFeed, UserFeed } from "@/components/feed";
 import { Header } from "@/components/header";
 import { getFollowers, getFollowing, getUser } from "@/lib/db";
 import { pages } from "@/lib/utils";
@@ -27,8 +27,8 @@ export default async function Page()
 	return (
 		<div className="flex flex-col items-center justify-items-center min-h-screen w-full">
 			<Header user={user_data.user} alias={user_data.alias} admin={user_data.admin} expired={user_data.expired} />
-			<div className="layout-horizontal w-4/5">
-				<div className="flex flex-col gap-1 items-center p-2">
+			<div className="flex flex-col lg:flex-row w-full items-center lg:items-start lg:justify-center">
+				<div className="flex flex-col p-2 gap-1 w-200 lg:w-100 max-w-[90vw]">
 					<UserProfile
 						id={user_data.alias.id}
 						name={user_data.alias.name}
@@ -47,12 +47,12 @@ export default async function Page()
 						</div>
 					</div>
 				</div>
-				<div className="flex flex-col p-2">
+				<FeedWrapper>
 					<div className="text-lg font-bold">Recent Posts</div>
 					<UserFeed currentUser={user_data.alias?.id} userID={user_data.alias.id} viewerID={user_data.alias.id} />
 					<div className="text-lg font-bold">Liked Posts</div>
 					<LikedFeed currentUser={user_data.alias?.id} userID={user_data.alias.id} viewerID={user_data.alias.id} />
-				</div>
+				</FeedWrapper>
 			</div>
 		</div>
 	);
