@@ -32,7 +32,7 @@ export function UserProfile(props: { id: string, name: string, tag: string, icon
 	const following_component = (props.following && props.following.length > 0) ? <UserList aliases={props.following} /> : <div>None</div>;
 
 	return (
-		<div className="flex flex-col p-2 gap-1 w-200 lg:w-100 max-w-[90vw] bg-panel">
+		<div className="flex flex-col p-2 gap-1 w-200 lg:w-100 max-w-[90vw] bg-panel-background text-panel-foreground">
 			<div className="flex flex-row gap-2 items-center w-full">
 				<UserAvatar icon={props.icon} colors={props.colors} style={props.style} size={64} />
 				<div className="flex flex-col grow-1">

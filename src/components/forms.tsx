@@ -58,7 +58,7 @@ export function CreatePost(props: { replyID?: string }): ReactElement
 	const hide_media = validMedia ? "" : " hidden";
 
 	return (
-		<form className="flex flex-col p-4 gap-2" onSubmit={submitForm}>
+		<form className="flex flex-col p-4 gap-2 bg-panel-background text-panel-foreground" onSubmit={submitForm}>
 			<input
 				className={"bg-input p-1" + hide_title}
 				placeholder={"Title"}
@@ -172,7 +172,7 @@ function SelectAvatar(props: { currentAvatar: AvatarSettings, salt: number, sele
 	}
 
 	return (
-		<div className="bg-slate-600 flex flex-col justify-center items-center w-full p-4 gap-4">
+		<div className="flex flex-col justify-center items-center w-full p-4 gap-4 bg-panel-background text-panel-foreground">
 			<div className="flex flex-row justify-evenly w-full">
 				<ColorSelector color={avatar.colorA} onChange={setColorA} />
 				<ColorSelector color={avatar.colorB} onChange={setColorB} />
@@ -226,7 +226,7 @@ export function CreateAlias(props: { defaultAvatar: AvatarSettings }): ReactElem
 	}
 
 	return (
-		<form className="flex flex-col p-4 gap-2 w-1/3 items-stretch bg-panel" onSubmit={submitForm}>
+		<form className="flex flex-col p-4 gap-2 w-1/3 items-stretch bg-panel-background text-panel-foreground" onSubmit={submitForm}>
 			{iconModal && <Modal onCancel={() => setIconModal(false)}>
 				<SelectAvatar currentAvatar={avatar} salt={Date.now()} selectCallback={selectAvatar} />
 			</Modal>}
@@ -292,7 +292,7 @@ export function UpdateAlias(props: {tag: string, name: string, bio: string | nul
 	}
 
 	return (
-		<form className="flex flex-col p-4 gap-2 w-1/3 items-stretch bg-panel" onSubmit={submitForm}>
+		<form className="flex flex-col p-4 gap-2 w-1/3 items-stretch bg-panel-background text-panel-foreground" onSubmit={submitForm}>
 			<div className="flex flex-row items-center">
 				<label className="flex-1">ID</label>
 				<input

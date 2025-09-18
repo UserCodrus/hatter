@@ -7,7 +7,7 @@ import { notFound } from "next/navigation";
 function Feed(props: { children: ReactNode }): ReactElement
 {
 	return (
-		<div className="flex flex-col gap-2 w-full">
+		<div className="flex flex-col gap-3 w-full">
 			{props.children}
 		</div>
 	);
@@ -27,7 +27,7 @@ export function FeedWrapper(props: { children: ReactNode }): ReactElement
 export function FeedHeader(props: { children: ReactNode }): ReactElement
 {
 	return (
-		<div className="font-bold text-lg text-light">
+		<div className="font-bold text-lg text-foreground">
 			{props.children}
 		</div>
 	)
@@ -141,8 +141,8 @@ export async function GlobalFeed(props: { currentUser: string | undefined, viewe
 			}
 
 			components.push(<div className="flex flex-col" key={key}>
-				{post_component}
-				<div className="flex flex-col">
+				<div className="flex flex-col gap-0.5 bg-panel-foreground">
+					{post_component}
 					{reply_components}
 				</div>
 			</div>);

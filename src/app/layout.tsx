@@ -30,7 +30,7 @@ export default function RootLayout(props: { children: ReactNode }) {
 					<Silk
 						speed={2}
 						scale={0.5}
-						color="#333527"
+						color="#313A14"
 						noiseIntensity={0.5}
 						rotation={0}
 					/>
