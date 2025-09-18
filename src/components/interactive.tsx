@@ -146,9 +146,9 @@ export function ReplyButton(props: { postID: string, postContent: string | null,
 	return (
 		<>
 			{modal && <Modal onCancel={() => setModal(false)}>
-				<div className="flex flex-col items-center justify-center w-full p-4 gap-2 z-30 bg-post-outer">
+				<div className="flex flex-col items-center justify-center w-full p-4 gap-2 z-30 bg-panel">
 					<div className="text-lg font-bold text-center">Reply</div>
-					<div className="bg-post-inner p-2 whitespace-pre">{props.postContent}</div>
+					<div className="bg-inset p-2 whitespace-pre">{props.postContent}</div>
 					<div className="w-full"><CreatePost replyID={props.postID} /></div>
 				</div>
 			</Modal>}

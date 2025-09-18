@@ -26,8 +26,8 @@
 	--color-input: #00ff00;
 	--color-header: #aaffaa;
 	--color-menu: #555599;
-	--color-post-outer: #aaffaa;
-	--color-post-inner: #dddddd;
+	--color-panel: #aa00ff;
+	--color-inset: #ffaaaa;
 }
 
 body {

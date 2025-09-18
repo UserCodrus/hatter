@@ -35,7 +35,7 @@ export function Post(props: { post: PostData, author: Author, likes: number, lik
 	//const width_style = props.isReply ? " w-[95%] self-end" : " w-full";
 
 	return (
-		<div className={"flex flex-col p-2 gap-2 relative w-full bg-post-outer"}>
+		<div className={"flex flex-col p-2 gap-2 relative w-full bg-panel"}>
 			<div className="flex flex-row items-center gap-2">
 				<div>
 					<UserAvatar icon={props.author.icon} colors={[props.author.colorA, props.author.colorB]} style={props.author.style} size={48} />
@@ -48,7 +48,7 @@ export function Post(props: { post: PostData, author: Author, likes: number, lik
 					<div className="text-lg font-bold">{title}</div>
 				</div>
 			</div>
-			<div className="flex flex-col p-2 whitespace-pre cursor-pointer bg-post-inner" onClick={() => router.push(pages.post(props.post.id))}>
+			<div className="flex flex-col p-2 whitespace-pre cursor-pointer bg-inset" onClick={() => router.push(pages.post(props.post.id))}>
 				{props.post.media && <div className="w-full flex flex-col items-center"><img className="max-w-4/5 p-1 bg-white" src={props.post.media} alt={props.post.media} /></div>}
 				<p className="flex-1 text-wrap">{content}</p>
 			</div>
