@@ -23,8 +23,10 @@ export default function RootLayout(props: { children: ReactNode }) {
 	return (
 		<html lang="en">
 			<body className={`${geistSans.variable} ${geistMono.variable} antialiased relative`}>
-				{props.children}
-				<div className="fixed top-0 left-0 w-full h-full -z-10">
+				<div className="flex flex-col items-center justify-items-center">
+					{props.children}
+				</div>
+				<div className="fixed top-0 left-0 w-[100vw] h-[100vh] -z-10">
 					<Silk
 						speed={2}
 						scale={0.5}

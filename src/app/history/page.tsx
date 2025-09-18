@@ -24,36 +24,34 @@ export default async function Page()
 	const follower_component = (followers && followers.length > 0) ? <UserList aliases={followers} /> : <div>None</div>;
 	const following_component = (following && following.length > 0) ? <UserList aliases={following} /> : <div>None</div>;
 
-	return (
-		<div className="flex flex-col items-center justify-items-center min-h-screen w-full">
-			<Header user={user_data.user} alias={user_data.alias} admin={user_data.admin} expired={user_data.expired} />
-			<div className="flex flex-col lg:flex-row w-full items-center lg:items-start lg:justify-center">
-				<div className="flex flex-col p-2 gap-1 w-200 lg:w-100 max-w-[90vw]">
-					<UserProfile
-						id={user_data.alias.id}
-						name={user_data.alias.name}
-						tag={user_data.alias.tag}
-						icon={user_data.alias.icon} colors={[user_data.alias.colorA, user_data.alias.colorB]} style={user_data.alias.style}
-						followers={followers.length} selfProfile={true} activeUser={true}
-					/>
-					<div className="flex flex-row justify-stretch gap-2 w-full">
-						<div className="flex flex-col grow-1">
-							<div className="font-bold">Following</div>
-							{following_component}
-						</div>
-						<div className="flex flex-col grow-1">
-							<div className="font-bold">Followers</div>
-							{follower_component}
-						</div>
+	return (<>
+		<Header user={user_data.user} alias={user_data.alias} admin={user_data.admin} expired={user_data.expired} />
+		<div className="flex flex-col lg:flex-row w-full items-center lg:items-start lg:justify-center">
+			<div className="flex flex-col p-2 gap-1 w-200 lg:w-100 max-w-[90vw]">
+				<UserProfile
+					id={user_data.alias.id}
+					name={user_data.alias.name}
+					tag={user_data.alias.tag}
+					icon={user_data.alias.icon} colors={[user_data.alias.colorA, user_data.alias.colorB]} style={user_data.alias.style}
+					followers={followers.length} selfProfile={true} activeUser={true}
+				/>
+				<div className="flex flex-row justify-stretch gap-2 w-full">
+					<div className="flex flex-col grow-1">
+						<div className="font-bold">Following</div>
+						{following_component}
+					</div>
+					<div className="flex flex-col grow-1">
+						<div className="font-bold">Followers</div>
+						{follower_component}
 					</div>
 				</div>
-				<FeedWrapper>
-					<FeedHeader>Recent Posts</FeedHeader>
-					<UserFeed currentUser={user_data.alias?.id} userID={user_data.alias.id} viewerID={user_data.alias.id} />
-					<FeedHeader>Liked Posts</FeedHeader>
-					<LikedFeed currentUser={user_data.alias?.id} userID={user_data.alias.id} viewerID={user_data.alias.id} />
-				</FeedWrapper>
 			</div>
+			<FeedWrapper>
+				<FeedHeader>Recent Posts</FeedHeader>
+				<UserFeed currentUser={user_data.alias?.id} userID={user_data.alias.id} viewerID={user_data.alias.id} />
+				<FeedHeader>Liked Posts</FeedHeader>
+				<LikedFeed currentUser={user_data.alias?.id} userID={user_data.alias.id} viewerID={user_data.alias.id} />
+			</FeedWrapper>
 		</div>
-	);
+	</>);
 }

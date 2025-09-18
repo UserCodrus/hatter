@@ -66,12 +66,10 @@ export default async function Page()
 	if (user_data.user && user_data.alias && !user_data.expired && !user_data.owned)
 		redirect(pages.history);
 
-	return (
-		<div className="flex flex-col items-center justify-items-center min-h-screen w-full">
-			<Header user={user_data.user} alias={user_data.alias} expired={user_data.expired} admin={user_data.admin} />
-			{user_data.alias && user_data.expired && <Expired expiration={user_data.expires}/>}
-			{user_data.alias && !user_data.expired && <Update tag={user_data.alias.tag} name={user_data.alias.name} bio={user_data.alias.bio} />}
-			{!user_data.alias && <Signup />}
-		</div>
-	);
+	return (<>
+		<Header user={user_data.user} alias={user_data.alias} expired={user_data.expired} admin={user_data.admin} />
+		{user_data.alias && user_data.expired && <Expired expiration={user_data.expires}/>}
+		{user_data.alias && !user_data.expired && <Update tag={user_data.alias.tag} name={user_data.alias.name} bio={user_data.alias.bio} />}
+		{!user_data.alias && <Signup />}
+	</>);
 }

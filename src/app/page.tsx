@@ -49,14 +49,12 @@ export default async function Page()
 		notification_component = <NotifyExpired />;
 	}
 
-	return (
-		<div className="flex flex-col items-center justify-items-center min-h-screen w-full">
-			<Header user={user_data.user} alias={user_data.alias} admin={user_data.admin} expired={user_data.expired} />
-			{notification_component}
-			<FeedWrapper>
-				<FeedHeader>Global Feed</FeedHeader>
-				<GlobalFeed currentUser={user_data.alias?.id} viewerID={user_data.expired ? undefined : user_data.alias?.id} />
-			</FeedWrapper>
-		</div>
-	);
+	return (<>
+		<Header user={user_data.user} alias={user_data.alias} admin={user_data.admin} expired={user_data.expired} />
+		{notification_component}
+		<FeedWrapper>
+			<FeedHeader>Global Feed</FeedHeader>
+			<GlobalFeed currentUser={user_data.alias?.id} viewerID={user_data.expired ? undefined : user_data.alias?.id} />
+		</FeedWrapper>
+	</>);
 }
