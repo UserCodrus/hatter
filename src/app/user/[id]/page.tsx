@@ -16,21 +16,15 @@ export default async function Page(props: { params: Promise<{ id: string }> })
 	const follower_component = (alias.following.length > 0) ? <UserList aliases={alias.following} /> : <div>None</div>;
 	return (<>
 		<Header user={user_data.user} alias={user_data.alias} admin={user_data.admin} expired={user_data.expired}  />
-		<div className="flex flex-col lg:flex-row w-full items-center lg:items-start lg:justify-center">
-			<div className="flex flex-col p-2 gap-1 w-200 lg:w-100 max-w-[90vw]">
-				<UserProfile
-					id={alias.id} name={alias.name} tag={alias.tag}
-					icon={alias.icon} colors={[alias.colorA, alias.colorB]} style={alias.style}
-					followers={alias.followers.length}
-					following={alias._count ? alias._count.followers > 0 : false}
-					selfProfile={user_data.alias?.id === alias.id}
-					activeUser={user_data.alias !== null && !user_data.expired}
-				/>
-				<div>
-					<div className="font-bold">Following</div>
-					{follower_component}
-				</div>
-			</div>
+		<div className="flex flex-col lg:flex-row w-full items-center lg:items-start lg:justify-center p-2">
+			<UserProfile
+				id={alias.id} name={alias.name} tag={alias.tag}
+				icon={alias.icon} colors={[alias.colorA, alias.colorB]} style={alias.style}
+				followers={alias.followers}
+				userFollowed={alias._count ? alias._count.followers > 0 : false}
+				selfProfile={user_data.alias?.id === alias.id}
+				activeUser={user_data.alias !== null && !user_data.expired}
+			/>
 			<FeedWrapper>
 				<FeedHeader>Recent Posts</FeedHeader>
 				<UserFeed currentUser={user_data.alias?.id} userID={alias.id} viewerID={user_data.expired ? undefined : user_data.alias?.id} />

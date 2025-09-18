@@ -70,13 +70,13 @@ export function UnregisterUserButton(): ReactElement
 }
 
 /** A button that can follow or unfollow a user */
-export function FollowButton(props: { userID: string, followers: number, following?: boolean, selfProfile: boolean, disabled: boolean }): ReactElement
+export function FollowButton(props: { userID: string, followers: number, following?: boolean, disabled: boolean }): ReactElement
 {
 	const [following, setFollowing] = useState(props.following ? true : false);
 	const [followers, setFollowers] = useState(props.followers);
 
 	async function handleClick() {
-		if (!props.selfProfile && !props.disabled) {
+		if (!props.disabled) {
 			await toggleFollow(props.userID);
 
 			setFollowing(!following);
@@ -88,8 +88,8 @@ export function FollowButton(props: { userID: string, followers: number, followi
 	}
 
 	// Set the icon to a filled style if the current user is following or its their own profile
-	const icon = following || props.selfProfile ? "tdesign--star-filled" : "tdesign--star";
-	const style = props.selfProfile || props.disabled ? "" : " cursor-pointer";
+	const icon = following ? "tdesign--star-filled" : "tdesign--star";
+	const style = props.disabled ? "" : " cursor-pointer";
 
 	return (
 		<div className="flex flex-row gap-1">

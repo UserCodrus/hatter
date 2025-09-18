@@ -3,7 +3,6 @@ import { ReactElement } from "react";
 import { FollowButton } from "./interactive";
 import { pages } from "@/lib/utils";
 import { Alias } from "@prisma/client";
-import Link from "next/link";
 
 const avatar_colors = [
 	"#99ff99",
@@ -27,17 +26,32 @@ export function UserName(props: { id: string, tag: string, name: string, icon: s
 }
 
 /** Display a user's full profile, including their name, icon and follower count */
-export function UserProfile(props: { id: string, name: string, tag: string, icon: string, colors: string[], style: string, followers: number, following?: boolean, selfProfile: boolean, activeUser: boolean }): ReactElement
+export function UserProfile(props: { id: string, name: string, tag: string, icon: string, colors: string[], style: string, followers: Alias[], following?: Alias[] | null, userFollowed: boolean, selfProfile: boolean, activeUser: boolean }): ReactElement
 {
+	const follower_component = (props.followers && props.followers.length > 0) ? <UserList aliases={props.followers} /> : <div>None</div>;
+	const following_component = (props.following && props.following.length > 0) ? <UserList aliases={props.following} /> : <div>None</div>;
+
 	return (
-		<div className="flex flex-row gap-2 items-center w-full">
-			<UserAvatar icon={props.icon} colors={props.colors} style={props.style} size={64} />
-			<div className="flex flex-col grow-1">
-				<div className="font-bold">{props.name}</div>
-				<div>@{props.tag}</div>
+		<div className="flex flex-col p-2 gap-1 w-200 lg:w-100 max-w-[90vw] bg-panel">
+			<div className="flex flex-row gap-2 items-center w-full">
+				<UserAvatar icon={props.icon} colors={props.colors} style={props.style} size={64} />
+				<div className="flex flex-col grow-1">
+					<div className="font-bold">{props.name}</div>
+					<div>@{props.tag}</div>
+				</div>
+				<div>
+					<FollowButton userID={props.id} followers={props.followers.length} following={props.userFollowed || props.selfProfile} disabled={!props.activeUser} />
+				</div>
 			</div>
-			<div>
-				<FollowButton userID={props.id} followers={props.followers} following={props.following} selfProfile={props.selfProfile} disabled={!props.activeUser} />
+			<div className="flex flex-row justify-stretch gap-2 w-full">
+				<div className="flex flex-col grow-1">
+					<div className="font-bold">Following</div>
+					{following_component}
+				</div>
+				<div className="flex flex-col grow-1">
+					<div className="font-bold">Followers</div>
+					{follower_component}
+				</div>
 			</div>
 		</div>
 	);
