@@ -14,7 +14,7 @@ export function NavigationButton(props: { label: string, target: string }): Reac
 
 	if (disabled) {
 		return (
-			<div className="text-gray-700 p-1">
+			<div className="text-disabled p-1">
 				{props.label}
 			</div>
 		);
@@ -34,7 +34,7 @@ export function LinkButton(props: { label: string, target: string }): ReactEleme
 
 	return (
 		<button
-			className="cursor-pointer p-1 outline-1 rounded-sm bg-slate-300"
+			className="cursor-pointer p-1 outline-1 rounded-sm bg-button"
 			onClick={() => router.push(props.target)}
 		>{props.label}</button>
 	)
@@ -44,7 +44,7 @@ export function LinkButton(props: { label: string, target: string }): ReactEleme
 export function MenuItem(props: { label: string, target: string }): ReactElement
 {
 	return (
-		<Link className="hover:bg-amber-300" href={props.target}>
+		<Link className="hover:bg-highlight" href={props.target}>
 			{props.label}
 		</Link>
 	)

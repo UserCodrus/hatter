@@ -22,7 +22,7 @@ export function ResetAliasButton(): ReactElement
 	return (
 		<button
 			onClick={() => handleClick()}
-			className="bg-red-300 p-2 cursor-pointer"
+			className="bg-alert p-2 cursor-pointer"
 		>
 			Reset Alias
 		</button>
@@ -42,7 +42,7 @@ export function ExpireAliasButton(): ReactElement
 	return (
 		<button
 			onClick={() => handleClick()}
-			className="hover:bg-red-500 cursor-pointer"
+			className="hover:bg-alert cursor-pointer"
 		>
 			Expire Alias
 		</button>
@@ -62,7 +62,7 @@ export function UnregisterUserButton(): ReactElement
 	return (
 		<button
 			onClick={() => handleClick()}
-			className="hover:bg-red-500 cursor-pointer"
+			className="hover:bg-alert cursor-pointer"
 		>
 			Unregister
 		</button>
@@ -94,7 +94,7 @@ export function FollowButton(props: { userID: string, followers: number, followi
 	return (
 		<div className="flex flex-row gap-1">
 			<div>{followers} Followers</div>
-			<button onClick={() => handleClick()} className={"text-green-800" + style}>
+			<button onClick={() => handleClick()} className={"text-interactive" + style}>
 				<Icon size={16} id={icon} />
 			</button>
 		</div>
@@ -125,7 +125,7 @@ export function LikeButton(props: { postID: string, likeCount: number, likedPost
 	const style = props.selfPost || props.disabled ? "" : " cursor-pointer";
 
 	return (
-		<button onClick={() => handleClick()} className={"flex flex-row items-center text-green-800" + style}>
+		<button onClick={() => handleClick()} className={"flex flex-row items-center text-interactive" + style}>
 			<Icon size={16} id={icon} />+{counter}
 		</button>
 	);
@@ -146,13 +146,13 @@ export function ReplyButton(props: { postID: string, postContent: string | null,
 	return (
 		<>
 			{modal && <Modal onCancel={() => setModal(false)}>
-				<div className="flex flex-col items-center justify-center bg-background w-full p-4 gap-2 z-30">
+				<div className="flex flex-col items-center justify-center w-full p-4 gap-2 z-30 bg-post-outer">
 					<div className="text-lg font-bold text-center">Reply</div>
-					<div className="bg-white p-2 whitespace-pre">{props.postContent}</div>
+					<div className="bg-post-inner p-2 whitespace-pre">{props.postContent}</div>
 					<div className="w-full"><CreatePost replyID={props.postID} /></div>
 				</div>
 			</Modal>}
-			<button onClick={() => handleClick()} className={"flex flex-row items-center gap-2 text-green-800" + style} >
+			<button onClick={() => handleClick()} className={"flex flex-row items-center gap-2 text-interactive" + style} >
 				<Icon size={16} id={props.replied ? "tdesign--chat-bubble-filled" : "tdesign--chat-bubble"} />{props.replyCount}
 			</button>
 		</>
@@ -171,10 +171,10 @@ export function AvatarSelector(props: { icon: string, colors: string[], style: A
 			props.onSelect(props.icon);
 	}
 
-	const style = props.selected ? " bg-white" : " cursor-pointer"
+	const style = props.selected ? " bg-highlight" : " bg-interactive cursor-pointer"
 
 	return (
-		<button onClick={(e) => handleClick(e)} className={"bg-slate-400 p-1" + style}>
+		<button onClick={(e) => handleClick(e)} className={"p-1" + style}>
 			<Avatar name={props.icon} colors={props.colors} variant={props.style} size={64} square />
 		</button>
 	);
@@ -186,7 +186,7 @@ export function ColorSelector(props: { color: string, onChange: (new_color: stri
 	return (
 		<div className="flex flex-col gap-2 items-center">
 			<HexColorPicker color={props.color} onChange={props.onChange} />
-			<HexColorInput color={props.color} onChange={props.onChange} prefixed className="text-white text-center w-1/2" />
+			<HexColorInput color={props.color} onChange={props.onChange} prefixed className="bg-input text-center w-1/2" />
 		</div>
 	);
 }
@@ -200,7 +200,7 @@ export function MenuButton(props: { label: string, onClick: Function }): ReactEl
 	}
 
 	return (
-		<button className="hover:bg-amber-300" onClick={(e) => handleClick(e)}>
+		<button className="hover:bg-highlight" onClick={(e) => handleClick(e)}>
 			{props.label}
 		</button>
 	)

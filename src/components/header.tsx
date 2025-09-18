@@ -19,7 +19,7 @@ function UserComponent(props: { user: SessionUser | null, alias: Alias | null, a
 			main = <div className="flex flex-row items-center gap-2 text-center">
 				<UserAvatar icon={props.alias.icon} colors={[props.alias.colorA, props.alias.colorB]} style={props.alias.style} size={32} />
 				<div className="text-nowrap">{props.alias.name}</div>
-				{props.expired && <div className="text-red-700"><Icon size={16} id={"tdesign--notification-error-filled"} /></div>}
+				{props.expired && <div className="text-alert"><Icon size={16} id={"tdesign--notification-error-filled"} /></div>}
 			</div>;
 
 			dropdown = [
@@ -43,7 +43,7 @@ function UserComponent(props: { user: SessionUser | null, alias: Alias | null, a
 
 	return (
 		<DropDownMenu main={main} disabled={props.user === null}>
-			<div className="flex flex-col gap-2 p-2 bg-slate-500 text-center">
+			<div className="flex flex-col gap-2 p-2 text-center bg-menu">
 				{dropdown}
 			</div>
 		</DropDownMenu>
@@ -65,7 +65,7 @@ function NavigationBar(props: { alias: Alias | null }): ReactElement
 export async function Header(props: { user: SessionUser | null, alias: Alias | null, admin?: boolean, expired: boolean }): Promise<ReactElement>
 {
 	return (
-		<div className="flex flex-row items-center gap-2 p-2 w-full sticky top-0 z-20 bg-slate-400">
+		<div className="flex flex-row items-center gap-2 p-2 w-full sticky top-0 z-20 bg-header">
 			<NavigationBar alias={props.expired ? null : props.alias} />
 			<UserComponent user={props.user} alias={props.alias} admin={props.admin} expired={props.expired} />
 		</div>

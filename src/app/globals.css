@@ -13,31 +13,36 @@
 }
 
 @theme inline {
-	--color-background: var(--background);
 	--color-foreground: var(--foreground);
+
 	--font-sans: var(--font-geist-sans);
 	--font-mono: var(--font-geist-mono);
+
+	--color-alert: #ff0000;
+	--color-highlight: #ffff00;
+	--color-interactive: #0000ff;
+	--color-button: #559955;
+	--color-disabled: #555555;
+	--color-input: #00ff00;
+	--color-header: #aaffaa;
+	--color-menu: #555599;
+	--color-post-outer: #aaffaa;
+	--color-post-inner: #dddddd;
 }
 
 body {
-	background: var(--background);
+	background: linear-gradient(#dddddd, #aaaaaa);
 	color: var(--foreground);
 	font-family: Arial, Helvetica, sans-serif;
 }
 
 @layer components {
-	.layout-horizontal {
-		display: grid;
-		grid-template-columns: 1fr 2fr;
-		grid-template-rows: 1fr;
-	}
-
-	.layout-vertical {
-		grid-template-rows: 1fr 2fr;
-	}
-
 	.modal-background {
 		background: rgb(255, 255, 255, 0.5);
 		backdrop-filter: blur(10px);
+	}
+
+	.react-colorful {
+		border: 3px white;
 	}
 }

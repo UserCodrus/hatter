@@ -60,7 +60,7 @@ export function CreatePost(props: { replyID?: string }): ReactElement
 	return (
 		<form className="flex flex-col p-4 gap-2" onSubmit={submitForm}>
 			<input
-				className={"bg-white p-1" + hide_title}
+				className={"bg-input p-1" + hide_title}
 				placeholder={"Title"}
 				value={title}
 				onChange={(e) => setTitle(e.target.value)}
@@ -77,20 +77,20 @@ export function CreatePost(props: { replyID?: string }): ReactElement
 				/>
 			</div>
 			<input
-				className="bg-white p-1"
+				className="bg-input p-1"
 				placeholder={"Image or Video URL"}
 				value={media}
 				onChange={(e) => setMedia(e.target.value)}
 				type="text"
 			/>
 			<textarea
-				className="bg-white p-1"
+				className="bg-input p-1"
 				placeholder={"Write your post here"}
 				value={content}
 				onChange={(e) => setContent(e.target.value)}
 			/>
 			<div className="flex items-center justify-center">
-				<input className="w-20 outline-1 bg-slate-300 cursor-pointer" disabled={(!content && !validMedia) || (!title && !props.replyID)} type="submit" value="Post" />
+				<input className="w-20 outline-1 bg-button cursor-pointer" disabled={(!content && !validMedia) || (!title && !props.replyID)} type="submit" value="Post" />
 			</div>
 		</form>
 	);
@@ -163,7 +163,7 @@ function SelectAvatar(props: { currentAvatar: AvatarSettings, salt: number, sele
 	}
 
 	// Create components for the dropdown menu
-	const dropdown_main = <div className="bg-white p-1 min-w-20 text-center">{avatar.style}</div>
+	const dropdown_main = <div className="bg-input p-1 min-w-20 text-center">{avatar.style}</div>
 	const dropdown: ReactElement[] = [];
 	key = 0;
 	for (const option of avatar_options) {
@@ -184,12 +184,12 @@ function SelectAvatar(props: { currentAvatar: AvatarSettings, salt: number, sele
 				<div className="flex flex-row gap-2 items-center">
 					<div>Style:</div>
 					<DropDownMenu main={dropdown_main} above>
-						<div className="flex flex-col gap-2 p-2 bg-slate-500 text-center">
+						<div className="flex flex-col gap-2 p-2 bg-menu text-center">
 							{dropdown}
 						</div>
 					</DropDownMenu>
 				</div>
-				<button onClick={() => submit()} className="bg-slate-200 p-1 cursor-pointer">Accept</button>
+				<button onClick={() => submit()} className="bg-button p-1 cursor-pointer">Accept</button>
 			</div>
 		</div>
 	);
@@ -241,7 +241,7 @@ export function CreateAlias(props: { defaultAvatar: AvatarSettings }): ReactElem
 			<div className="flex flex-row items-center">
 				<label className="flex-1">ID</label>
 				<input
-					className="bg-white p-1 w-2/3 lowercase"
+					className="bg-input p-1 w-2/3 lowercase"
 					placeholder={""}
 					value={tag}
 					onChange={(e) => setTag(e.target.value)}
@@ -251,7 +251,7 @@ export function CreateAlias(props: { defaultAvatar: AvatarSettings }): ReactElem
 			<div className="flex flex-row items-center">
 				<label className="flex-1">Name</label>
 				<input
-					className="bg-white p-1 w-2/3"
+					className="bg-input p-1 w-2/3"
 					placeholder={""}
 					value={name}
 					onChange={(e) => setName(e.target.value)}
@@ -260,15 +260,15 @@ export function CreateAlias(props: { defaultAvatar: AvatarSettings }): ReactElem
 			</div>
 			<div className="text-center">Bio</div>
 			<textarea
-				className="bg-white p-1"
+				className="bg-input p-1"
 				placeholder={"Write your account's bio here"}
 				value={bio}
 				onChange={(e) => setBio(e.target.value)}
 			/>
 			<div className="flex items-center justify-center m-2">
-				<input className="w-20 outline-1 bg-slate-300 cursor-pointer" disabled={!tag || !name} type="submit" value="Create" />
+				<input className="w-20 outline-1 bg-button cursor-pointer" disabled={!tag || !name} type="submit" value="Create" />
 			</div>
-			{error && <div className="text-center text-red-800">{error}</div>}
+			{error && <div className="text-center text-alert">{error}</div>}
 		</form>
 	);
 }
