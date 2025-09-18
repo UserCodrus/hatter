@@ -4,7 +4,7 @@ import { Post } from "./post";
 import { notFound } from "next/navigation";
 
 /** The base layout for post feeds */
-function Feed(props: {children: ReactNode}): ReactElement
+function Feed(props: { children: ReactNode }): ReactElement
 {
 	return (
 		<div className="flex flex-col gap-2 w-full">
@@ -14,10 +14,20 @@ function Feed(props: {children: ReactNode}): ReactElement
 }
 
 /** A wrapper component for feed layouts */
-export function FeedWrapper(props: {children: ReactNode}): ReactElement
+export function FeedWrapper(props: { children: ReactNode }): ReactElement
 {
 	return (
 		<div className="flex flex-col p-2 w-200 max-w-[90vw]">
+			{props.children}
+		</div>
+	)
+}
+
+/** A header above a feed */
+export function FeedHeader(props: { children: ReactNode }): ReactElement
+{
+	return (
+		<div className="font-bold text-lg text-light">
 			{props.children}
 		</div>
 	)

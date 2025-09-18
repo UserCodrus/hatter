@@ -1,5 +1,5 @@
 import { ExpireAliasButton, ResetAliasButton } from "@/components/interactive";
-import { FeedWrapper, LikedFeed, UserFeed } from "@/components/feed";
+import { FeedHeader, FeedWrapper, LikedFeed, UserFeed } from "@/components/feed";
 import { Header } from "@/components/header";
 import { getFollowers, getFollowing, getUser } from "@/lib/db";
 import { pages } from "@/lib/utils";
@@ -48,9 +48,9 @@ export default async function Page()
 					</div>
 				</div>
 				<FeedWrapper>
-					<div className="text-lg font-bold">Recent Posts</div>
+					<FeedHeader>Recent Posts</FeedHeader>
 					<UserFeed currentUser={user_data.alias?.id} userID={user_data.alias.id} viewerID={user_data.alias.id} />
-					<div className="text-lg font-bold">Liked Posts</div>
+					<FeedHeader>Liked Posts</FeedHeader>
 					<LikedFeed currentUser={user_data.alias?.id} userID={user_data.alias.id} viewerID={user_data.alias.id} />
 				</FeedWrapper>
 			</div>

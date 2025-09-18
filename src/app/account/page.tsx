@@ -18,7 +18,7 @@ function Signup(): ReactElement
 
 	const expires = getNextReset();
 	return (
-		<div className="flex flex-col items-center w-full">
+		<div className="flex flex-col items-center w-full text-light">
 			<div className="p-4 text-center">
 				<p>Fill out the boxes below to create a new alias.</p>
 				<p>Your alias will be available until {expires.toLocaleString()}.</p>
@@ -33,7 +33,7 @@ function Signup(): ReactElement
 function Update(props: {tag: string, name: string, bio: string | null}): ReactElement
 {
 	return (
-		<div className="flex flex-col items-center w-full">
+		<div className="flex flex-col items-center w-full text-light">
 			<div className="p-4 text-center">
 				<p>Fill out the boxes below to change your alias info.</p>
 			</div>
@@ -48,7 +48,7 @@ function Expired(props: { expiration: Date }): ReactElement
 	const date_format: Intl.DateTimeFormatOptions = { month: "long", day: "numeric", year: "numeric", hour: "numeric", minute: "numeric" };
 
 	return (
-		<div className="flex flex-col items-center gap-2 p-4">
+		<div className="flex flex-col items-center gap-2 p-4 text-light">
 			<div>Your current account expired on {props.expiration.toLocaleString("default", date_format)}</div>
 			<div>Click the button below to get a new one.</div>
 			<div><ResetAliasButton /></div>

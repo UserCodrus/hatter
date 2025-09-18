@@ -1,4 +1,4 @@
-import { FeedWrapper, LikedFeed, UserFeed } from "@/components/feed";
+import { FeedHeader, FeedWrapper, LikedFeed, UserFeed } from "@/components/feed";
 import { Header } from "@/components/header";
 import { UserList, UserProfile } from "@/components/info";
 import { getAliasData, getUser } from "@/lib/db";
@@ -33,9 +33,9 @@ export default async function Page(props: { params: Promise<{ id: string }> })
 					</div>
 				</div>
 				<FeedWrapper>
-					<div className="text-lg font-bold">Recent Posts</div>
+					<FeedHeader>Recent Posts</FeedHeader>
 					<UserFeed currentUser={user_data.alias?.id} userID={alias.id} viewerID={user_data.expired ? undefined : user_data.alias?.id} />
-					<div className="text-lg font-bold">Liked Posts</div>
+					<FeedHeader>Liked Posts</FeedHeader>
 					<LikedFeed currentUser={user_data.alias?.id} userID={alias.id} viewerID={user_data.expired ? undefined : user_data.alias?.id} />
 				</FeedWrapper>
 			</div>
