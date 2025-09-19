@@ -45,6 +45,22 @@ body {
 }
 
 @layer components {
+	.panel {
+		color: #dddddd;
+		background: #ffffff20;
+		backdrop-filter: blur(10px);
+	}
+
+	.panel-inner {
+		background: #00000030;
+	}
+
+	.header {
+		color: #dddddd;
+		background: #ffffff20;
+		backdrop-filter: blur(10px);
+	}
+
 	.modal-background {
 		background: rgb(255, 255, 255, 0.5);
 		backdrop-filter: blur(10px);

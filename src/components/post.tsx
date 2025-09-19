@@ -20,9 +20,7 @@ type Author = {
 export function Post(props: { post: PostData, author: Author, likes: number, liked?: boolean, replies: number, replied?: boolean, inline?: boolean, activeUser?: string }): ReactElement
 {
 	const router = useRouter();
-	const content = props.post.content ? props.post.content : "This post is empty.";
-
-	let date_format: Intl.DateTimeFormatOptions = { month: "long", day: "numeric", year: "numeric", hour: "numeric", minute: "numeric" };
+	const date_format: Intl.DateTimeFormatOptions = { month: "long", day: "numeric", year: "numeric", hour: "numeric", minute: "numeric" };
 	
 	// Change the title
 	let title = props.post.title;
@@ -32,10 +30,8 @@ export function Post(props: { post: PostData, author: Author, likes: number, lik
 		title = `Reply to @${props.post.title}`;
 	}
 
-	//const width_style = props.isReply ? " w-[95%] self-end" : " w-full";
-
 	return (
-		<div className={"flex flex-col p-2 gap-2 relative w-full bg-panel-background text-panel-foreground"}>
+		<div className={"flex flex-col p-2 gap-2 relative w-full panel"}>
 			<div className="flex flex-row items-center gap-2">
 				<div>
 					<UserAvatar icon={props.author.icon} colors={[props.author.colorA, props.author.colorB]} style={props.author.style} size={48} />
@@ -48,9 +44,9 @@ export function Post(props: { post: PostData, author: Author, likes: number, lik
 					<div className="text-lg font-bold">{title}</div>
 				</div>
 			</div>
-			<div className="flex flex-col gap-1 p-4 whitespace-pre cursor-pointer bg-inset" onClick={() => router.push(pages.post(props.post.id))}>
+			<div className="flex flex-col gap-1 p-4 whitespace-pre cursor-pointer panel-inner" onClick={() => router.push(pages.post(props.post.id))}>
 				{props.post.media && <img className="max-w-full" src={props.post.media} alt={props.post.media} />}
-				<p className="flex-1 text-wrap">{content}</p>
+				{props.post.content && <p className="flex-1 text-wrap">{props.post.content}</p>}
 			</div>
 			<div className="flex flex-row">
 				<div className="text-sm grow-1">{props.post.updated.toLocaleString("default", date_format)}</div>

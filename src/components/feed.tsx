@@ -141,7 +141,7 @@ export async function GlobalFeed(props: { currentUser: string | undefined, viewe
 			}
 
 			components.push(<div className="flex flex-col" key={key}>
-				<div className="flex flex-col gap-0.5 bg-panel-foreground">
+				<div className="flex flex-col">
 					{post_component}
 					{reply_components}
 				</div>
