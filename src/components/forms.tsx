@@ -183,7 +183,7 @@ function SelectAvatar(props: { currentAvatar: AvatarSettings, salt: number, sele
 			<div className="flex flex-row justify-evenly items-center w-full">
 				<div className="flex flex-row gap-2 items-center">
 					<div>Style:</div>
-					<DropDownMenu main={dropdown_main} above>
+					<DropDownMenu main={dropdown_main} fill above>
 						<div className="flex flex-col gap-2 p-2 bg-menu text-center">
 							{dropdown}
 						</div>

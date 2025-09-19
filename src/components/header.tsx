@@ -10,16 +10,15 @@ import { ExpireAliasButton, UnregisterUserButton } from "./interactive";
 /** Displays a user's current status and gives them the option to sign in or out */
 function UserComponent(props: { user: SessionUser | null, alias: Alias | null, admin?: boolean, expired: boolean }): ReactElement
 {
-	let main = <LinkButton label="Sign In" target={pages.api.signin} />;
-	let dropdown: ReactElement[] = [];
-	
 	if (props.user) {
+		let dropdown: ReactElement[] = [];
+		let main = <div className="flex flex-row items-center">Not Registered</div>
 		if (props.alias) {
 			// Display the user's current alias as the dropdown element
 			main = <div className="flex flex-row items-center gap-2 text-center">
-				<UserAvatar icon={props.alias.icon} colors={[props.alias.colorA, props.alias.colorB]} style={props.alias.style} size={32} />
 				<div className="text-nowrap">{props.alias.name}</div>
 				{props.expired && <div className="text-alert"><Icon size={16} id={"tdesign--notification-error-filled"} /></div>}
+				<UserAvatar icon={props.alias.icon} colors={[props.alias.colorA, props.alias.colorB]} style={props.alias.style} size={32} />
 			</div>;
 
 			dropdown = [
@@ -35,19 +34,21 @@ function UserComponent(props: { user: SessionUser | null, alias: Alias | null, a
 		} else {
 			// Display a button to create an account if the user doesn't have an alias yet
 			dropdown = [
-				<MenuItem label="Setup" target={pages.account} key={1} />,
+				<MenuItem label="Register" target={pages.account} key={1} />,
 				<MenuItem label="Sign Out" target={pages.api.signout} key={2} />,
 			];
 		}
+
+		return (
+			<DropDownMenu main={main} disabled={props.user === null}>
+				<div className="flex flex-col gap-2 p-2 text-center w-40 panel">
+					{dropdown}
+				</div>
+			</DropDownMenu>
+		);
 	}
 
-	return (
-		<DropDownMenu main={main} disabled={props.user === null}>
-			<div className="flex flex-col gap-2 p-2 text-center bg-menu">
-				{dropdown}
-			</div>
-		</DropDownMenu>
-	);
+	return <LinkButton label="Sign In" target={pages.api.signin} />;
 }
 
 /** A set of navigation buttons that provide different options depending on the user's status */
