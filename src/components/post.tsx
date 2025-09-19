@@ -34,14 +34,14 @@ export function Post(props: { post: PostData, author: Author, likes: number, lik
 		<div className={"flex flex-col p-2 gap-2 relative w-full panel"}>
 			<div className="flex flex-row items-center gap-2">
 				<div>
-					<UserAvatar icon={props.author.icon} colors={[props.author.colorA, props.author.colorB]} style={props.author.style} size={48} />
+					<UserAvatar icon={props.author.icon} colors={[props.author.colorA, props.author.colorB]} style={props.author.style} size={40} />
 				</div>
 				<div className="flex flex-col">
 					<Link href={pages.user(props.author.tag)}>{props.author.name}</Link>
 					<div className="text-sm">@{props.author.tag}</div>
 				</div>
 				<div className="flex flex-col grow-1 text-center">
-					<div className="text-lg font-bold">{title}</div>
+					<div className="text-lg font-bold text-right">{title}</div>
 				</div>
 			</div>
 			<div className="flex flex-col gap-1 p-4 whitespace-pre cursor-pointer panel-inner" onClick={() => router.push(pages.post(props.post.id))}>

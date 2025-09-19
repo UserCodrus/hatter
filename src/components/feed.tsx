@@ -17,7 +17,7 @@ function Feed(props: { children: ReactNode }): ReactElement
 export function FeedWrapper(props: { children: ReactNode }): ReactElement
 {
 	return (
-		<div className="flex flex-col p-2 w-200 max-w-[90vw]">
+		<div className="flex flex-col w-200 max-w-[90vw]">
 			{props.children}
 		</div>
 	)
