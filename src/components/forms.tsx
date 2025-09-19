@@ -225,11 +225,11 @@ export function CreateAlias(props: { defaultAvatar: AvatarSettings }): ReactElem
 		setIconModal(false);
 	}
 
-	return (
+	return (<>
+		{iconModal && <Modal onCancel={() => setIconModal(false)}>
+			<SelectAvatar currentAvatar={avatar} salt={Date.now()} selectCallback={selectAvatar} />
+		</Modal>}
 		<form className="flex flex-col p-4 gap-2 w-1/3 items-stretch panel" onSubmit={submitForm}>
-			{iconModal && <Modal onCancel={() => setIconModal(false)}>
-				<SelectAvatar currentAvatar={avatar} salt={Date.now()} selectCallback={selectAvatar} />
-			</Modal>}
 			<div className="flex flex-row items-center">
 				<div className="flex-1">Icon (click to change)</div>
 				<div className="flex justify-center w-2/3">
@@ -270,7 +270,7 @@ export function CreateAlias(props: { defaultAvatar: AvatarSettings }): ReactElem
 			</div>
 			{error && <div className="text-center text-alert">{error}</div>}
 		</form>
-	);
+	</>);
 }
 
 /** A form that allows the user to update an owned alias */

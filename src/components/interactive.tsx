@@ -184,7 +184,7 @@ export function AvatarSelector(props: { icon: string, colors: string[], style: A
 export function ColorSelector(props: { color: string, onChange: (new_color: string) => void }): ReactElement
 {
 	return (
-		<div className="flex flex-col gap-2 items-center">
+		<div className="flex flex-col gap-2 items-center colorful">
 			<HexColorPicker color={props.color} onChange={props.onChange} />
 			<HexColorInput color={props.color} onChange={props.onChange} prefixed className="bg-input text-center w-1/2" />
 		</div>
