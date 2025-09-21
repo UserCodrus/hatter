@@ -141,6 +141,7 @@ export function ReplyButton(props: { postID: string, postContent: string | null,
 			setModal(true);
 	}
 
+	const icon = props.replied ? "tdesign--chat-bubble-filled" : "tdesign--chat-bubble"
 	const style = props.disabled ? "" : " cursor-pointer";
 
 	return (
@@ -153,7 +154,7 @@ export function ReplyButton(props: { postID: string, postContent: string | null,
 				</div>
 			</Modal>}
 			<button onClick={() => handleClick()} className={"flex flex-row items-center gap-2 text-interactive" + style} >
-				<Icon size={16} id={props.replied ? "tdesign--chat-bubble-filled" : "tdesign--chat-bubble"} />{props.replyCount}
+				<Icon size={16} id={icon} />{props.replyCount}
 			</button>
 		</>
 	);

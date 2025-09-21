@@ -51,8 +51,8 @@ export function Post(props: { post: PostData, author: Author, likes: number, lik
 			<div className="flex flex-row">
 				<div className="text-sm grow-1">{props.post.updated.toLocaleString("default", date_format)}</div>
 				<div className="flex flex-row gap-2">
-					<ReplyButton postID={props.post.id} postContent={props.post.content} replyCount={props.replies} replied={props.replied} disabled={props.activeUser === undefined} />
-					<LikeButton postID={props.post.id} likedPost={props.liked} likeCount={props.likes} selfPost={props.post.authorId === props.activeUser} disabled={props.activeUser === undefined} />
+					<ReplyButton postID={props.post.id} postContent={props.post.content} replied={props.replied && props.activeUser != undefined} replyCount={props.replies} disabled={props.activeUser === undefined} />
+					<LikeButton postID={props.post.id} likedPost={props.liked && props.activeUser != undefined} likeCount={props.likes} selfPost={props.post.authorId === props.activeUser} disabled={props.activeUser === undefined} />
 				</div>
 			</div>
 		</div>

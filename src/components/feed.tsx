@@ -102,6 +102,7 @@ export async function GlobalFeed(props: { currentUser: string | undefined, viewe
 	const components: ReactElement[] = [];
 	let key = 0;
 	for (const post of posts) {
+		console.log(`Post ${post.title}: likes ${post.likes.length}, replies ${post.replies.length}`)
 		const post_component = <Post
 			post={post}
 			author={post.author}
