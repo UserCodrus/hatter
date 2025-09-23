@@ -22,7 +22,7 @@ export const metadata: Metadata = {
 export default function RootLayout(props: { children: ReactNode }) {
 	return (
 		<html lang="en">
-			<body className={`${geistSans.variable} ${geistMono.variable} antialiased relative`}>
+			<body className={`${geistSans.variable} ${geistMono.variable} antialiased relative`} data-theme="light">
 				<div className="flex flex-col items-center justify-items-center">
 					{props.children}
 				</div>

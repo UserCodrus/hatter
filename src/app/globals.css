@@ -3,14 +3,17 @@
 :root {
 	--background: #333527;
 	--foreground: #dddddd;
+
+	--panel-outer: #ffffff20;
+	--panel-inner: #00000030;
+
+	--input-area: #00000030;
+	--interactive: #D494FF;
 }
 
-/*@media (prefers-color-scheme: dark) {
-	:root {
-		--background: #333527;
-		--foreground: #171717;
-	}
-}*/
+:root [data-theme="light"] {
+	--foreground: #dddddd;
+}
 
 @theme inline {
 	--color-foreground: var(--foreground);
@@ -20,64 +23,62 @@
 	--font-mono: var(--font-geist-mono);
 
 	--color-alert: #ff0000;
-	--color-highlight: #D494FF;
-	--color-interactive: #D494FF;
+	--color-highlight: #0000ff;
+	
 	--color-button: #0000ff;
 	--color-disabled: #333527;
 	--color-input: #333527;
 
-	--color-header-background: #3C154F;
-	--color-header-foreground: var(--foreground);
+	--color-header-background: #0000ff;
+	--color-header-foreground: #0000ff;
 
 	--color-menu: #5F018F;
 	--color-inset: #5F018F;
-	--color-panel-background: #5F018F;
-	--color-panel-foreground: var(--foreground);
+	--color-panel-background: #0000ff;
+	--color-panel-foreground: #0000ff;
 
 	--color-dark: #171717;
+
+	--color-interactive: var(--interactive);
 }
 
 body {
 	background: var(--background);
 	/*color: var(--foreground);*/
-	color: #ff0000;
+	color: var(--foreground);
 	font-family: Arial, Helvetica, sans-serif;
 }
 
 input, textarea {
-	background: #00000030;
+	background: var(--input-area);
 	padding: 0.25rem;
 }
 
 input[type=submit] {
-	color: #dddddd;
-	background: #D494FF;
+	background: var(--interactive);
 	cursor: pointer;
 	padding: 0.5rem;
 }
 
 @layer components {
 	.panel {
-		color: #dddddd;
-		background: #ffffff20;
+		background: var(--panel-outer);
 		backdrop-filter: blur(10px);
 	}
 
 	.panel-inner {
-		background: #00000030;
+		background: var(--panel-inner);
 		padding: 0.5rem;
 	}
 
 	.button {
-		color: #dddddd;
-		background: #D494FF;
+		background: var(--interactive);
 		cursor: pointer;
 		padding: 0.5rem;
 	}
 
 	.header {
-		color: #dddddd;
-		background: #ffffff20;
+		background: var(--panel-outer);
 		backdrop-filter: blur(10px);
 	}
 
