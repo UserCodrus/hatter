@@ -7,7 +7,7 @@ import { notFound } from "next/navigation";
 function Feed(props: { children: ReactNode }): ReactElement
 {
 	return (
-		<div className="flex flex-col gap-3 w-full">
+		<div className="flex flex-col gap-2 w-full my-2">
 			{props.children}
 		</div>
 	);
@@ -153,6 +153,7 @@ export async function GlobalFeed(props: { currentUser: string | undefined, viewe
 
 	return (
 		<Feed>
+			<FeedHeader>Global Feed</FeedHeader>
 			{components}
 		</Feed>
 	);
@@ -198,7 +199,7 @@ export async function PostFeed(props: { currentUser: string | undefined, postID:
 				replied={post.replies.length > 0}
 				key={0}
 			/>
-			<div className="font-bold text-lg">Replies</div>
+			<FeedHeader>Replies</FeedHeader>
 			{reply_components}
 		</Feed>
 	);

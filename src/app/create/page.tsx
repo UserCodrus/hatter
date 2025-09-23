@@ -1,5 +1,6 @@
 import { CreatePost } from "@/components/forms";
 import { Header } from "@/components/header";
+import { ContentPanel } from "@/components/info";
 import { getUser } from "@/lib/db";
 import { pages } from "@/lib/utils";
 import { redirect } from "next/navigation";
@@ -14,7 +15,7 @@ export default async function Page()
 
 	return (<>
 		<Header user={user_data.user} alias={user_data.alias} admin={user_data.admin} expired={user_data.expired} />
-		<div>Create a post</div>
+		<ContentPanel>Create a post</ContentPanel>
 		<div className="w-1/3 m-2">
 			<CreatePost />
 		</div>

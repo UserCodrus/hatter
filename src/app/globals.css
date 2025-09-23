@@ -22,7 +22,7 @@
 	--color-alert: #ff0000;
 	--color-highlight: #D494FF;
 	--color-interactive: #D494FF;
-	--color-button: #D494FF;
+	--color-button: #0000ff;
 	--color-disabled: #333527;
 	--color-input: #333527;
 
@@ -44,6 +44,18 @@ body {
 	font-family: Arial, Helvetica, sans-serif;
 }
 
+input, textarea {
+	background: #00000030;
+	padding: 0.25rem;
+}
+
+input[type=submit] {
+	color: #dddddd;
+	background: #D494FF;
+	cursor: pointer;
+	padding: 0.5rem;
+}
+
 @layer components {
 	.panel {
 		color: #dddddd;
@@ -53,6 +65,14 @@ body {
 
 	.panel-inner {
 		background: #00000030;
+		padding: 0.5rem;
+	}
+
+	.button {
+		color: #dddddd;
+		background: #D494FF;
+		cursor: pointer;
+		padding: 0.5rem;
 	}
 
 	.header {

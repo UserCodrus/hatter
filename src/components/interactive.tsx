@@ -22,7 +22,7 @@ export function ResetAliasButton(): ReactElement
 	return (
 		<button
 			onClick={() => handleClick()}
-			className="bg-alert p-2 cursor-pointer"
+			className="button"
 		>
 			Reset Alias
 		</button>

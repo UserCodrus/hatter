@@ -1,5 +1,6 @@
 import { CreateAlias, UpdateAlias } from "@/components/forms";
 import { Header } from "@/components/header";
+import { ContentPanel } from "@/components/info";
 import { ResetAliasButton } from "@/components/interactive";
 import { getUser } from "@/lib/db";
 import { getNextReset, pages, randomColor } from "@/lib/utils";
@@ -19,11 +20,13 @@ function Signup(): ReactElement
 	const expires = getNextReset();
 	return (
 		<div className="flex flex-col items-center w-full text-light">
-			<div className="p-4 text-center">
-				<p>Fill out the boxes below to create a new alias.</p>
-				<p>Your alias will be available until {expires.toLocaleString()}.</p>
-				<p>A different user will receive your alias at this time and you will be unable to change the information below.</p>
-			</div>
+			<ContentPanel>
+				<div className="text-center">
+					<p>Fill out the boxes below to create a new alias.</p>
+					<p>Your alias will be available until {expires.toLocaleString()}.</p>
+					<p>A different user will receive your alias at this time and you will be unable to change the information below.</p>
+				</div>
+			</ContentPanel>
 			<CreateAlias defaultAvatar={default_avatar} />
 		</div>
 	);
@@ -34,9 +37,9 @@ function Update(props: {tag: string, name: string, bio: string | null}): ReactEl
 {
 	return (
 		<div className="flex flex-col items-center w-full text-light">
-			<div className="p-4 text-center">
-				<p>Fill out the boxes below to change your alias info.</p>
-			</div>
+			<ContentPanel>
+				Fill out the boxes below to change your alias info.
+			</ContentPanel>
 			<UpdateAlias tag={props.tag} name={props.name} bio={props.bio} />
 		</div>
 	);
@@ -48,11 +51,13 @@ function Expired(props: { expiration: Date }): ReactElement
 	const date_format: Intl.DateTimeFormatOptions = { month: "long", day: "numeric", year: "numeric", hour: "numeric", minute: "numeric" };
 
 	return (
-		<div className="flex flex-col items-center gap-2 p-4 text-light">
-			<div>Your current account expired on {props.expiration.toLocaleString("default", date_format)}</div>
-			<div>Click the button below to get a new one.</div>
-			<div><ResetAliasButton /></div>
-		</div>
+		<ContentPanel>
+			<div className="flex flex-col items-center">
+				<div>Your current account expired on {props.expiration.toLocaleString("default", date_format)}</div>
+				<div>Click the button below to get a new one.</div>
+				<ResetAliasButton />
+			</div>
+		</ContentPanel>
 	);
 }
 

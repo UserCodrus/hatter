@@ -1,5 +1,5 @@
 import Avatar from "boring-avatars";
-import { ReactElement } from "react";
+import { ReactElement, ReactNode } from "react";
 import { FollowButton } from "./interactive";
 import { pages } from "@/lib/utils";
 import { Alias } from "@prisma/client";
@@ -26,24 +26,27 @@ export function UserName(props: { id: string, tag: string, name: string, icon: s
 }
 
 /** Display a user's full profile, including their name, icon and follower count */
-export function UserProfile(props: { id: string, name: string, tag: string, icon: string, colors: string[], style: string, followers: Alias[], following?: Alias[] | null, userFollowed: boolean, selfProfile: boolean, activeUser: boolean }): ReactElement
+export function UserProfile(props: { alias: Alias, followers: Alias[], following?: Alias[] | null, userFollowed: boolean, selfProfile: boolean, activeUser: boolean }): ReactElement
 {
 	const follower_component = (props.followers && props.followers.length > 0) ? <UserList aliases={props.followers} /> : <div>None</div>;
 	const following_component = (props.following && props.following.length > 0) ? <UserList aliases={props.following} /> : <div>None</div>;
 
 	return (
-		<div className="flex flex-col p-2 gap-1 w-200 max-w-[90vw] panel">
+		<div className="flex flex-col p-2 gap-2 w-200 max-w-[90vw] panel">
 			<div className="flex flex-row gap-2 items-center w-full">
-				<UserAvatar icon={props.icon} colors={props.colors} style={props.style} size={64} />
+				<UserAvatar icon={props.alias.icon} colors={[props.alias.colorA, props.alias.colorB]} style={props.alias.style} size={64} />
 				<div className="flex flex-col grow-1">
-					<div className="font-bold">{props.name}</div>
-					<div>@{props.tag}</div>
+					<div className="font-bold">{props.alias.name}</div>
+					<div>@{props.alias.tag}</div>
 				</div>
 				<div>
-					<FollowButton userID={props.id} followers={props.followers.length} following={props.userFollowed || props.selfProfile} disabled={!props.activeUser} />
+					<FollowButton userID={props.alias.id} followers={props.followers.length} following={props.userFollowed || props.selfProfile} disabled={!props.activeUser} />
 				</div>
 			</div>
-			<div className="flex flex-row justify-stretch gap-2 w-full">
+			{props.alias.bio && <div className="panel-inner">
+				{props.alias.bio}
+			</div>}
+			<div className="flex flex-row justify-stretch gap-2 w-full panel-inner">
 				<div className="flex flex-col grow-1">
 					<div className="font-bold">Following</div>
 					{following_component}
@@ -79,5 +82,15 @@ export function Icon(props: { size: number, id: string }): ReactElement
 {
 	return (
 		<svg width={props.size} height={props.size}><use href={pages.icons + "#" + props.id} /></svg>
+	);
+}
+
+/** A box used to display content other than posts, like alerts or status messages */
+export function ContentPanel(props: { children?: ReactNode }): ReactElement
+{
+	return (
+		<div className="p-4 m-2 panel">
+			{props.children}
+		</div>
 	);
 }

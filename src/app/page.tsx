@@ -1,5 +1,6 @@
 import { FeedHeader, FeedWrapper, GlobalFeed } from "@/components/feed";
 import { Header } from "@/components/header";
+import { ContentPanel } from "@/components/info";
 import { getUser } from "@/lib/db";
 import { pages } from "@/lib/utils";
 import Link from "next/link";
@@ -9,9 +10,9 @@ import { ReactElement } from "react";
 function NotifyExpired(): ReactElement
 {
 	return (
-		<div className="p-4 text-light">
+		<ContentPanel>
 			Your current account has expired. Go to the <Link href={pages.account}>account page</Link> to acquire a new one.
-		</div>
+		</ContentPanel>
 	);
 }
 
@@ -19,9 +20,9 @@ function NotifyExpired(): ReactElement
 function NotifyUnregistered(): ReactElement
 {
 	return (
-		<div className="p-4 text-light">
+		<ContentPanel>
 			You have not registered with Hatter. Go to the <Link href={pages.account}>account page</Link> to create an alias and start posting!
-		</div>
+		</ContentPanel>
 	);
 }
 
@@ -29,9 +30,9 @@ function NotifyUnregistered(): ReactElement
 function NotifySignout(): ReactElement
 {
 	return (
-		<div className="p-4 text-light">
+		<ContentPanel>
 			You aren't currently signed in. Go to the <Link href={pages.api.signin}>signin page</Link> to sign in with Google and register for Hatter.
-		</div>
+		</ContentPanel>
 	);
 }
 
@@ -53,7 +54,6 @@ export default async function Page()
 		<Header user={user_data.user} alias={user_data.alias} admin={user_data.admin} expired={user_data.expired} />
 		{notification_component}
 		<FeedWrapper>
-			<FeedHeader>Global Feed</FeedHeader>
 			<GlobalFeed currentUser={user_data.alias?.id} viewerID={user_data.expired ? undefined : user_data.alias?.id} />
 		</FeedWrapper>
 	</>);

@@ -54,13 +54,13 @@ export function CreatePost(props: { replyID?: string }): ReactElement
 	}
 
 	// Hide the title field if the post is a reply - the title will be set automatically when a reply post is created
-	const hide_title = props.replyID ? " hidden" : "";
+	const hide_title = props.replyID ? "hidden" : "";
 	const hide_media = validMedia ? "" : " hidden";
 
 	return (
 		<form className="flex flex-col p-4 gap-2 panel" onSubmit={submitForm}>
 			<input
-				className={"bg-input p-1" + hide_title}
+				className={hide_title}
 				placeholder={"Title"}
 				value={title}
 				onChange={(e) => setTitle(e.target.value)}
@@ -77,20 +77,18 @@ export function CreatePost(props: { replyID?: string }): ReactElement
 				/>
 			</div>
 			<input
-				className="bg-input p-1"
 				placeholder={"Image or Video URL"}
 				value={media}
 				onChange={(e) => setMedia(e.target.value)}
 				type="text"
 			/>
 			<textarea
-				className="bg-input p-1"
 				placeholder={"Write your post here"}
 				value={content}
 				onChange={(e) => setContent(e.target.value)}
 			/>
 			<div className="flex items-center justify-center">
-				<input className="w-20 outline-1 bg-button cursor-pointer" disabled={(!content && !validMedia) || (!title && !props.replyID)} type="submit" value="Post" />
+				<input className="w-20 button" disabled={(!content && !validMedia) || (!title && !props.replyID)} type="submit" value="Post" />
 			</div>
 		</form>
 	);
@@ -241,7 +239,7 @@ export function CreateAlias(props: { defaultAvatar: AvatarSettings }): ReactElem
 			<div className="flex flex-row items-center">
 				<label className="flex-1">ID</label>
 				<input
-					className="bg-input p-1 w-2/3 lowercase"
+					className="w-2/3 lowercase"
 					placeholder={""}
 					value={tag}
 					onChange={(e) => setTag(e.target.value)}
@@ -251,7 +249,7 @@ export function CreateAlias(props: { defaultAvatar: AvatarSettings }): ReactElem
 			<div className="flex flex-row items-center">
 				<label className="flex-1">Name</label>
 				<input
-					className="bg-input p-1 w-2/3"
+					className="w-2/3"
 					placeholder={""}
 					value={name}
 					onChange={(e) => setName(e.target.value)}
@@ -260,13 +258,12 @@ export function CreateAlias(props: { defaultAvatar: AvatarSettings }): ReactElem
 			</div>
 			<div className="text-center">Bio</div>
 			<textarea
-				className="bg-input p-1"
 				placeholder={"Write your account's bio here"}
 				value={bio}
 				onChange={(e) => setBio(e.target.value)}
 			/>
 			<div className="flex items-center justify-center m-2">
-				<input className="w-20 outline-1 bg-button cursor-pointer" disabled={!tag || !name} type="submit" value="Create" />
+				<input className="w-20 button" disabled={!tag || !name} type="submit" value="Create" />
 			</div>
 			{error && <div className="text-center text-alert">{error}</div>}
 		</form>
@@ -276,8 +273,8 @@ export function CreateAlias(props: { defaultAvatar: AvatarSettings }): ReactElem
 /** A form that allows the user to update an owned alias */
 export function UpdateAlias(props: {tag: string, name: string, bio: string | null}): ReactElement
 {
-	const [name, setName] = useState("");
-	const [bio, setBio] = useState("");
+	const [name, setName] = useState(props.name ? props.name : "");
+	const [bio, setBio] = useState(props.bio ? props.bio : "");
 	const [error, setError] = useState("");
 	const router = useRouter();
 
@@ -296,7 +293,7 @@ export function UpdateAlias(props: {tag: string, name: string, bio: string | nul
 			<div className="flex flex-row items-center">
 				<label className="flex-1">ID</label>
 				<input
-					className="bg-input p-1 w-2/3 lowercase"
+					className="w-2/3 lowercase"
 					placeholder={""}
 					value={props.tag}
 					type="text"
@@ -306,7 +303,7 @@ export function UpdateAlias(props: {tag: string, name: string, bio: string | nul
 			<div className="flex flex-row items-center">
 				<label className="flex-1">Name</label>
 				<input
-					className="bg-input p-1 w-2/3"
+					className="w-2/3"
 					placeholder={props.name}
 					value={name}
 					onChange={(e) => setName(e.target.value)}
@@ -315,13 +312,12 @@ export function UpdateAlias(props: {tag: string, name: string, bio: string | nul
 			</div>
 			<div className="text-center">Bio</div>
 			<textarea
-				className="bg-input p-1"
 				placeholder={props.bio ? props.bio : "Write your account's bio here"}
 				value={bio}
 				onChange={(e) => setBio(e.target.value)}
 			/>
 			<div className="flex items-center justify-center m-2">
-				<input className="w-20 outline-1 bg-button cursor-pointer" disabled={!name} type="submit" value="Update" />
+				<input className="w-20 button" disabled={!name} type="submit" value="Update" />
 			</div>
 			{error && <div className="text-center text-alert">{error}</div>}
 		</form>

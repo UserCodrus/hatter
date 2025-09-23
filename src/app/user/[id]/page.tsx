@@ -13,13 +13,11 @@ export default async function Page(props: { params: Promise<{ id: string }> })
 	if (alias === null)
 		notFound();
 
-	const follower_component = (alias.following.length > 0) ? <UserList aliases={alias.following} /> : <div>None</div>;
 	return (<>
 		<Header user={user_data.user} alias={user_data.alias} admin={user_data.admin} expired={user_data.expired}  />
-		<div className="flex flex-col lg:flex-row w-full items-center lg:items-start lg:justify-center p-2">
+		<div className="flex flex-col lg:flex-row w-full items-center lg:items-start lg:justify-center p-2 gap-2 mt-2">
 			<UserProfile
-				id={alias.id} name={alias.name} tag={alias.tag}
-				icon={alias.icon} colors={[alias.colorA, alias.colorB]} style={alias.style}
+				alias={alias}
 				followers={alias.followers}
 				userFollowed={alias._count ? alias._count.followers > 0 : false}
 				selfProfile={user_data.alias?.id === alias.id}
