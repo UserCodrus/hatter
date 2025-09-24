@@ -187,7 +187,7 @@ function SelectAvatar(props: { currentAvatar: AvatarSettings, salt: number, sele
 						</div>
 					</DropDownMenu>
 				</div>
-				<button onClick={() => submit()} className="bg-button p-1 cursor-pointer">Accept</button>
+				<button onClick={() => submit()} className="button">Accept</button>
 			</div>
 		</div>
 	);

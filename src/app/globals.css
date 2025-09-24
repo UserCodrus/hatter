@@ -9,6 +9,9 @@
 
 	--input-area: #00000030;
 	--interactive: #D494FF;
+	--alert: #ff0000;
+	--highlight: #00ff00;
+	--disabled: #aaaaaa;
 }
 
 :root [data-theme="light"] {
@@ -16,29 +19,11 @@
 }
 
 @theme inline {
-	--color-foreground: var(--foreground);
-	--color-background: var(--background);
-
 	--font-sans: var(--font-geist-sans);
 	--font-mono: var(--font-geist-mono);
 
-	--color-alert: #ff0000;
-	--color-highlight: #0000ff;
-	
-	--color-button: #0000ff;
-	--color-disabled: #333527;
-	--color-input: #333527;
-
-	--color-header-background: #0000ff;
-	--color-header-foreground: #0000ff;
-
-	--color-menu: #5F018F;
-	--color-inset: #5F018F;
-	--color-panel-background: #0000ff;
-	--color-panel-foreground: #0000ff;
-
-	--color-dark: #171717;
-
+	--color-alert: var(--alert);
+	--color-highlight: var(--highlight);
 	--color-interactive: var(--interactive);
 }
 
@@ -80,6 +65,10 @@ input[type=submit] {
 	.header {
 		background: var(--panel-outer);
 		backdrop-filter: blur(10px);
+	}
+
+	.disabled {
+		color: var(--disabled);
 	}
 
 	.modal-background {

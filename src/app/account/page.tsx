@@ -19,7 +19,7 @@ function Signup(): ReactElement
 
 	const expires = getNextReset();
 	return (
-		<div className="flex flex-col items-center w-full text-light">
+		<div className="flex flex-col items-center w-full">
 			<ContentPanel>
 				<div className="text-center">
 					<p>Fill out the boxes below to create a new alias.</p>
@@ -36,7 +36,7 @@ function Signup(): ReactElement
 function Update(props: {tag: string, name: string, bio: string | null}): ReactElement
 {
 	return (
-		<div className="flex flex-col items-center w-full text-light">
+		<div className="flex flex-col items-center w-full">
 			<ContentPanel>
 				Fill out the boxes below to change your alias info.
 			</ContentPanel>

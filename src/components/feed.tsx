@@ -27,7 +27,7 @@ export function FeedWrapper(props: { children: ReactNode }): ReactElement
 export function FeedHeader(props: { children: ReactNode }): ReactElement
 {
 	return (
-		<div className="font-bold text-lg text-foreground">
+		<div className="font-bold text-lg">
 			{props.children}
 		</div>
 	)

@@ -42,7 +42,7 @@ export function ExpireAliasButton(): ReactElement
 	return (
 		<button
 			onClick={() => handleClick()}
-			className="hover:bg-alert cursor-pointer"
+			className="hover:bg-highlight cursor-pointer"
 		>
 			Expire Alias
 		</button>
@@ -62,7 +62,7 @@ export function UnregisterUserButton(): ReactElement
 	return (
 		<button
 			onClick={() => handleClick()}
-			className="hover:bg-alert cursor-pointer"
+			className="hover:bg-highlight cursor-pointer"
 		>
 			Unregister
 		</button>
@@ -147,9 +147,9 @@ export function ReplyButton(props: { postID: string, postContent: string | null,
 	return (
 		<>
 			{modal && <Modal onCancel={() => setModal(false)}>
-				<div className="flex flex-col items-center justify-center w-full p-4 gap-2 z-30 bg-panel">
+				<div className="flex flex-col items-center justify-center w-full p-4 gap-2 z-30 panel">
 					<div className="text-lg font-bold text-center">Reply</div>
-					<div className="bg-inset p-2 whitespace-pre">{props.postContent}</div>
+					<div className="panel-inner whitespace-pre">{props.postContent}</div>
 					<div className="w-full"><CreatePost replyID={props.postID} /></div>
 				</div>
 			</Modal>}
