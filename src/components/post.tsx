@@ -3,10 +3,11 @@
 import { pages } from "@/lib/utils";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { ReactElement } from "react";
+import { ReactElement, useState } from "react";
 import { UserAvatar } from "./info";
 import { LikeButton, ReplyButton } from "./interactive";
 import { Post as PostData } from "@prisma/client";
+import { Reply } from "./forms";
 
 type Author = {
 	name: string,
@@ -19,15 +20,21 @@ type Author = {
 
 export function Post(props: { post: PostData, author: Author, likes: number, liked?: boolean, replies: number, replied?: boolean, inline?: boolean, activeUser?: string }): ReactElement
 {
+	const [replyOpen, setReplyOpen] = useState(false);
 	const router = useRouter();
 	const date_format: Intl.DateTimeFormatOptions = { month: "long", day: "numeric", year: "numeric", hour: "numeric", minute: "numeric" };
+
+	// Activate the reply component when the user clicks the reply button
+	function reply() {
+		setReplyOpen(true);
+	}
 	
 	// Change the title
 	let title = props.post.title;
 	if (props.inline) {
 		title = "";
 	} else if (props.post.replyID) {
-		title = `Reply to @${props.post.title}`;
+		title = `Reply`;
 	}
 
 	return (
@@ -51,10 +58,26 @@ export function Post(props: { post: PostData, author: Author, likes: number, lik
 			<div className="flex flex-row">
 				<div className="text-sm grow-1">{props.post.updated.toLocaleString("default", date_format)}</div>
 				<div className="flex flex-row gap-2">
-					<ReplyButton postID={props.post.id} postContent={props.post.content} replied={props.replied && props.activeUser != undefined} replyCount={props.replies} disabled={props.activeUser === undefined} />
-					<LikeButton postID={props.post.id} likedPost={props.liked && props.activeUser != undefined} likeCount={props.likes} selfPost={props.post.authorId === props.activeUser} disabled={props.activeUser === undefined} />
+					<ReplyButton
+						postID={props.post.id}
+						replied={props.replied && props.activeUser != undefined}
+						replyCount={props.replies}
+						disabled={props.activeUser === undefined}
+						onClick={reply}
+					/>
+					<LikeButton
+						postID={props.post.id}
+						likedPost={props.liked && props.activeUser != undefined}
+						likeCount={props.likes}
+						selfPost={props.post.authorId === props.activeUser}
+						disabled={props.activeUser === undefined}
+					/>
 				</div>
 			</div>
+			{replyOpen && <div className="flex flex-col items-stretch panel-inner">
+				<div className="text-center font-bold">Reply to {props.author.name}</div>
+				<Reply replyID={props.post.id} />
+			</div>}
 		</div>
 	);
 }

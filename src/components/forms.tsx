@@ -22,7 +22,7 @@ export function CreatePost(props: { replyID?: string }): ReactElement
 	async function submitForm(e: FormEvent<HTMLFormElement>) {
 		e.preventDefault();
 		try {
-			const media_link = media//validMedia ? media : undefined;
+			const media_link = validMedia ? media : undefined;
 
 			// Submit the post data to the API
 			const body = { title, content, media: media_link, reply: props.replyID };
@@ -42,13 +42,11 @@ export function CreatePost(props: { replyID?: string }): ReactElement
 	}
 
 	function imageLoad() {
-		console.log("valid image")
 		if (!validMedia)
 			setValidMedia(true);
 	}
 
 	function imageError() {
-		console.log("invalid image")
 		if (validMedia)
 			setValidMedia(false);
 	}
@@ -67,9 +65,9 @@ export function CreatePost(props: { replyID?: string }): ReactElement
 				type="text"
 				disabled={props.replyID ? true : false}
 			/>
-			<div className="flex flex-row w-full justify-center">
+			<div className={"flex flex-row w-full justify-center" + hide_media}>
 				<img
-					className={"max-w-2/3" + hide_media}
+					className="max-w-2/3"
 					src={media ? media : undefined}
 					onLoad={() => imageLoad()}
 					onError={() => imageError()}
@@ -77,7 +75,7 @@ export function CreatePost(props: { replyID?: string }): ReactElement
 				/>
 			</div>
 			<input
-				placeholder={"Image or Video URL"}
+				placeholder={"Image URL"}
 				value={media}
 				onChange={(e) => setMedia(e.target.value)}
 				type="text"
@@ -89,6 +87,80 @@ export function CreatePost(props: { replyID?: string }): ReactElement
 			/>
 			<div className="flex items-center justify-center">
 				<input className="w-20 button" disabled={(!content && !validMedia) || (!title && !props.replyID)} type="submit" value="Post" />
+			</div>
+		</form>
+	);
+}
+
+/** A form used to reply to posts */
+export function Reply(props: { replyID: string }): ReactElement
+{
+	const [media, setMedia] = useState("");
+	const [validMedia, setValidMedia] = useState(false);
+	const [content, setContent] = useState("");
+
+	const ref = useRef(null);
+	const router = useRouter();
+
+	async function submitForm(e: FormEvent<HTMLFormElement>) {
+		e.preventDefault();
+		try {
+			const media_link = media;
+
+			// Submit the post data to the API
+			const body = { title: "", content, media: media_link, reply: props.replyID };
+			console.log(body);
+			await fetch("/api/post", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify(body)
+			});
+
+			// Redirect to the history feed
+			router.push(pages.history);
+		} catch (error) {
+			if (error instanceof Error)
+				console.error(error);
+		}
+	}
+
+	function imageLoad() {
+		if (!validMedia)
+			setValidMedia(true);
+	}
+
+	function imageError() {
+		if (validMedia)
+			setValidMedia(false);
+	}
+
+	// Hide the media panel if the user hasn't provided a valid image
+	const hide_media = validMedia ? "" : " hidden";
+
+	return (
+		<form className="flex flex-col p-4 gap-2" onSubmit={submitForm}>
+			<div className={"flex flex-row w-full justify-center" + hide_media}>
+				<img
+					className="max-w-2/3"
+					src={media ? media : undefined}
+					onLoad={() => imageLoad()}
+					onError={() => imageError()}
+					ref={ref}
+				/>
+			</div>
+			<input
+				placeholder={"Image URL"}
+				value={media}
+				onChange={(e) => setMedia(e.target.value)}
+				type="text"
+			/>
+			<textarea
+				placeholder={"Type a reply here"}
+				value={content}
+				onChange={(e) => setContent(e.target.value)}
+			/>
+			<div className="flex items-center justify-center">
+				<input className="w-20 button" disabled={(!content && !validMedia)} type="submit" value="Post" />
 			</div>
 		</form>
 	);

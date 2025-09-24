@@ -132,32 +132,21 @@ export function LikeButton(props: { postID: string, likeCount: number, likedPost
 }
 
 /** A button that opens a modal box to compose a reply */
-export function ReplyButton(props: { postID: string, postContent: string | null, replyCount: number, replied?: boolean, disabled?: boolean }): ReactElement
+export function ReplyButton(props: { postID: string, replyCount: number, replied?: boolean, disabled?: boolean, onClick: Function }): ReactElement
 {
-	const [modal, setModal] = useState(false);
-
 	function handleClick() {
 		if (!props.replied && !props.disabled)
-			setModal(true);
+			props.onClick();
 	}
 
 	const icon = props.replied ? "tdesign--chat-bubble-filled" : "tdesign--chat-bubble"
 	const style = props.disabled ? "" : " cursor-pointer";
 
 	return (
-		<>
-			{modal && <Modal onCancel={() => setModal(false)}>
-				<div className="flex flex-col items-center justify-center w-full p-4 gap-2 z-30 panel">
-					<div className="text-lg font-bold text-center">Reply</div>
-					<div className="panel-inner whitespace-pre">{props.postContent}</div>
-					<div className="w-full"><CreatePost replyID={props.postID} /></div>
-				</div>
-			</Modal>}
-			<button onClick={() => handleClick()} className={"flex flex-row items-center gap-2 text-interactive" + style} >
-				<Icon size={16} id={icon} />{props.replyCount}
-			</button>
-		</>
-	);
+		<button onClick={() => handleClick()} className={"flex flex-row items-center gap-2 text-interactive" + style} >
+			<Icon size={16} id={icon} />{props.replyCount}
+		</button>
+);
 }
 
 type AvatarStyle = "pixel" | "bauhaus" | "ring" | "beam" | "sunset" | "marble" | "geometric" | "abstract";
