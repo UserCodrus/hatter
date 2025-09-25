@@ -135,7 +135,7 @@ export function LikeButton(props: { postID: string, likeCount: number, likedPost
 export function ReplyButton(props: { postID: string, replyCount: number, replied?: boolean, disabled?: boolean, onClick: Function }): ReactElement
 {
 	function handleClick() {
-		if (!props.replied && !props.disabled)
+		if (!props.disabled)
 			props.onClick();
 	}
 
