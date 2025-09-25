@@ -52,7 +52,7 @@ export function Post(props: { post: PostData, author: Author, likes: number, lik
 				</div>
 			</div>
 			<div className="flex flex-col gap-1 p-4 whitespace-pre cursor-pointer panel-inner" onClick={() => router.push(pages.post(props.post.id))}>
-				{props.post.media && <img className="max-w-full" src={props.post.media} alt={props.post.media} />}
+				{props.post.media && <div className="flex flex-col items-center w-full"><img className="max-w-full" src={props.post.media} alt={props.post.media} /></div>}
 				{props.post.content && <p className="flex-1 text-wrap">{props.post.content}</p>}
 			</div>
 			<div className="flex flex-row">
