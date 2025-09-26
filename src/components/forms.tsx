@@ -93,7 +93,7 @@ export function CreatePost(props: { replyID?: string }): ReactElement
 }
 
 /** A form used to reply to posts */
-export function Reply(props: { replyID: string }): ReactElement
+export function CreateReply(props: { replyID: string }): ReactElement
 {
 	const [media, setMedia] = useState("");
 	const [validMedia, setValidMedia] = useState(false);
@@ -182,58 +182,75 @@ const avatar_options = [
 ] as const;
 
 /** A modal popup that gives the user a set of icons to choose from */
-function SelectAvatar(props: { currentAvatar: AvatarSettings, salt: number, selectCallback: (settings: AvatarSettings) => void }): ReactElement
+function SelectAvatar(props: { avatar: AvatarSettings, base: string, selectCallback: (settings: AvatarSettings) => void }): ReactElement
 {
-	const [avatar, setAvatar] = useState<AvatarSettings>(props.currentAvatar);
+	const [lastSelection, setLastSelection] = useState(props.avatar.icon);
+	const [salt, setSalt] = useState<number | null>(null);
 
 	// Pass the selected avatar back to the create alias form
-	function submit() {
-		props.selectCallback(avatar);
+	function submit(new_avatar: AvatarSettings) {
+		props.selectCallback(new_avatar);
 	}
 
 	function selectIcon(new_icon: string) {
-		setAvatar({
-			...avatar,
+		submit({
+			...props.avatar,
 			icon: new_icon,
 		});
 	}
 
 	function setColorA(new_color: string) {
-		setAvatar({
-			...avatar,
+		submit({
+			...props.avatar,
 			colorA: new_color,
 		});
 	}
 
 	function setColorB(new_color: string) {
-		setAvatar({
-			...avatar,
+		submit({
+			...props.avatar,
 			colorB: new_color,
 		});
 	}
 
 	function setStyle(new_style: string) {
-		setAvatar({
-			...avatar,
+		submit({
+			...props.avatar,
 			style: new_style,
 		});
+	}
+
+	// Generate an avatar icon string using a given
+	function generateAvatar(i: number) {
+		if (i === 0)
+			return lastSelection;
+
+		if (salt === null)
+			return props.base.concat(i.toString());
+		else
+			return props.base.concat((salt / i).toString());
+	}
+
+	function shuffleAvatars() {
+		setLastSelection(props.avatar.icon);
+		setSalt(Math.random() * 1000);
 	}
 
 	// Create buttons to select different avatar styles
 	const components: ReactElement[] = [];
 	let key = 0;
 	for (let i = 0; i < num_avatars; ++i) {
-		const icon = (i === 0) ? props.currentAvatar.icon : props.currentAvatar.icon.concat((props.salt / i).toString());
+		const icon = generateAvatar(i);
 		components.push(<AvatarSelector
-			icon={icon} selected={icon === avatar.icon}
-			colors={[avatar.colorA, avatar.colorB]}
+			icon={icon} selected={icon === props.avatar.icon}
+			colors={[props.avatar.colorA, props.avatar.colorB]}
 			onSelect={selectIcon}
-			style={avatar.style as any} key={key} />);
+			style={props.avatar.style as any} key={key} />);
 		++key;
 	}
 
 	// Create components for the dropdown menu
-	const dropdown_main = <div className="bg-input p-1 min-w-20 text-center">{avatar.style}</div>
+	const dropdown_main = <div className="bg-input p-1 min-w-20 text-center">{props.avatar.style}</div>
 	const dropdown: ReactElement[] = [];
 	key = 0;
 	for (const option of avatar_options) {
@@ -242,10 +259,10 @@ function SelectAvatar(props: { currentAvatar: AvatarSettings, salt: number, sele
 	}
 
 	return (
-		<div className="flex flex-col justify-center items-center w-full p-4 gap-4 panel">
-			<div className="flex flex-row justify-evenly w-full">
-				<ColorSelector color={avatar.colorA} onChange={setColorA} />
-				<ColorSelector color={avatar.colorB} onChange={setColorB} />
+		<div className="flex flex-col justify-center items-center overflow-auto p-4 gap-4 panel fit-width">
+			<div className="flex flex-row justify-center w-full">
+				<ColorSelector color={props.avatar.colorA} onChange={setColorA} />
+				<ColorSelector color={props.avatar.colorB} onChange={setColorB} />
 			</div>
 			<div className="flex flex-row justify-center gap-2 flex-wrap max-h-[50vh] overflow-auto">
 				{components}
@@ -259,7 +276,7 @@ function SelectAvatar(props: { currentAvatar: AvatarSettings, salt: number, sele
 						</div>
 					</DropDownMenu>
 				</div>
-				<button onClick={() => submit()} className="button">Accept</button>
+				<button className="button" onClick={() => shuffleAvatars()}>Shuffle</button>
 			</div>
 		</div>
 	);
@@ -272,7 +289,6 @@ export function CreateAlias(props: { defaultAvatar: AvatarSettings }): ReactElem
 	const [name, setName] = useState("");
 	const [bio, setBio] = useState("");
 	const [avatar, setAvatar] = useState<AvatarSettings>(props.defaultAvatar);
-	const [iconModal, setIconModal] = useState(false);
 	const [error, setError] = useState("");
 	const router = useRouter();
 
@@ -292,54 +308,45 @@ export function CreateAlias(props: { defaultAvatar: AvatarSettings }): ReactElem
 	// Set the user's current avatar from the avatar selection modal
 	function selectAvatar(avatar: AvatarSettings) {
 		setAvatar(avatar);
-		setIconModal(false);
 	}
 
-	return (<>
-		{iconModal && <Modal onCancel={() => setIconModal(false)}>
-			<SelectAvatar currentAvatar={avatar} salt={Date.now()} selectCallback={selectAvatar} />
-		</Modal>}
-		<form className="flex flex-col p-4 gap-2 w-1/3 items-stretch panel" onSubmit={submitForm}>
-			<div className="flex flex-row items-center">
-				<div className="flex-1">Icon (click to change)</div>
-				<div className="flex justify-center w-2/3">
-					<button className="cursor-pointer" onClick={(e) => {e.preventDefault(); setIconModal(true);}}>
-						<UserAvatar icon={avatar.icon} colors={[avatar.colorA, avatar.colorB]} style={avatar.style} size={64} />
-					</button>
+	return (
+		<div className="flex flex-row flex-wrap items-start justify-center gap-2">
+			<form className="flex flex-col p-4 gap-2 items-stretch panel fit-width" onSubmit={submitForm}>
+				<div className="flex flex-row items-center">
+					<label className="flex-1">ID</label>
+					<input
+						className="w-2/3 lowercase"
+						placeholder={""}
+						value={tag}
+						onChange={(e) => setTag(e.target.value)}
+						type="text" pattern="^([a-zA-Z]+)$"
+					/>
 				</div>
-			</div>
-			<div className="flex flex-row items-center">
-				<label className="flex-1">ID</label>
-				<input
-					className="w-2/3 lowercase"
-					placeholder={""}
-					value={tag}
-					onChange={(e) => setTag(e.target.value)}
-					type="text" pattern="^([a-zA-Z]+)$"
+				<div className="flex flex-row items-center">
+					<label className="flex-1">Name</label>
+					<input
+						className="w-2/3"
+						placeholder={""}
+						value={name}
+						onChange={(e) => setName(e.target.value)}
+						type="text"
+					/>
+				</div>
+				<div className="text-center">Bio</div>
+				<textarea
+					placeholder={"Write your account's bio here"}
+					value={bio}
+					onChange={(e) => setBio(e.target.value)}
 				/>
-			</div>
-			<div className="flex flex-row items-center">
-				<label className="flex-1">Name</label>
-				<input
-					className="w-2/3"
-					placeholder={""}
-					value={name}
-					onChange={(e) => setName(e.target.value)}
-					type="text"
-				/>
-			</div>
-			<div className="text-center">Bio</div>
-			<textarea
-				placeholder={"Write your account's bio here"}
-				value={bio}
-				onChange={(e) => setBio(e.target.value)}
-			/>
-			<div className="flex items-center justify-center m-2">
-				<input className="w-20 button" disabled={!tag || !name} type="submit" value="Create" />
-			</div>
-			{error && <div className="text-center text-alert">{error}</div>}
-		</form>
-	</>);
+				<div className="flex items-center justify-center m-2">
+					<input className="w-20 button" disabled={!tag || !name} type="submit" value="Create" />
+				</div>
+				{error && <div className="text-center text-alert">{error}</div>}
+			</form>
+			<SelectAvatar avatar={avatar} base={props.defaultAvatar.icon} selectCallback={selectAvatar} />
+		</div>
+	);
 }
 
 /** A form that allows the user to update an owned alias */

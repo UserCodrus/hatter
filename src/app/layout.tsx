@@ -23,7 +23,7 @@ export default function RootLayout(props: { children: ReactNode }) {
 	return (
 		<html lang="en">
 			<body className={`${geistSans.variable} ${geistMono.variable} antialiased relative`} data-theme="light">
-				<div className="flex flex-col items-center justify-items-center">
+				<div className="flex flex-col items-center justify-items-center min-h-screen">
 					{props.children}
 				</div>
 				<div className="fixed top-0 left-0 w-screen h-screen -z-10">

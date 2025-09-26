@@ -34,7 +34,7 @@ export function LinkButton(props: { label: string, target: string }): ReactEleme
 
 	return (
 		<button
-			className="cursor-pointer p-1 outline-1 rounded-sm"
+			className="button"
 			onClick={() => router.push(props.target)}
 		>{props.label}</button>
 	)

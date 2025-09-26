@@ -19,7 +19,7 @@ function Signup(): ReactElement
 
 	const expires = getNextReset();
 	return (
-		<div className="flex flex-col items-center w-full">
+		<div className="flex flex-col flex-1 p-2 gap-2 items-center justify-center w-full">
 			<ContentPanel>
 				<div className="text-center">
 					<p>Fill out the boxes below to create a new alias.</p>
@@ -27,7 +27,9 @@ function Signup(): ReactElement
 					<p>A different user will receive your alias at this time and you will be unable to change the information below.</p>
 				</div>
 			</ContentPanel>
-			<CreateAlias defaultAvatar={default_avatar} />
+			<div className="flex flex-col justify-center w-full">
+				<CreateAlias defaultAvatar={default_avatar} />
+			</div>
 		</div>
 	);
 }

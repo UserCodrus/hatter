@@ -7,7 +7,7 @@ import { ReactElement, useState } from "react";
 import { UserAvatar } from "./info";
 import { LikeButton, ReplyButton } from "./interactive";
 import { Post as PostData } from "@prisma/client";
-import { Reply } from "./forms";
+import { CreateReply } from "./forms";
 
 type Author = {
 	name: string,
@@ -76,7 +76,7 @@ export function Post(props: { post: PostData, author: Author, likes: number, lik
 			</div>
 			{replyOpen && <div className="flex flex-col items-stretch panel-inner">
 				<div className="text-center font-bold">Reply to {props.author.name}</div>
-				<Reply replyID={props.post.id} />
+				<CreateReply replyID={props.post.id} />
 			</div>}
 		</div>
 	);

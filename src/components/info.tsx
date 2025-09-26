@@ -89,7 +89,7 @@ export function Icon(props: { size: number, id: string }): ReactElement
 export function ContentPanel(props: { children?: ReactNode }): ReactElement
 {
 	return (
-		<div className="p-4 m-2 panel">
+		<div className="fit-width p-2 panel">
 			{props.children}
 		</div>
 	);

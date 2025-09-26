@@ -17,7 +17,7 @@ export function DropDownMenu(props: { above?: boolean, fill?: boolean, disabled?
 	const additional_style = props.className ? " " + props.className : "";
 
 	return (
-		<div className={"relative origin-top" + additional_style} onMouseLeave={() => setOpen(false)}>
+		<div className={"relative origin-top z-20" + additional_style} onMouseLeave={() => setOpen(false)}>
 			<div onMouseOver={() => setOpen(true)} onClick={() => setOpen(true)}>
 				{props.main}
 			</div>
@@ -32,8 +32,8 @@ export function DropDownMenu(props: { above?: boolean, fill?: boolean, disabled?
 export function Modal(props: { onCancel: Function, children: ReactNode }): ReactElement
 {
 	return (
-		<div className="fixed modal-background top-0 left-0 flex flex-row items-center justify-center min-w-screen min-h-screen z-10" onClick={() => props.onCancel()}>
-			<div onClick={(e) => e.stopPropagation()} className="flex items-center w-1/3">
+		<div className="fixed modal-background top-0 left-0 flex flex-row items-center justify-center min-w-screen min-h-screen z-30" onClick={() => props.onCancel()}>
+			<div onClick={(e) => e.stopPropagation()} className="flex items-center w-full">
 				{props.children}
 			</div>
 		</div>

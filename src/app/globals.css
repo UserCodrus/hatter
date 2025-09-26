@@ -51,6 +51,10 @@ input[type=submit] {
 		backdrop-filter: blur(10px);
 	}
 
+	.blur {
+		backdrop-filter: blur(10px);
+	}
+
 	.panel-inner {
 		background: var(--panel-inner);
 		padding: 0.5rem;
@@ -59,7 +63,7 @@ input[type=submit] {
 	.button {
 		background: var(--interactive);
 		cursor: pointer;
-		padding: 0.5rem;
+		padding: 0.25rem;
 	}
 
 	.header {
@@ -71,8 +75,13 @@ input[type=submit] {
 		color: var(--disabled);
 	}
 
+	.fit-width {
+		width: 50rem;
+		max-width: 90vw;
+	}
+
 	.modal-background {
-		background: rgb(255, 255, 255, 0.5);
+		background: #00000050;
 		backdrop-filter: blur(10px);
 	}
 }
