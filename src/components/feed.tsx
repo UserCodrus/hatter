@@ -1,6 +1,6 @@
 'use client';
 
-import { getAll, getLiked, getPost, getPosts, getReplies } from "@/lib/db";
+import { getActivity, getAll, getLiked, getPost, getPosts, getReplies } from "@/lib/db";
 import { ReactElement, ReactNode, useEffect, useRef, useState } from "react";
 import { Post } from "./post";
 import { notFound } from "next/navigation";
@@ -60,9 +60,34 @@ export function FeedHeader(props: { children: ReactNode }): ReactElement
 }
 
 /** A feed showing the posts made by a single user */
-export async function UserFeed(props: { currentUser: string | undefined, userID: string, viewerID: string | undefined }): Promise<ReactElement>
+export function UserFeed(props: { currentUser: string | undefined, userID: string, userName: string }): ReactElement
 {
-	const posts = await getPosts([props.userID], props.currentUser);
+	//const posts = await getPosts([props.userID], props.currentUser);
+	const [posts, setPosts] = useState<Awaited<ReturnType<typeof getAll>>>([]);
+	const [reload, setReload] = useState(true);
+
+	// Change the number of posts displayed
+	function reloadPosts() {
+		setReload(true);
+	}
+
+	// Load a new set of posts every time the reload flag is set
+	useEffect(() => {
+		if (!reload) return;
+
+		(async () => {
+			if (posts.length > 0) {
+				console.log(`Reloading with ${posts.length + feed_size} posts`);
+				const new_posts = await getActivity(props.userID, feed_size, props.currentUser, posts[posts.length - 1].index);
+				setPosts(posts.concat(new_posts));
+			} else {
+				console.log(`Initializing with ${feed_size} posts`);
+				const new_posts = await getActivity(props.userID, feed_size, props.currentUser);
+				setPosts(new_posts);
+			}
+			setReload(false);
+		})();
+	}, [reload, posts]);
 	
 	// Create a set of post components for each post in the feed
 	const components: ReactElement[] = [];
@@ -71,7 +96,7 @@ export async function UserFeed(props: { currentUser: string | undefined, userID:
 		components.push(<Post
 			post={post}
 			author={post.author}
-			activeUser={props.viewerID}
+			activeUser={props.currentUser}
 			likes={post._count.likes}
 			liked={post.likes.length > 0}
 			replies={post._count.replies}
@@ -82,7 +107,8 @@ export async function UserFeed(props: { currentUser: string | undefined, userID:
 	}
 
 	return (
-		<Feed>
+		<Feed onReload={reloadPosts} loading={reload}>
+			<FeedHeader>{props.userName}'s Feed</FeedHeader>
 			{components}
 		</Feed>
 	);
@@ -153,52 +179,11 @@ export function GlobalFeed(props: { currentUser: string | undefined, viewerID: s
 
 	console.log(`Loaded posts: ${posts.length}, ${reload ? "reloading" : "not reloading"}`);
 
+	// Create a set of post components for the feed
 	const components: ReactElement[] = [];
 	let key = 0;
 	for (const post of posts) {
-		/*const post_component = <Post
-			post={post}
-			author={post.author}
-			activeUser={props.viewerID}
-			likes={post._count.likes}
-			liked={post.likes.length > 0}
-			replies={post._count.replies}
-			replied={post.replies.length > 0}
-			key={post._count.replies > 0 ? undefined : key}
-		/>
-
-		if (post._count.replies === 0) {
-			components.push(post_component);
-		} else {
-			// Add replies below the post
-			const replies = await getReplies(post.id, num_replies, props.currentUser);
-
-			const reply_components: ReactElement[] = [];
-			let secondary_key = 0;
-			for (const reply of replies) {
-				reply_components.push(<Post
-					post={reply}
-					author={reply.author}
-					activeUser={props.viewerID}
-					likes={reply._count.likes}
-					liked={reply.likes.length > 0}
-					replies={reply.replies.length}
-					replied={reply._count.replies > 0}
-					key={secondary_key}
-					inline
-				/>);
-				++secondary_key;
-			}
-
-			components.push(<div className="flex flex-col" key={key}>
-				<div className="flex flex-col">
-					{post_component}
-					{reply_components}
-				</div>
-			</div>);
-		}*/
-
-		const post_component = <Post
+		components.push(<Post
 			post={post}
 			author={post.author}
 			activeUser={props.viewerID}
@@ -207,9 +192,7 @@ export function GlobalFeed(props: { currentUser: string | undefined, viewerID: s
 			replies={post._count.replies}
 			replied={post.replies.length > 0}
 			key={key}
-		/>
-		components.push(post_component);
-
+		/>);
 		++key;
 	}
 

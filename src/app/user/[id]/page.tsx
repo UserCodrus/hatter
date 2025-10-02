@@ -24,10 +24,7 @@ export default async function Page(props: { params: Promise<{ id: string }> })
 				activeUser={user_data.alias !== null && !user_data.expired}
 			/>
 			<FeedWrapper>
-				<FeedHeader>Recent Posts</FeedHeader>
-				<UserFeed currentUser={user_data.alias?.id} userID={alias.id} viewerID={user_data.expired ? undefined : user_data.alias?.id} />
-				<FeedHeader>Liked Posts</FeedHeader>
-				<LikedFeed currentUser={user_data.alias?.id} userID={alias.id} viewerID={user_data.expired ? undefined : user_data.alias?.id} />
+				<UserFeed currentUser={user_data.alias?.id} userID={alias.id} userName={alias.name} />
 			</FeedWrapper>
 		</div>
 	</>);

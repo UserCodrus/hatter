@@ -30,10 +30,7 @@ export default async function Page()
 				selfProfile={true} activeUser={true} userFollowed={true}
 			/>
 			<FeedWrapper>
-				<FeedHeader>Recent Posts</FeedHeader>
-				<UserFeed currentUser={user_data.alias?.id} userID={user_data.alias.id} viewerID={user_data.alias.id} />
-				<FeedHeader>Liked Posts</FeedHeader>
-				<LikedFeed currentUser={user_data.alias?.id} userID={user_data.alias.id} viewerID={user_data.alias.id} />
+				<UserFeed currentUser={user_data.alias?.id} userID={user_data.alias.id} userName={user_data.alias.name} />
 			</FeedWrapper>
 		</div>
 	</>);

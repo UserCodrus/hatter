@@ -474,7 +474,7 @@ export async function getAll(currentUser: string | undefined, count: number, sta
 }
 
 /** Get posts made by a set of users */
-export async function getPosts(users: string[], currentUser?: string)
+export async function getPosts(users: string[], count: number, currentUser?: string, start_index?: number)
 {
 	// Generate a set of search queries from the user list
 	const filters = users.map((value) => {
@@ -492,6 +492,30 @@ export async function getPosts(users: string[], currentUser?: string)
 		orderBy: {
 			created: "desc",
 		},
+		cursor: start_index ? { index: start_index } : undefined,
+		skip: start_index ? 1 : 0,
+		take: count,
+		include: prisma_post_query(currentUser),
+	});
+}
+
+/** Get all the activity for a single user, including posts and likes */
+export async function getActivity(user: string, count: number, currentUser?: string, start_index?: number)
+{
+	// Find posts made by the user or liked by the user
+	return await prisma.post.findMany({
+		where: {
+			OR: [
+				{ published: true, authorId: user },
+				{ published: true, likes: { some: { userID: user } } },
+			],
+		},
+		orderBy: {
+			created: "desc",
+		},
+		cursor: start_index ? { index: start_index } : undefined,
+		skip: start_index ? 1 : 0,
+		take: count,
 		include: prisma_post_query(currentUser),
 	});
 }
