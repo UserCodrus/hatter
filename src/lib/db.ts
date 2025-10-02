@@ -456,7 +456,7 @@ export async function getPost(postID: string, currentUser?: string)
 }
 
 /** Get all posts made on the app */
-export async function getAll(currentUser: string | undefined)
+export async function getAll(currentUser: string | undefined, count: number, start_index?: number)
 {
 	return await prisma.post.findMany({
 		where: {
@@ -466,6 +466,9 @@ export async function getAll(currentUser: string | undefined)
 		orderBy: {
 			created: "desc",
 		},
+		cursor: start_index ? { index: start_index } : undefined,
+		skip: start_index ? 1 : 0,
+		take: count,
 		include: prisma_post_query(currentUser),
 	});
 }
@@ -494,7 +497,7 @@ export async function getPosts(users: string[], currentUser?: string)
 }
 
 /** Get all the replies to a given post */
-export async function getReplies(postID: string, currentUser?: string)
+export async function getReplies(postID: string, count: number, currentUser?: string)
 {
 	return await prisma.post.findMany({
 		where: {
@@ -504,6 +507,7 @@ export async function getReplies(postID: string, currentUser?: string)
 		orderBy: {
 			created: "desc",
 		},
+		take: count,
 		include: prisma_post_query(currentUser),
 	});
 }

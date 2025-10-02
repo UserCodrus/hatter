@@ -43,6 +43,7 @@ model UserAlias {
 
 model Post {
 	id			String		@id @default(cuid())
+	index		Int			@unique @default(autoincrement())
 	title		String?
 	content		String?
 	media		String?

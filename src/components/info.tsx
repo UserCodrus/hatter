@@ -1,7 +1,7 @@
 import Avatar from "boring-avatars";
-import { ReactElement, ReactNode } from "react";
+import { ReactElement, ReactNode, useEffect } from "react";
 import { FollowButton } from "./interactive";
-import { pages } from "@/lib/utils";
+import { getScrollRatio, pages } from "@/lib/utils";
 import { Alias } from "@prisma/client";
 
 const avatar_colors = [
