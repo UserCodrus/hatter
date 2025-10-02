@@ -1,10 +1,10 @@
-import { ExpireAliasButton, ResetAliasButton } from "@/components/interactive";
-import { FeedHeader, FeedWrapper, LikedFeed, UserFeed } from "@/components/feed";
+import { ResetAliasButton } from "@/components/interactive";
+import { FeedWrapper, UserFeed } from "@/components/feed";
 import { Header } from "@/components/header";
 import { getFollowers, getFollowing, getUser } from "@/lib/db";
 import { pages } from "@/lib/utils";
 import { redirect } from "next/navigation";
-import { UserList, UserProfile } from "@/components/info";
+import { UserProfile } from "@/components/info";
 
 export default async function Page()
 {

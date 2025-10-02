@@ -521,7 +521,7 @@ export async function getActivity(user: string, count: number, currentUser?: str
 }
 
 /** Get all the replies to a given post */
-export async function getReplies(postID: string, count: number, currentUser?: string)
+export async function getReplies(postID: string, currentUser: string | undefined, count: number, start_index?: number)
 {
 	return await prisma.post.findMany({
 		where: {
@@ -531,6 +531,8 @@ export async function getReplies(postID: string, count: number, currentUser?: st
 		orderBy: {
 			created: "desc",
 		},
+		cursor: start_index ? { index: start_index } : undefined,
+		skip: start_index ? 1 : 0,
 		take: count,
 		include: prisma_post_query(currentUser),
 	});

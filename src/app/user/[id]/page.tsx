@@ -1,6 +1,6 @@
-import { FeedHeader, FeedWrapper, LikedFeed, UserFeed } from "@/components/feed";
+import { FeedWrapper, UserFeed } from "@/components/feed";
 import { Header } from "@/components/header";
-import { UserList, UserProfile } from "@/components/info";
+import { UserProfile } from "@/components/info";
 import { getAliasData, getUser } from "@/lib/db";
 import { notFound } from "next/navigation";
 
