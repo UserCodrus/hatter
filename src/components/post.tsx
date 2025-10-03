@@ -3,26 +3,35 @@
 import { pages } from "@/lib/utils";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { ReactElement, useState } from "react";
+import { ReactElement, ReactNode, useState } from "react";
 import { UserAvatar } from "./info";
 import { LikeButton, ReplyButton } from "./interactive";
-import { Post as PostData } from "@prisma/client";
+import { Alias, Post as PostData } from "@prisma/client";
 import { CreateReply } from "./forms";
 
-type Author = {
-	name: string,
-	tag: string,
-	icon: string,
-	colorA: string,
-	colorB: string,
-	style: string,
+const date_format: Intl.DateTimeFormatOptions = { month: "long", day: "numeric", year: "numeric", hour: "numeric", minute: "numeric" };
+
+/** A component containing the content of a post */
+function PostBody(props: { post: PostData, author?: Alias | null, children?: ReactNode }): ReactElement
+{
+	const router = useRouter();
+	return (
+		<div className="flex flex-col gap-2 p-4 whitespace-pre cursor-pointer panel-inner" onClick={() => router.push(pages.post(props.post.id))}>
+			{props.post.content && <p className="flex-1 text-wrap">{props.post.content}</p>}
+			{props.post.media && <div className="flex flex-col items-center w-full"><img className="max-w-full" src={props.post.media} alt={props.post.media} /></div>}
+			{props.children}
+			{props.author && <div className="flex flex-row text-sm items-center">
+				<div className="flex-1">{props.post.updated.toLocaleString("default", date_format)}</div>
+				<div>Reply to <Link href={pages.user(props.author.id)}>@{props.author.tag}</Link></div>
+			</div>}
+		</div>
+	);
 }
 
-export function Post(props: { post: PostData, author: Author, likes: number, liked?: boolean, replies: number, replied?: boolean, inline?: boolean, activeUser?: string }): ReactElement
+/** A component that displays a post */
+export function Post(props: { post: PostData, author: Alias, reply?: PostData | null, replyAuthor?: Alias | null, likes: number, liked?: boolean, replies: number, replied?: boolean, inline?: boolean, activeUser?: string }): ReactElement
 {
 	const [replyOpen, setReplyOpen] = useState(false);
-	const router = useRouter();
-	const date_format: Intl.DateTimeFormatOptions = { month: "long", day: "numeric", year: "numeric", hour: "numeric", minute: "numeric" };
 
 	// Activate the reply component when the user clicks the reply button
 	function reply() {
@@ -37,8 +46,10 @@ export function Post(props: { post: PostData, author: Author, likes: number, lik
 		title = `Reply`;
 	}
 
+	console.log(`Reply value: ${props.reply ? props.reply.title : "None"}`)
+
 	return (
-		<div className={"flex flex-col p-2 gap-2 relative w-full panel"}>
+		<div className={"flex flex-col p-4 gap-2 relative w-full panel"}>
 			<div className="flex flex-row items-center gap-2">
 				<div>
 					<UserAvatar icon={props.author.icon} colors={[props.author.colorA, props.author.colorB]} style={props.author.style} size={40} />
@@ -51,11 +62,10 @@ export function Post(props: { post: PostData, author: Author, likes: number, lik
 					<div className="text-lg font-bold text-right">{title}</div>
 				</div>
 			</div>
-			<div className="flex flex-col gap-1 p-4 whitespace-pre cursor-pointer panel-inner" onClick={() => router.push(pages.post(props.post.id))}>
-				{props.post.media && <div className="flex flex-col items-center w-full"><img className="max-w-full" src={props.post.media} alt={props.post.media} /></div>}
-				{props.post.content && <p className="flex-1 text-wrap">{props.post.content}</p>}
-			</div>
-			<div className="flex flex-row">
+			<PostBody post={props.post}>
+				{props.reply && <PostBody post={props.reply} author={props.replyAuthor} />}
+			</PostBody>
+			<div className="flex flex-row items-center">
 				<div className="text-sm grow-1">{props.post.updated.toLocaleString("default", date_format)}</div>
 				<div className="flex flex-row gap-2">
 					<ReplyButton

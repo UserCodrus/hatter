@@ -98,6 +98,8 @@ export function UserFeed(props: { currentUser: string | undefined, userID: strin
 		components.push(<Post
 			post={post}
 			author={post.author}
+			reply={post.reply}
+			replyAuthor={post.reply ? (post.reply as any).author : null}
 			activeUser={props.currentUser}
 			likes={post._count.likes}
 			liked={post.likes.length > 0}
@@ -118,8 +120,6 @@ export function UserFeed(props: { currentUser: string | undefined, userID: strin
 
 // The maximum number of posts to show with each load in a feed
 const feed_size = 20;
-// The maximum number of replies allowed below each post
-const num_replies = 3;
 
 /** A feed showing recent posts made on the app */
 export function GlobalFeed(props: { currentUser: string | undefined, viewerID: string | undefined }): ReactElement
@@ -155,6 +155,8 @@ export function GlobalFeed(props: { currentUser: string | undefined, viewerID: s
 		components.push(<Post
 			post={post}
 			author={post.author}
+			reply={post.reply}
+			replyAuthor={post.reply ? (post.reply as any).author : null}
 			activeUser={props.viewerID}
 			likes={post._count.likes}
 			liked={post.likes.length > 0}
@@ -207,6 +209,8 @@ export function PostFeed(props: { currentUser: string | undefined, post: PostDat
 		components.push(<Post
 			post={post}
 			author={post.author}
+			reply={post.reply}
+			replyAuthor={post.reply ? (post.reply as any).author : null}
 			activeUser={props.viewerID}
 			likes={post._count.likes}
 			liked={post.likes.length > 0}

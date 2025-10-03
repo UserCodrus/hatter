@@ -461,7 +461,7 @@ export async function getAll(currentUser: string | undefined, count: number, sta
 	return await prisma.post.findMany({
 		where: {
 			published: true,
-			replyID: null,
+			//replyID: null,
 		},
 		orderBy: {
 			created: "desc",

@@ -1,4 +1,4 @@
-import { Prisma } from "@prisma/client";
+import { Alias, Prisma } from "@prisma/client";
 
 /**
  * A portion of a prisma post query
@@ -66,12 +66,25 @@ const count_data = (alias: string | undefined): Prisma.PostCountOutputTypeDefaul
 	}
 }
 
+type IncludeAuthor = {
+	reply?: {
+		author: Alias
+	}
+}
+
+//type test = Prisma.PostGetPayload<{ include: { reply: {include: {author: true}} }}>
+
 /** A prisma include config that specifies which data should be returned from a set of posts */
-export const prisma_post_query = (alias: string | undefined): Prisma.PostInclude => {
+export function prisma_post_query(alias: string | undefined): Prisma.PostInclude {
 	return {
 		author: author_data,
 		likes: like_data(alias),
 		replies: reply_data(alias),
+		reply: {
+			include: {
+				author: true
+			}
+		},
 		_count: count_data(alias),
 	}
 }
