@@ -65,7 +65,7 @@ export function FeedHeader(props: { children: ReactNode }): ReactElement
 export function UserFeed(props: { currentUser: string | undefined, userID: string, userName: string }): ReactElement
 {
 	//const posts = await getPosts([props.userID], props.currentUser);
-	const [posts, setPosts] = useState<Awaited<ReturnType<typeof getAll>>>([]);
+	const [posts, setPosts] = useState<Awaited<ReturnType<typeof getActivity>>>([]);
 	const [reload, setReload] = useState(true);
 
 	// Change the number of posts displayed
@@ -178,7 +178,7 @@ export function GlobalFeed(props: { currentUser: string | undefined, viewerID: s
 /** A feed showing a single post and its replies */
 export function PostFeed(props: { currentUser: string | undefined, post: PostData, author: Alias, likes: number, liked?: boolean, replies: number, replied?: boolean, viewerID: string | undefined }): ReactElement
 {
-	const [replies, setReplies] = useState<Awaited<ReturnType<typeof getAll>>>([]);
+	const [replies, setReplies] = useState<Awaited<ReturnType<typeof getReplies>>>([]);
 	const [reload, setReload] = useState(true);
 
 	// Change the number of posts displayed

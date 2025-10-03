@@ -1,19 +1,4 @@
-import { Alias, Prisma } from "@prisma/client";
-
-/**
- * A portion of a prisma post query
- * Includes data about the post author needed to display the author's info in each post
- * */
-const author_data: Prisma.AliasDefaultArgs = {
-	select: {
-		name: true,
-		tag: true,
-		icon: true,
-		colorA: true,
-		colorB: true,
-		style: true,
-	}
-}
+import { Prisma } from "@prisma/client";
 
 /**
  * A portion of a prisma post query
@@ -66,18 +51,10 @@ const count_data = (alias: string | undefined): Prisma.PostCountOutputTypeDefaul
 	}
 }
 
-type IncludeAuthor = {
-	reply?: {
-		author: Alias
-	}
-}
-
-//type test = Prisma.PostGetPayload<{ include: { reply: {include: {author: true}} }}>
-
 /** A prisma include config that specifies which data should be returned from a set of posts */
-export function prisma_post_query(alias: string | undefined): Prisma.PostInclude {
+export const prisma_post_query = (alias: string | undefined): Prisma.PostInclude => {
 	return {
-		author: author_data,
+		author: true,
 		likes: like_data(alias),
 		replies: reply_data(alias),
 		reply: {
