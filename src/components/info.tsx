@@ -27,7 +27,7 @@ export function UserProfile(props: { alias: Alias, followers: Alias[], following
 	const following_component = (props.following && props.following.length > 0) ? <UserList aliases={props.following} /> : <div>None</div>;
 
 	return (
-		<div className="flex flex-col p-2 gap-2 w-200 max-w-[90vw] panel">
+		<div className="flex flex-col p-4 gap-2 w-200 max-w-[90vw] panel">
 			<div className="flex flex-row gap-2 items-center w-full">
 				<UserAvatar icon={props.alias.icon} colors={[props.alias.colorA, props.alias.colorB]} style={props.alias.style} size={64} />
 				<div className="flex flex-col grow-1">
@@ -84,7 +84,7 @@ export function Icon(props: { size: number, id: string }): ReactElement
 export function ContentPanel(props: { children?: ReactNode }): ReactElement
 {
 	return (
-		<div className="fit-width p-2 panel">
+		<div className="fit-width p-4 panel">
 			{props.children}
 		</div>
 	);

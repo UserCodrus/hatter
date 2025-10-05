@@ -17,13 +17,11 @@ function PostBody(props: { post: PostData, author?: Alias | null, children?: Rea
 	const router = useRouter();
 	return (
 		<div className="flex flex-col gap-2 p-4 whitespace-pre cursor-pointer panel-inner" onClick={() => router.push(pages.post(props.post.id))}>
+			{props.author && <div className="text-sm"><Link href={pages.user(props.author.id)}>@{props.author.tag}</Link></div>}
 			{props.post.content && <p className="flex-1 text-wrap">{props.post.content}</p>}
 			{props.post.media && <div className="flex flex-col items-center w-full"><img className="max-w-full" src={props.post.media} alt={props.post.media} /></div>}
 			{props.children}
-			{props.author && <div className="flex flex-row text-sm items-center">
-				<div className="flex-1">{props.post.updated.toLocaleString("default", date_format)}</div>
-				<div>Reply to <Link href={pages.user(props.author.id)}>@{props.author.tag}</Link></div>
-			</div>}
+			{props.author && <div className="text-sm">{props.post.updated.toLocaleString("default", date_format)}</div>}
 		</div>
 	);
 }

@@ -15,7 +15,7 @@ export default async function Page(props: { params: Promise<{ id: string }> })
 
 	return (<>
 		<Header user={user_data.user} alias={user_data.alias} admin={user_data.admin} expired={user_data.expired}  />
-		<div className="flex flex-col lg:flex-row w-full items-center lg:items-start lg:justify-center p-2 gap-2 mt-2">
+		<div className="flex flex-col lg:flex-row w-full items-center lg:items-start lg:justify-center gap-2">
 			<UserProfile
 				alias={alias}
 				followers={alias.followers}
