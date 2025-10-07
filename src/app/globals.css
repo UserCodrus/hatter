@@ -67,6 +67,22 @@ input[type=submit] {
 	}
 
 	.header {
+		z-index: 10;
+		padding: 0.5rem;
+	}
+
+	.header::after {
+		/* All this nonsense creates a background element separate from the
+		header element because some browsers won't let the drop-down menu in
+		the header apply a background blur if the parent (the header) has a
+		backdrop filter applied directly to it. */
+		content: '';
+		position: absolute;
+		width: 100%;
+		height: 100%;
+		margin: -0.5rem;
+		z-index: -10;
+
 		background: var(--panel-outer);
 		backdrop-filter: blur(10px);
 	}

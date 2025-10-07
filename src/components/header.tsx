@@ -41,7 +41,7 @@ function UserComponent(props: { user: SessionUser | null, alias: Alias | null, a
 
 		return (
 			<DropDownMenu main={main} disabled={props.user === null}>
-				<div className="flex flex-col gap-2 p-2 text-center w-40 panel">
+				<div className="flex flex-col gap-2 p-2 text-center w-40">
 					{dropdown}
 				</div>
 			</DropDownMenu>
@@ -66,7 +66,7 @@ function NavigationBar(props: { alias: Alias | null }): ReactElement
 export async function Header(props: { user: SessionUser | null, alias: Alias | null, admin?: boolean, expired: boolean }): Promise<ReactElement>
 {
 	return (
-		<div className="flex flex-row items-center gap-2 p-2 mb-4 w-full sticky top-0 z-20 header">
+		<div className="flex flex-row items-center gap-2 mb-4 w-full sticky top-0 header">
 			<NavigationBar alias={props.expired ? null : props.alias} />
 			<UserComponent user={props.user} alias={props.alias} admin={props.admin} expired={props.expired} />
 		</div>

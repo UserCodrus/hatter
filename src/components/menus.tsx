@@ -17,11 +17,11 @@ export function DropDownMenu(props: { above?: boolean, fill?: boolean, disabled?
 	const additional_style = props.className ? " " + props.className : "";
 
 	return (
-		<div className={"relative origin-top z-20" + additional_style} onMouseLeave={() => setOpen(false)}>
+		<div className={"relative origin-top" + additional_style} onMouseLeave={() => setOpen(false)}>
 			<div onMouseOver={() => setOpen(true)} onClick={() => setOpen(true)}>
 				{props.main}
 			</div>
-			{open && !props.disabled && <div className={"absolute z-10 right-0" + position_style + size_style} onClick={(e) => handleClick(e)}>
+			{open && !props.disabled && <div className={"absolute right-0 panel" + position_style + size_style} onClick={(e) => handleClick(e)}>
 				{props.children}
 			</div>}
 		</div>

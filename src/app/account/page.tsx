@@ -54,9 +54,11 @@ function Expired(props: { expiration: Date }): ReactElement
 
 	return (
 		<ContentPanel>
-			<div className="flex flex-col items-center">
-				<div>Your current account expired on {props.expiration.toLocaleString("default", date_format)}</div>
-				<div>Click the button below to get a new one.</div>
+			<div className="flex flex-col gap-4 items-center">
+				<div className="text-center">
+					<div>Your current account expired on {props.expiration.toLocaleString("default", date_format)}</div>
+					<div>Click the button below to get a new one.</div>
+				</div>
 				<ResetAliasButton />
 			</div>
 		</ContentPanel>
