@@ -15,7 +15,7 @@ export async function POST(req: NextRequest)
 	const data: PostData = await req.json();
 	const user = await getUser();
 
-	if (user.user && user.alias) {
+	if (user.user && user.alias && user.banned === null) {
 		// Check media links to ensure they are valid
 		if (data.media) {
 			try {
