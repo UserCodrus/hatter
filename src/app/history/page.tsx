@@ -12,7 +12,7 @@ export default async function Page()
 	console.log(`Alias: ${user_data.alias?.name}, expired: ${user_data.expired}, owned: ${user_data.owned}`);
 
 	// Send the user to the home page if they aren't logged in
-	if (!user_data.user || !user_data.alias || user_data.expired)
+	if (!user_data.user || !user_data.alias || user_data.expired || user_data.banned !== null)
 		redirect(pages.root);
 
 	if (!user_data.alias)
@@ -22,7 +22,7 @@ export default async function Page()
 	const followers = await getFollowers(user_data.alias.id);
 
 	return (<>
-		<Header user={user_data.user} alias={user_data.alias} admin={user_data.admin} expired={user_data.expired} />
+		<Header user={user_data.user} alias={user_data.alias} admin={user_data.admin} expired={user_data.expired} banned={user_data.banned !== null}/>
 		<div className="flex flex-col lg:flex-row w-full items-center lg:items-start lg:justify-center p-2 gap-2 mt-2">
 			<UserProfile
 				alias={user_data.alias}

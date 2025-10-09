@@ -8,12 +8,23 @@ import { Icon, UserAvatar } from "./info";
 import { ExpireAliasButton, UnregisterUserButton } from "./interactive";
 
 /** Displays a user's current status and gives them the option to sign in or out */
-function UserComponent(props: { user: SessionUser | null, alias: Alias | null, admin?: boolean, expired: boolean }): ReactElement
+function UserComponent(props: { user: SessionUser | null, alias: Alias | null, admin?: boolean, expired: boolean, banned: boolean }): ReactElement
 {
 	if (props.user) {
 		let dropdown: ReactElement[] = [];
 		let main = <div className="flex flex-row items-center">Not Registered</div>
-		if (props.alias) {
+		if (props.banned) {
+			// Display a banned
+			main = <div className="flex flex-row items-center gap-2 text-center">
+					<div className="text-nowrap">Account Banned</div>
+					<div className="text-alert"><Icon size={16} id={"tdesign--notification-error-filled"} /></div>
+				</div>;
+
+			dropdown = [
+				<MenuItem label="Account" target={pages.account} key={1} />,
+				<MenuItem label="Sign Out" target={pages.api.signout} key={2} />,
+			];
+		} else if (props.alias) {
 			// Display the user's current alias as the dropdown element
 			main = <div className="flex flex-row items-center gap-2 text-center">
 				<div className="text-nowrap">{props.alias.name}</div>
@@ -63,12 +74,12 @@ function NavigationBar(props: { alias: Alias | null }): ReactElement
 	)
 }
 
-export async function Header(props: { user: SessionUser | null, alias: Alias | null, admin?: boolean, expired: boolean }): Promise<ReactElement>
+export async function Header(props: { user: SessionUser | null, alias: Alias | null, admin?: boolean, expired: boolean, banned: boolean }): Promise<ReactElement>
 {
 	return (
 		<div className="flex flex-row items-center gap-2 mb-4 w-full sticky top-0 header">
-			<NavigationBar alias={props.expired ? null : props.alias} />
-			<UserComponent user={props.user} alias={props.alias} admin={props.admin} expired={props.expired} />
+			<NavigationBar alias={!props.expired && !props.banned ? props.alias : null} />
+			<UserComponent user={props.user} alias={props.alias} admin={props.admin} expired={props.expired} banned={props.banned} />
 		</div>
 	);
 }

@@ -11,6 +11,7 @@ type UserData = {
 	user: SessionUser | null,
 	alias: Alias | null,
 	owned: boolean,
+	banned: Date | null,
 	expired: boolean,
 	expires: Date,
 	admin?: boolean,
@@ -39,6 +40,7 @@ export async function getUser(): Promise<UserData>
 			user: session.user,
 			alias: user?.alias ? user?.alias.alias : null,
 			owned: isOwner(session.user, user?.alias?.alias),
+			banned: user?.ban && (user.ban > now) ? user.ban : null,
 			expired: user?.alias ? (user.alias.expires <= now) : true,
 			expires: user?.alias ? user.alias.expires : new Date(),
 			admin: user?.permissions?.admin,
@@ -50,8 +52,11 @@ export async function getUser(): Promise<UserData>
 		user: null,
 		alias: null,
 		owned: false,
+		banned: null,
 		expired: true,
 		expires: new Date(),
+		admin: false,
+		mod: false
 	};
 }
 
@@ -572,4 +577,34 @@ export async function getAuthor(postID: string | null | undefined)
 	});
 
 	return post?.author;
+}
+
+/** Apply a ban to a user */
+export async function banUser(userID: string, expiry: Date)
+{
+	const user = await prisma.user.update({
+		where: {
+			id: userID,
+		},
+		data: {
+			ban: expiry,
+		},
+	});
+
+	return user;
+}
+
+/** Unpublish a post */
+export async function hidePost(postID: string, hide: boolean)
+{
+	const post = await prisma.post.update({
+		where: {
+			id: postID,
+		},
+		data: {
+			published: !hide,
+		},
+	});
+	
+	return post;
 }

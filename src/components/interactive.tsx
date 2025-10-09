@@ -1,6 +1,6 @@
 'use client';
 
-import { toggleFollow, resetAlias, toggleLike, expireAlias, unregisterUser } from "@/lib/db";
+import { toggleFollow, resetAlias, toggleLike, expireAlias, unregisterUser, hidePost, banUser } from "@/lib/db";
 import { useRouter } from "next/navigation";
 import { MouseEvent, ReactElement, useState } from "react";
 import { Icon } from "./info";
@@ -146,7 +146,57 @@ export function ReplyButton(props: { postID: string, replyCount: number, replied
 		<button onClick={() => handleClick()} className={"flex flex-row items-center gap-2 text-interactive" + style} >
 			<Icon size={16} id={icon} />{props.replyCount}
 		</button>
-);
+	);
+}
+
+/** A component that allows users to moderate posts */
+export function ModeratorTools(props: { postID: string, authorID: string | null, published: boolean, banned: boolean }): ReactElement
+{
+	const router = useRouter();
+
+	// Hide the post from users
+	async function hide() {
+		await hidePost(props.postID, props.published);
+		router.refresh();
+	}
+
+	// Apply a permanent (100 year) ban to the account that made the post
+	async function ban() {
+		if (props.authorID) {
+			let date = new Date();
+			date.setFullYear(date.getFullYear() + 100);
+			await banUser(props.authorID, date);
+			router.refresh();
+		}
+	}
+
+	// Apply a one week ban
+	async function timeOut() {
+		if (props.authorID) {
+			let date = new Date();
+			date.setDate(date.getDate() + 7);
+			await banUser(props.authorID, date);
+			router.refresh();
+		}
+	}
+
+	return (
+		<div className="flex flex-col items-center gap-4 p-4 panel">
+			<div>Moderator Actions</div>
+			<div>{props.published ? "Post is visible" : "Post is hidden"}</div>
+			<div className="flex flex-row items-center justify-center gap-4">
+				<button onClick={() => hide()} className={"flex flex-row items-center justify-center gap-2 button"} >
+					{props.published ? "Hide Post" : "Show Post"}
+				</button>
+				<button onClick={() => timeOut()} className={"flex flex-row items-center justify-center gap-2 button"} >
+					Time Out
+				</button>
+				<button onClick={() => ban()} className={"flex flex-row items-center justify-center gap-2 button"} >
+					Ban
+				</button>
+			</div>
+		</div>
+	);
 }
 
 type AvatarStyle = "pixel" | "bauhaus" | "ring" | "beam" | "sunset" | "marble" | "geometric" | "abstract";

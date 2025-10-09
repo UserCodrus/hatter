@@ -1,7 +1,6 @@
 import prisma from "@/lib/prisma";
 import { NextRequest } from "next/server";
-import { getAlias, getAuthor, getPost } from "@/lib/db";
-import { Alias } from "@prisma/client";
+import { getAlias, getAuthor, getPost, getUser } from "@/lib/db";
 
 type PostData = {
 	title: string,
@@ -10,34 +9,13 @@ type PostData = {
 	reply?: string,
 }
 
-/** Push a post to the database */
-async function createPost(alias: Alias, data: PostData, author?: Alias): Promise<Response>
-{
-	const result = await prisma.post.create({
-		data: {
-			title: data.reply ? author?.tag : data.title,
-			content: data.content,
-			media: data.media,
-			published: true,
-			reply: data.reply ? { connect: { id: data.reply } } : undefined,
-			author: { connect: { id: alias.id } },
-		},
-	});
-
-	return Response.json(result);
-}
-
-
 export async function POST(req: NextRequest)
 {
 	// Retrieve post info and the current server session
 	const data: PostData = await req.json();
-	const alias = await getAlias();
+	const user = await getUser();
 
-	// If the post is a reply, get the author of the post we are replying to
-	const reply_author = await getAuthor(data.reply);
-
-	if (alias) {
+	if (user.user && user.alias) {
 		// Check media links to ensure they are valid
 		if (data.media) {
 			try {
@@ -56,7 +34,8 @@ export async function POST(req: NextRequest)
 			media: data.media,
 			published: true,
 			reply: data.reply ? { connect: { id: data.reply } } : undefined,
-			author: { connect: { id: alias.id } },
+			author: { connect: { id: user.alias.id } },
+			user: { connect: { id: user.user.id } },
 		},
 	});
 

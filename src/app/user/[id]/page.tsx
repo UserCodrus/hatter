@@ -14,7 +14,7 @@ export default async function Page(props: { params: Promise<{ id: string }> })
 		notFound();
 
 	return (<>
-		<Header user={user_data.user} alias={user_data.alias} admin={user_data.admin} expired={user_data.expired}  />
+		<Header user={user_data.user} alias={user_data.alias} admin={user_data.admin} expired={user_data.expired} banned={user_data.banned !== null}  />
 		<div className="flex flex-col lg:flex-row w-full items-center lg:items-start lg:justify-center gap-2">
 			<UserProfile
 				alias={alias}

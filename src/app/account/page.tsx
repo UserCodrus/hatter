@@ -75,10 +75,21 @@ export default async function Page()
 	if (user_data.user && user_data.alias && !user_data.expired && !user_data.owned)
 		redirect(pages.history);
 
+	// Set the page's content based on the user's status
+	let main_component = <Signup />
+	if (user_data.alias) {
+		if (user_data.banned !== null) {
+			main_component = <div>You banned.</div>;
+		} else if (user_data.expired) {
+			main_component = <Expired expiration={user_data.expires}/>;
+		} else {
+			main_component = <Update tag={user_data.alias.tag} name={user_data.alias.name} bio={user_data.alias.bio} />;
+		}
+	}
+	const banned = user_data.alias && user_data.banned !== null;
+
 	return (<>
-		<Header user={user_data.user} alias={user_data.alias} expired={user_data.expired} admin={user_data.admin} />
-		{user_data.alias && user_data.expired && <Expired expiration={user_data.expires}/>}
-		{user_data.alias && !user_data.expired && <Update tag={user_data.alias.tag} name={user_data.alias.name} bio={user_data.alias.bio} />}
-		{!user_data.alias && <Signup />}
+		<Header user={user_data.user} alias={user_data.alias} expired={user_data.expired} banned={user_data.banned !== null} />
+		{main_component}
 	</>);
 }

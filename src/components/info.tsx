@@ -84,7 +84,7 @@ export function Icon(props: { size: number, id: string }): ReactElement
 export function ContentPanel(props: { children?: ReactNode }): ReactElement
 {
 	return (
-		<div className="fit-width p-4 panel">
+		<div className="fit-width p-4 panel text-center">
 			{props.children}
 		</div>
 	);
