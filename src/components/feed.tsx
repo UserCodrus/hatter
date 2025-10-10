@@ -184,7 +184,7 @@ export function GlobalFeed(props: { currentUser: string | undefined, viewerID: s
 }
 
 /** A feed showing a single post and its replies */
-export function PostFeed(props: { currentUser: string | undefined, post: PostData, author: Alias, likes: number, liked?: boolean, replies: number, replied?: boolean, viewerID: string | undefined }): ReactElement
+export function PostFeed(props: { currentUser: string | undefined, post: PostData, reply: PostData | null, author: Alias, replyAuthor: Alias | null, likes: number, liked?: boolean, replies: number, replied?: boolean, viewerID: string | undefined }): ReactElement
 {
 	const [replies, setReplies] = useState<Awaited<ReturnType<typeof getReplies>>>([]);
 	const [reload, setReload] = useState(true);
@@ -217,8 +217,6 @@ export function PostFeed(props: { currentUser: string | undefined, post: PostDat
 		components.push(<Post
 			post={post}
 			author={post.author}
-			reply={post.reply}
-			replyAuthor={post.reply ? (post.reply as any).author : null}
 			activeUser={props.viewerID}
 			likes={post._count.likes}
 			liked={post.likes.length > 0}
@@ -231,7 +229,7 @@ export function PostFeed(props: { currentUser: string | undefined, post: PostDat
 
 	// Add a message to empty feeds
 	if (components.length === 0) {
-		components.push(<ContentPanel>
+		components.push(<ContentPanel key={0}>
 			This post has no replies.
 		</ContentPanel>);
 	}
@@ -241,6 +239,8 @@ export function PostFeed(props: { currentUser: string | undefined, post: PostDat
 			<Post
 				post={props.post}
 				author={props.author}
+				reply={props.reply}
+				replyAuthor={props.replyAuthor}
 				activeUser={props.viewerID}
 				likes={props.likes}
 				liked={props.liked}

@@ -20,6 +20,8 @@ export default async function Page(props: { params: Promise<{ id: string }> })
 			<PostFeed
 				currentUser={user_data.alias?.id}
 				post={post}
+				reply={post.reply}
+				replyAuthor={(post.reply as any)?.author}
 				author={post.author}
 				likes={post._count.likes}
 				liked={post.likes.length > 0}

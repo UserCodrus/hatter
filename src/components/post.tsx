@@ -12,17 +12,16 @@ import { CreateReply } from "./forms";
 const date_format: Intl.DateTimeFormatOptions = { month: "long", day: "numeric", year: "numeric", hour: "numeric", minute: "numeric" };
 
 /** A component containing the content of a post */
-function PostBody(props: { post: PostData, author?: Alias | null, children?: ReactNode }): ReactElement
+function PostBody(props: { post: PostData, author?: Alias | null, children?: ReactNode}): ReactElement
 {
-	const router = useRouter();
 	return (
-		<div className="flex flex-col gap-2 p-4 whitespace-pre cursor-pointer panel-inner" onClick={() => router.push(pages.post(props.post.id))}>
-			{props.author && <div className="text-sm"><Link href={pages.user(props.author.id)}>@{props.author.tag}</Link></div>}
+		<Link className={"flex flex-col gap-2 p-4 whitespace-pre panel-inner"} href={pages.post(props.post.id)}>
+			{props.author && <div className="text-sm">@{props.author.tag}</div>}
 			{props.post.content && <p className="flex-1 text-wrap">{props.post.content}</p>}
 			{props.post.media && <div className="flex flex-col items-center w-full"><img className="max-w-full" src={props.post.media} alt={props.post.media} /></div>}
 			{props.children}
 			{props.author && <div className="text-sm">{props.post.updated.toLocaleString("default", date_format)}</div>}
-		</div>
+		</Link>
 	);
 }
 
@@ -43,8 +42,6 @@ export function Post(props: { post: PostData, author: Alias, reply?: PostData | 
 	} else if (props.post.replyID) {
 		title = `Reply`;
 	}
-
-	console.log(`Reply value: ${props.reply ? props.reply.title : "None"}`)
 
 	return (
 		<div className={"flex flex-col p-4 gap-2 relative w-full panel"}>
