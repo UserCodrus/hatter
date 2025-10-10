@@ -28,18 +28,18 @@ export async function POST(req: NextRequest)
 		}
 
 		const result = await prisma.post.create({
-		data: {
-			title: data.title,
-			content: data.content,
-			media: data.media,
-			published: true,
-			reply: data.reply ? { connect: { id: data.reply } } : undefined,
-			author: { connect: { id: user.alias.id } },
-			user: { connect: { id: user.user.id } },
-		},
-	});
+			data: {
+				title: data.title,
+				content: data.content,
+				media: data.media,
+				published: true,
+				reply: data.reply ? { connect: { id: data.reply } } : undefined,
+				author: { connect: { id: user.alias.id } },
+				user: { connect: { id: user.user.id } },
+			},
+		});
 
-	return Response.json(result);
+		return Response.json(result);
 	}
 
 	return new Response("User not found", { status: 511 });

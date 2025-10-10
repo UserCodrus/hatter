@@ -6,6 +6,7 @@ import { Post } from "./post";
 import { notFound } from "next/navigation";
 import { Alias, Post as PostData } from "@prisma/client";
 import { Author } from "next/dist/lib/metadata/types/metadata-types";
+import { ContentPanel } from "./info";
 
 /** The base layout for post feeds */
 function Feed(props: { children: ReactNode, onReload?: Function, loading?: boolean }): ReactElement
@@ -108,6 +109,13 @@ export function UserFeed(props: { currentUser: string | undefined, userID: strin
 			key={key}
 		/>);
 		++key;
+	}
+
+	// Add a message to empty feeds
+	if (components.length === 0) {
+		components.push(<ContentPanel>
+			{props.userName} has no activity yet.
+		</ContentPanel>);
 	}
 
 	return (
@@ -219,6 +227,13 @@ export function PostFeed(props: { currentUser: string | undefined, post: PostDat
 			key={key}
 		/>);
 		++key;
+	}
+
+	// Add a message to empty feeds
+	if (components.length === 0) {
+		components.push(<ContentPanel>
+			This post has no replies.
+		</ContentPanel>);
 	}
 
 	return (
