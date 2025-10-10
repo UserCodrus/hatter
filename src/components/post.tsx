@@ -3,7 +3,7 @@
 import { pages } from "@/lib/utils";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { ReactElement, ReactNode, useState } from "react";
+import { MouseEvent, ReactElement, ReactNode, useState } from "react";
 import { UserAvatar } from "./info";
 import { LikeButton, ReplyButton } from "./interactive";
 import { Alias, Post as PostData } from "@prisma/client";
@@ -14,14 +14,21 @@ const date_format: Intl.DateTimeFormatOptions = { month: "long", day: "numeric",
 /** A component containing the content of a post */
 function PostBody(props: { post: PostData, author?: Alias | null, children?: ReactNode}): ReactElement
 {
+	const router = useRouter();
+
+	function handleClick(event: MouseEvent) {
+		event.stopPropagation();
+		router.push(pages.post(props.post.id));
+	}
+
 	return (
-		<Link className={"flex flex-col gap-2 p-4 whitespace-pre panel-inner"} href={pages.post(props.post.id)}>
+		<div className={"flex flex-col gap-2 p-4 whitespace-pre panel-inner cursor-pointer"} onClick={(e) => handleClick(e)}>
 			{props.author && <div className="text-sm">@{props.author.tag}</div>}
 			{props.post.content && <p className="flex-1 text-wrap">{props.post.content}</p>}
 			{props.post.media && <div className="flex flex-col items-center w-full"><img className="max-w-full" src={props.post.media} alt={props.post.media} /></div>}
 			{props.children}
 			{props.author && <div className="text-sm">{props.post.updated.toLocaleString("default", date_format)}</div>}
-		</Link>
+		</div>
 	);
 }
 
