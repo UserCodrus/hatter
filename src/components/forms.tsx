@@ -368,7 +368,7 @@ export function UpdateAlias(props: {tag: string, name: string, bio: string | nul
 	}
 
 	return (
-		<form className="flex flex-col p-4 gap-2 w-1/3 items-stretch panel" onSubmit={submitForm}>
+		<form className="flex flex-col p-4 gap-2 w-full items-stretch panel" onSubmit={submitForm}>
 			<div className="flex flex-row items-center">
 				<label className="flex-1">ID</label>
 				<input

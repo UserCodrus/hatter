@@ -113,7 +113,7 @@ export function UserFeed(props: { currentUser: string | undefined, userID: strin
 
 	// Add a message to empty feeds
 	if (components.length === 0) {
-		components.push(<ContentPanel>
+		components.push(<ContentPanel key={0}>
 			{props.userName} has no activity yet.
 		</ContentPanel>);
 	}

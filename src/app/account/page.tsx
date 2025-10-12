@@ -38,7 +38,7 @@ function Signup(): ReactElement
 function Update(props: {tag: string, name: string, bio: string | null}): ReactElement
 {
 	return (
-		<div className="flex flex-col items-center w-full">
+		<div className="flex flex-col flex-1 gap-2 items-center justify-center fit-width">
 			<ContentPanel>
 				Fill out the boxes below to change your alias info.
 			</ContentPanel>
@@ -53,15 +53,17 @@ function Expired(props: { expiration: Date }): ReactElement
 	const date_format: Intl.DateTimeFormatOptions = { month: "long", day: "numeric", year: "numeric", hour: "numeric", minute: "numeric" };
 
 	return (
-		<ContentPanel>
-			<div className="flex flex-col gap-4 items-center">
-				<div className="text-center">
-					<div>Your current account expired on {props.expiration.toLocaleString("default", date_format)}</div>
-					<div>Click the button below to get a new one.</div>
+		<div className="flex flex-col flex-1 gap-2 items-center justify-center fit-width">
+			<ContentPanel>
+				<div className="flex flex-col gap-4 items-center">
+					<div className="text-center">
+						<div>Your current account expired on {props.expiration.toLocaleString("default", date_format)}</div>
+						<div>Click the button below to get a new one.</div>
+					</div>
+					<ResetAliasButton />
 				</div>
-				<ResetAliasButton />
-			</div>
-		</ContentPanel>
+			</ContentPanel>
+		</div>
 	);
 }
 
@@ -89,7 +91,7 @@ export default async function Page()
 	const banned = user_data.alias && user_data.banned !== null;
 
 	return (<>
-		<Header user={user_data.user} alias={user_data.alias} expired={user_data.expired} banned={user_data.banned !== null} />
+		<Header user={user_data.user} alias={user_data.alias} admin={user_data.admin} expired={user_data.expired} banned={user_data.banned !== null} />
 		{main_component}
 	</>);
 }
