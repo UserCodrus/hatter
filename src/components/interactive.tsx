@@ -181,7 +181,7 @@ export function ModeratorTools(props: { postID: string, authorID: string | null,
 	}
 
 	return (
-		<div className="flex flex-col items-center gap-4 p-4 panel">
+		<div className="flex flex-col items-center gap-4 p-4 fit-width panel">
 			<div>Moderator Actions</div>
 			<div>{props.published ? "Post is visible" : "Post is hidden"}</div>
 			<div className="flex flex-row items-center justify-center gap-4">

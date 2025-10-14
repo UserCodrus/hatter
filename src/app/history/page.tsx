@@ -23,7 +23,7 @@ export default async function Page()
 
 	return (<>
 		<Header user={user_data.user} alias={user_data.alias} admin={user_data.admin} expired={user_data.expired} banned={user_data.banned !== null}/>
-		<div className="flex flex-col lg:flex-row w-full items-center lg:items-start lg:justify-center p-2 gap-2 mt-2">
+		<div className="flex flex-col lg:flex-row w-full items-center lg:items-start lg:justify-center gap-4 mt-4">
 			<UserProfile
 				alias={user_data.alias}
 				followers={followers} following={following}

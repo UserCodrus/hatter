@@ -34,7 +34,7 @@ function Feed(props: { children: ReactNode, onReload?: Function, loading?: boole
 	}, []);
 
 	return (
-		<div className="flex flex-col gap-2 w-full my-2">
+		<div className="flex flex-col gap-2 w-full">
 			{props.children}
 			<div ref={ref}></div>
 			{props.loading && <div>Loading...</div>}

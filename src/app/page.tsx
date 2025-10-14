@@ -1,4 +1,4 @@
-import { FeedHeader, FeedWrapper, GlobalFeed } from "@/components/feed";
+import { FeedWrapper, GlobalFeed } from "@/components/feed";
 import { Header } from "@/components/header";
 import { ContentPanel } from "@/components/info";
 import { getUser } from "@/lib/db";
@@ -51,7 +51,7 @@ export default async function Page()
 	const user_data = await getUser();
 
 	// Add a notification based on the user's current status
-	let notification_component: ReactElement = <></>;
+	let notification_component: ReactElement | null = null;
 	if (user_data.user === null) {
 		notification_component = <NotifySignout />
 	} else if (user_data.banned !== null) {
@@ -64,9 +64,11 @@ export default async function Page()
 
 	return (<>
 		<Header user={user_data.user} alias={user_data.alias} admin={user_data.admin} expired={user_data.expired} banned={user_data.banned !== null} />
-		{notification_component}
-		<FeedWrapper>
-			<GlobalFeed currentUser={user_data.alias?.id} viewerID={user_data.expired ? undefined : user_data.alias?.id} />
-		</FeedWrapper>
+		<div className="flex flex-col gap-4 mt-4">
+			{notification_component}
+			<FeedWrapper>
+				<GlobalFeed currentUser={user_data.alias?.id} viewerID={user_data.expired ? undefined : user_data.alias?.id} />
+			</FeedWrapper>
+		</div>
 	</>);
 }

@@ -77,7 +77,7 @@ function NavigationBar(props: { alias: Alias | null }): ReactElement
 export async function Header(props: { user: SessionUser | null, alias: Alias | null, admin?: boolean, expired: boolean, banned: boolean }): Promise<ReactElement>
 {
 	return (
-		<div className="flex flex-row items-center gap-2 mb-4 w-full sticky top-0 header">
+		<div className="flex flex-row items-center gap-2 w-full sticky top-0 header">
 			<NavigationBar alias={!props.expired && !props.banned ? props.alias : null} />
 			<UserComponent user={props.user} alias={props.alias} admin={props.admin} expired={props.expired} banned={props.banned} />
 		</div>
