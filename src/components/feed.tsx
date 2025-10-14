@@ -34,10 +34,10 @@ function Feed(props: { children: ReactNode, onReload?: Function, loading?: boole
 	}, []);
 
 	return (
-		<div className="flex flex-col gap-2 w-full">
+		<div className="flex flex-col gap-4 w-full">
 			{props.children}
 			<div ref={ref}></div>
-			{props.loading && <div>Loading...</div>}
+			{props.loading && <div className="w-full text-center mb-4">Loading...</div>}
 		</div>
 	);
 }
