@@ -7,7 +7,7 @@ import { MouseEvent, ReactElement, ReactNode, useState } from "react";
 import { UserAvatar } from "./info";
 import { LikeButton, ReplyButton } from "./interactive";
 import { Alias, Post as PostData } from "@prisma/client";
-import { CreateReply } from "./forms";
+import { CreatePost } from "./forms";
 
 const date_format: Intl.DateTimeFormatOptions = { month: "long", day: "numeric", year: "numeric", hour: "numeric", minute: "numeric" };
 
@@ -78,7 +78,7 @@ export function Post(props: { post: PostData, author: Alias, reply?: PostData | 
 			</div>
 			{replyOpen && <div className="flex flex-col items-stretch panel-inner">
 				<div className="text-center font-bold">Reply to {props.author.name}</div>
-				<CreateReply replyID={props.post.id} />
+				<CreatePost replyID={props.post.id} />
 			</div>}
 		</div>
 	);

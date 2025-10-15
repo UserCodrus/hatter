@@ -17,7 +17,7 @@ export default async function Page()
 		<Header user={user_data.user} alias={user_data.alias} admin={user_data.admin} expired={user_data.expired} banned={user_data.banned !== null} />
 		<div className="flex flex-col flex-1 gap-2 items-stretch justify-center fit-width">
 			<ContentPanel>Create a post</ContentPanel>
-			<div>
+			<div className="panel">
 				<CreatePost />
 			</div>
 		</div>
