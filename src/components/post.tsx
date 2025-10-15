@@ -24,6 +24,7 @@ function PostBody(props: { post: PostData, author?: Alias | null, children?: Rea
 	return (
 		<div className={"flex flex-col gap-2 p-4 whitespace-pre panel-inner cursor-pointer"} onClick={(e) => handleClick(e)}>
 			{props.author && <div className="text-sm">@{props.author.tag}</div>}
+			{props.post.title && !props.author && <p className="text-lg">{props.post.title}</p>}
 			{props.post.content && <p className="flex-1 text-wrap">{props.post.content}</p>}
 			{props.post.media && <div className="flex flex-col items-center w-full"><img className="max-w-full" src={props.post.media} alt={props.post.media} /></div>}
 			{props.children}
@@ -41,14 +42,6 @@ export function Post(props: { post: PostData, author: Alias, reply?: PostData | 
 	function reply() {
 		setReplyOpen(true);
 	}
-	
-	// Change the title
-	let title = props.post.title;
-	if (props.inline) {
-		title = "";
-	} else if (props.post.replyID) {
-		title = `Reply`;
-	}
 
 	return (
 		<div className={"flex flex-col p-4 gap-2 relative w-full panel"}>
@@ -59,9 +52,6 @@ export function Post(props: { post: PostData, author: Alias, reply?: PostData | 
 				<div className="flex flex-col">
 					<Link href={pages.user(props.author.tag)}>{props.author.name}</Link>
 					<div className="text-sm">@{props.author.tag}</div>
-				</div>
-				<div className="flex flex-col grow-1 text-center">
-					<div className="text-lg font-bold text-right">{title}</div>
 				</div>
 			</div>
 			<PostBody post={props.post}>

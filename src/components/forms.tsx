@@ -4,8 +4,7 @@ import { createAlias, updateAlias } from "@/lib/db";
 import { pages } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import { FormEvent, ReactElement, useRef, useState } from "react";
-import { DropDownMenu, Modal } from "./menus";
-import { UserAvatar } from "./info";
+import { DropDownMenu } from "./menus";
 import { AvatarSelector, ColorSelector, MenuButton } from "./interactive";
 
 /** A form that allows the user to submit a post */
@@ -59,7 +58,7 @@ export function CreatePost(props: { replyID?: string }): ReactElement
 		<form className="flex flex-col p-4 gap-2 panel" onSubmit={submitForm}>
 			<input
 				className={hide_title}
-				placeholder={"Title"}
+				placeholder={"Title (optional)"}
 				value={title}
 				onChange={(e) => setTitle(e.target.value)}
 				type="text"
@@ -75,7 +74,7 @@ export function CreatePost(props: { replyID?: string }): ReactElement
 				/>
 			</div>
 			<input
-				placeholder={"Image URL"}
+				placeholder={"Image URL (optional)"}
 				value={media}
 				onChange={(e) => setMedia(e.target.value)}
 				type="text"
@@ -86,7 +85,7 @@ export function CreatePost(props: { replyID?: string }): ReactElement
 				onChange={(e) => setContent(e.target.value)}
 			/>
 			<div className="flex items-center justify-center">
-				<input className="w-20 button" disabled={(!content && !validMedia) || (!title && !props.replyID)} type="submit" value="Post" />
+				<input className="w-20 button" disabled={!content && !validMedia} type="submit" value="Post" />
 			</div>
 		</form>
 	);
