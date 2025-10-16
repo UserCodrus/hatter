@@ -4,6 +4,7 @@ import { SessionUser } from "./auth";
 /** URL leafs for each page of the app */
 export const pages = {
 	root: "/",
+	global: "/all",
 	history: "/history",
 	create: "/create",
 	account: "/account",

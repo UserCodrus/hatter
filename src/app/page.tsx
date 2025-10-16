@@ -1,4 +1,4 @@
-import { FeedWrapper, GlobalFeed } from "@/components/feed";
+import { CustomFeed, FeedWrapper, GlobalFeed } from "@/components/feed";
 import { Header } from "@/components/header";
 import { ContentPanel } from "@/components/info";
 import { getUser } from "@/lib/db";
@@ -62,12 +62,15 @@ export default async function Page()
 		notification_component = <NotifyExpired />;
 	}
 
+	const active = !user_data.banned && !user_data.expired && user_data.alias !== null;
+
 	return (<>
 		<Header user={user_data.user} alias={user_data.alias} admin={user_data.admin} expired={user_data.expired} banned={user_data.banned !== null} />
 		<div className="flex flex-col gap-4 mt-4">
 			{notification_component}
 			<FeedWrapper>
-				<GlobalFeed currentUser={user_data.alias?.id} viewerID={user_data.expired ? undefined : user_data.alias?.id} banned={user_data.banned !== null} />
+				{!active && <GlobalFeed currentUser={user_data.alias?.id} viewerID={user_data.expired ? undefined : user_data.alias?.id} banned={user_data.banned !== null} />}
+				{active && <CustomFeed currentUser={user_data.alias?.id} viewerID={user_data.expired ? undefined : user_data.alias?.id} banned={user_data.banned !== null} />}
 			</FeedWrapper>
 		</div>
 	</>);

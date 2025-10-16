@@ -68,7 +68,8 @@ function NavigationBar(props: { alias: Alias | null }): ReactElement
 	return (
 		<div className="flex flex-row gap-2 font-bold flex-1">
 			<NavigationButton label="Home" target={pages.root} />
-			{props.alias && <NavigationButton label="Posts" target={pages.history} />}
+			{props.alias && <NavigationButton label="All" target={pages.global} />}
+			{props.alias && <NavigationButton label="Me" target={pages.history} />}
 			{props.alias && <NavigationButton label="Create" target={pages.create} />}
 		</div>
 	)

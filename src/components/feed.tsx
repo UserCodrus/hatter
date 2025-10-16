@@ -1,6 +1,6 @@
 'use client';
 
-import { getActivity, getAll, getPost, getReplies } from "@/lib/db";
+import { getActivity, getAll, getFollowing, getPost, getPosts, getReplies } from "@/lib/db";
 import { ReactElement, ReactNode, useEffect, useRef, useState } from "react";
 import { Post } from "./post";
 import { notFound } from "next/navigation";
@@ -36,7 +36,7 @@ function Feed(props: { children: ReactNode, onReload?: Function, loading?: boole
 	return (
 		<div className="flex flex-col gap-4 w-full">
 			{props.children}
-			<div ref={ref}></div>
+			<div className="h-[10px] w-full" ref={ref}></div>
 			{props.loading && <div className="w-full text-center mb-4">Loading...</div>}
 		</div>
 	);
@@ -253,6 +253,66 @@ export function PostFeed(props: { currentUser: string | undefined, post: PostDat
 				key={0}
 			/>
 			<FeedHeader>Replies</FeedHeader>
+			{components}
+		</Feed>
+	);
+}
+
+/** A feed showing user the current user is following */
+export function CustomFeed(props: { currentUser: string | undefined, viewerID: string | undefined, banned: boolean }): ReactElement
+{
+	const [posts, setPosts] = useState<Awaited<ReturnType<typeof getAll>>>([]);
+	const [reload, setReload] = useState(true);
+
+	// Change the number of posts displayed
+	function reloadPosts() {
+		setReload(true);
+	}
+
+	// Load a new set of posts every time the reload flag is set
+	useEffect(() => {
+		if (!reload) return;
+
+		(async () => {
+			const following = await getFollowing(props.currentUser);
+			if (!following || following.length === 0) {
+				// Fallback to the global feed if the user isn't following anyone
+				const new_posts = await getAll(props.currentUser, feed_size, posts.length > 0 ? posts[posts.length - 1].index : undefined);
+				setPosts(posts.concat(new_posts));
+			} else {
+				// Get posts made by accounts the current user is following
+				const users = following.map((value) => value.id);
+				const new_posts = await getPosts(users, feed_size, props.currentUser, posts.length > 0 ? posts[posts.length - 1].index : undefined);
+				setPosts(posts.concat(new_posts));
+			}
+			
+			setReload(false);
+		})();
+	}, [reload, posts]);
+
+	// Create a set of post components for the feed
+	const components: ReactElement[] = [];
+	let key = 0;
+	for (const post of posts) {
+		components.push(<Post
+			post={post}
+			author={post.author}
+			reply={post.reply}
+			replyAuthor={post.reply ? (post.reply as any).author : null}
+			activeUser={props.viewerID}
+			likes={post._count.likes}
+			liked={post.likes.length > 0}
+			replies={post._count.replies}
+			replied={post.replies.length > 0}
+			banned={props.banned}
+			key={key}
+		/>);
+		++key;
+	}
+
+	return (
+		<Feed onReload={reloadPosts} loading={reload}>
+			<FeedHeader>Your Feed</FeedHeader>
 			{components}
 		</Feed>
 	);
