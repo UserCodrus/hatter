@@ -63,7 +63,7 @@ export function FeedHeader(props: { children: ReactNode }): ReactElement
 }
 
 /** A feed showing the posts made by a single user */
-export function UserFeed(props: { currentUser: string | undefined, userID: string, userName: string }): ReactElement
+export function UserFeed(props: { currentUser: string | undefined, userID: string, userName: string, banned: boolean }): ReactElement
 {
 	//const posts = await getPosts([props.userID], props.currentUser);
 	const [posts, setPosts] = useState<Awaited<ReturnType<typeof getActivity>>>([]);
@@ -106,6 +106,7 @@ export function UserFeed(props: { currentUser: string | undefined, userID: strin
 			liked={post.likes.length > 0}
 			replies={post._count.replies}
 			replied={post.replies.length > 0}
+			banned={props.banned}
 			key={key}
 		/>);
 		++key;
@@ -130,7 +131,7 @@ export function UserFeed(props: { currentUser: string | undefined, userID: strin
 const feed_size = 20;
 
 /** A feed showing recent posts made on the app */
-export function GlobalFeed(props: { currentUser: string | undefined, viewerID: string | undefined }): ReactElement
+export function GlobalFeed(props: { currentUser: string | undefined, viewerID: string | undefined, banned: boolean }): ReactElement
 {
 	const [posts, setPosts] = useState<Awaited<ReturnType<typeof getAll>>>([]);
 	const [reload, setReload] = useState(true);
@@ -170,6 +171,7 @@ export function GlobalFeed(props: { currentUser: string | undefined, viewerID: s
 			liked={post.likes.length > 0}
 			replies={post._count.replies}
 			replied={post.replies.length > 0}
+			banned={props.banned}
 			key={key}
 		/>);
 		++key;
@@ -184,7 +186,7 @@ export function GlobalFeed(props: { currentUser: string | undefined, viewerID: s
 }
 
 /** A feed showing a single post and its replies */
-export function PostFeed(props: { currentUser: string | undefined, post: PostData, reply: PostData | null, author: Alias, replyAuthor: Alias | null, likes: number, liked?: boolean, replies: number, replied?: boolean, viewerID: string | undefined }): ReactElement
+export function PostFeed(props: { currentUser: string | undefined, post: PostData, reply: PostData | null, author: Alias, replyAuthor: Alias | null, likes: number, liked?: boolean, replies: number, replied?: boolean, viewerID: string | undefined, banned: boolean }): ReactElement
 {
 	const [replies, setReplies] = useState<Awaited<ReturnType<typeof getReplies>>>([]);
 	const [reload, setReload] = useState(true);
@@ -222,6 +224,7 @@ export function PostFeed(props: { currentUser: string | undefined, post: PostDat
 			liked={post.likes.length > 0}
 			replies={post._count.replies}
 			replied={post.replies.length > 0}
+			banned={props.banned}
 			key={key}
 		/>);
 		++key;
@@ -246,6 +249,7 @@ export function PostFeed(props: { currentUser: string | undefined, post: PostDat
 				liked={props.liked}
 				replies={props.replies}
 				replied={props.replied}
+				banned={props.banned}
 				key={0}
 			/>
 			<FeedHeader>Replies</FeedHeader>

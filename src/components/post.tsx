@@ -34,7 +34,7 @@ function PostBody(props: { post: PostData, author?: Alias | null, children?: Rea
 }
 
 /** A component that displays a post */
-export function Post(props: { post: PostData, author: Alias, reply?: PostData | null, replyAuthor?: Alias | null, likes: number, liked?: boolean, replies: number, replied?: boolean, inline?: boolean, activeUser?: string }): ReactElement
+export function Post(props: { post: PostData, author: Alias, reply?: PostData | null, replyAuthor?: Alias | null, likes: number, liked?: boolean, replies: number, replied?: boolean, inline?: boolean, activeUser?: string, banned: boolean }): ReactElement
 {
 	const [replyOpen, setReplyOpen] = useState(false);
 
@@ -64,7 +64,7 @@ export function Post(props: { post: PostData, author: Alias, reply?: PostData | 
 						postID={props.post.id}
 						replied={props.replied && props.activeUser != undefined}
 						replyCount={props.replies}
-						disabled={props.activeUser === undefined}
+						disabled={props.activeUser === undefined || props.banned}
 						onClick={reply}
 					/>
 					<LikeButton
@@ -72,7 +72,7 @@ export function Post(props: { post: PostData, author: Alias, reply?: PostData | 
 						likedPost={props.liked && props.activeUser != undefined}
 						likeCount={props.likes}
 						selfPost={props.post.authorId === props.activeUser}
-						disabled={props.activeUser === undefined}
+						disabled={props.activeUser === undefined || props.banned}
 					/>
 				</div>
 			</div>

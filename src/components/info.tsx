@@ -21,7 +21,7 @@ export function UserName(props: { id: string, tag: string, name: string, icon: s
 }
 
 /** Display a user's full profile, including their name, icon and follower count */
-export function UserProfile(props: { alias: Alias, followers: Alias[], following?: Alias[] | null, userFollowed: boolean, selfProfile: boolean, activeUser: boolean }): ReactElement
+export function UserProfile(props: { alias: Alias, followers: Alias[], following?: Alias[] | null, userFollowed: boolean, selfProfile: boolean, activeUser: boolean, banned: boolean }): ReactElement
 {
 	const follower_component = (props.followers && props.followers.length > 0) ? <UserList aliases={props.followers} /> : <div>None</div>;
 	const following_component = (props.following && props.following.length > 0) ? <UserList aliases={props.following} /> : <div>None</div>;
@@ -35,7 +35,7 @@ export function UserProfile(props: { alias: Alias, followers: Alias[], following
 					<div>@{props.alias.tag}</div>
 				</div>
 				<div>
-					<FollowButton userID={props.alias.id} followers={props.followers.length} following={props.userFollowed || props.selfProfile} disabled={!props.activeUser} />
+					<FollowButton userID={props.alias.id} followers={props.followers.length} following={props.userFollowed || props.selfProfile} disabled={!props.activeUser || props.banned} />
 				</div>
 			</div>
 			{props.alias.bio && <div className="panel-inner">

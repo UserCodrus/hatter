@@ -28,9 +28,10 @@ export default async function Page()
 				alias={user_data.alias}
 				followers={followers} following={following}
 				selfProfile={true} activeUser={true} userFollowed={true}
+				banned={user_data.banned !== null}
 			/>
 			<FeedWrapper>
-				<UserFeed currentUser={user_data.alias?.id} userID={user_data.alias.id} userName={user_data.alias.name} />
+				<UserFeed currentUser={user_data.alias?.id} userID={user_data.alias.id} userName={user_data.alias.name} banned={user_data.banned !== null} />
 			</FeedWrapper>
 		</div>
 	</>);

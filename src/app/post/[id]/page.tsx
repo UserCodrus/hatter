@@ -28,6 +28,7 @@ export default async function Page(props: { params: Promise<{ id: string }> })
 					liked={post.likes.length > 0}
 					replies={post._count.replies}
 					replied={post.replies.length > 0}
+					banned={user_data.banned !== null}
 					viewerID={user_data.expired ? undefined : user_data.alias?.id}
 				/>
 			</FeedWrapper>

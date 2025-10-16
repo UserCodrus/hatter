@@ -301,6 +301,9 @@ export async function updateAlias(name: string, bio: string | null, image: strin
 	if (!session.alias)
 		return "You do not have an alias.";
 
+	if (session.banned !== null)
+		return "Your account is currently banned.";
+
 	// Make sure the provided alias belongs to the user
 	const alias_query = await prisma.alias.findUnique({
 		where: {
@@ -370,7 +373,7 @@ export async function getFollowing(id: string | null | undefined)
 export async function toggleFollow(id: string)
 {
 	const user_data = await getUser();
-	if (user_data.alias) {
+	if (user_data.alias && user_data.banned === null) {
 		// Check to see if the user is already following the given alias
 		const following = await prisma.alias.findUnique({
 			where: {
@@ -400,7 +403,7 @@ export async function toggleFollow(id: string)
 export async function toggleLike(id: string)
 {
 	const user_data = await getUser();
-	if (user_data.alias) {
+	if (user_data.alias && user_data.banned === null) {
 		// Make sure the post exists and wasn't created by the user
 		const post = await prisma.post.findUnique({
 			where: {
@@ -582,29 +585,35 @@ export async function getAuthor(postID: string | null | undefined)
 /** Apply a ban to a user */
 export async function banUser(userID: string, expiry: Date)
 {
-	const user = await prisma.user.update({
-		where: {
-			id: userID,
-		},
-		data: {
-			ban: expiry,
-		},
-	});
+	const user_data = await getUser();
+	if (user_data.mod) {
+		const user = await prisma.user.update({
+			where: {
+				id: userID,
+			},
+			data: {
+				ban: expiry,
+			},
+		});
 
-	return user;
+		return user;
+	}
 }
 
 /** Unpublish a post */
 export async function hidePost(postID: string, hide: boolean)
 {
-	const post = await prisma.post.update({
-		where: {
-			id: postID,
-		},
-		data: {
-			published: !hide,
-		},
-	});
-	
-	return post;
+	const user_data = await getUser();
+	if (user_data.mod) {
+		const post = await prisma.post.update({
+			where: {
+				id: postID,
+			},
+			data: {
+				published: !hide,
+			},
+		});
+		
+		return post;
+	}
 }

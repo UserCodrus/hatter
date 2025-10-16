@@ -22,9 +22,10 @@ export default async function Page(props: { params: Promise<{ id: string }> })
 				userFollowed={alias._count ? alias._count.followers > 0 : false}
 				selfProfile={user_data.alias?.id === alias.id}
 				activeUser={user_data.alias !== null && !user_data.expired}
+				banned={user_data.banned !== null}
 			/>
 			<FeedWrapper>
-				<UserFeed currentUser={user_data.alias?.id} userID={alias.id} userName={alias.name} />
+				<UserFeed currentUser={user_data.alias?.id} userID={alias.id} userName={alias.name} banned={user_data.banned !== null} />
 			</FeedWrapper>
 		</div>
 	</>);

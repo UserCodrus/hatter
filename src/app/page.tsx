@@ -67,7 +67,7 @@ export default async function Page()
 		<div className="flex flex-col gap-4 mt-4">
 			{notification_component}
 			<FeedWrapper>
-				<GlobalFeed currentUser={user_data.alias?.id} viewerID={user_data.expired ? undefined : user_data.alias?.id} />
+				<GlobalFeed currentUser={user_data.alias?.id} viewerID={user_data.expired ? undefined : user_data.alias?.id} banned={user_data.banned !== null} />
 			</FeedWrapper>
 		</div>
 	</>);
