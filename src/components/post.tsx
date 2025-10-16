@@ -45,14 +45,16 @@ export function Post(props: { post: PostData, author: Alias, reply?: PostData | 
 
 	return (
 		<div className={"flex flex-col p-4 gap-2 relative w-full panel"}>
-			<div className="flex flex-row items-center gap-2">
-				<div>
-					<UserAvatar icon={props.author.icon} colors={[props.author.colorA, props.author.colorB]} style={props.author.style} size={40} />
-				</div>
-				<div className="flex flex-col">
-					<Link href={pages.user(props.author.tag)}>{props.author.name}</Link>
-					<div className="text-sm">@{props.author.tag}</div>
-				</div>
+			<div className="flex flex-row">
+				<Link href={pages.user(props.author.tag)} className="flex flex-row items-center gap-2">
+					<div>
+						<UserAvatar icon={props.author.icon} colors={[props.author.colorA, props.author.colorB]} style={props.author.style} size={40} />
+					</div>
+					<div className="flex flex-col">
+						<div>{props.author.name}</div>
+						<div className="text-sm">@{props.author.tag}</div>
+					</div>
+				</Link>
 			</div>
 			<PostBody post={props.post}>
 				{props.reply && <PostBody post={props.reply} author={props.replyAuthor} />}
