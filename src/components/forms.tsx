@@ -10,7 +10,6 @@ import { AvatarSelector, ColorSelector, MenuButton } from "./interactive";
 /** A form that allows the user to submit a post */
 export function CreatePost(props: { replyID?: string }): ReactElement
 {
-	const [title, setTitle] = useState("");
 	const [media, setMedia] = useState("");
 	const [validMedia, setValidMedia] = useState(false);
 	const [content, setContent] = useState("");
@@ -25,7 +24,7 @@ export function CreatePost(props: { replyID?: string }): ReactElement
 			const media_link = validMedia ? media : undefined;
 
 			// Submit the post data to the API
-			const body = { title, content, media: media_link, reply: props.replyID };
+			const body = { content, media: media_link, reply: props.replyID };
 			console.log(body);
 			await fetch("/api/post", {
 				method: "POST",
@@ -63,14 +62,6 @@ export function CreatePost(props: { replyID?: string }): ReactElement
 
 	return (
 		<form className="flex flex-col p-4 gap-2" onSubmit={submitForm}>
-			<input
-				className={hide_title}
-				placeholder={"Title (optional)"}
-				value={title}
-				onChange={(e) => setTitle(e.target.value)}
-				type="text"
-				disabled={props.replyID ? true : false}
-			/>
 			<div className={"flex flex-row w-full justify-center" + hide_media}>
 				<img
 					className="max-w-2/3"

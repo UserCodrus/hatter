@@ -29,7 +29,6 @@ export async function POST(req: NextRequest)
 
 		const result = await prisma.post.create({
 			data: {
-				title: data.title,
 				content: data.content,
 				media: data.media,
 				published: true,

@@ -24,7 +24,6 @@ function PostBody(props: { post: PostData, author?: Alias | null, children?: Rea
 	return (
 		<div className={"flex flex-col gap-2 p-4 whitespace-pre panel-inner cursor-pointer"} onClick={(e) => handleClick(e)}>
 			{props.author && <div className="text-sm">@{props.author.tag}</div>}
-			{props.post.title && !props.author && <p className="text-lg">{props.post.title}</p>}
 			{props.post.content && <p className="flex-1 text-wrap">{props.post.content}</p>}
 			{props.post.media && <div className="flex flex-col items-center w-full"><img className="max-w-full" src={props.post.media} alt={props.post.media} /></div>}
 			{props.children}
