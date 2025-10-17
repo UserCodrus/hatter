@@ -23,23 +23,24 @@ export function UserName(props: { id: string, tag: string, name: string, icon: s
 /** Display a user's full profile, including their name, icon and follower count */
 export function UserProfile(props: { alias: Alias, followers: number, following?: Alias[] | null, userFollowed: boolean, selfProfile: boolean, activeUser: boolean, banned: boolean }): ReactElement
 {
+	console.log(`Self profile: ${props.selfProfile}`)
 	return (
 		<div className="flex flex-col p-4 gap-2 w-200 max-w-[90vw] panel">
-			<div className="flex flex-row gap-2 items-center w-full">
+			<div className="flex flex-row flex-wrap gap-2 items-center w-full">
 				<UserAvatar icon={props.alias.icon} colors={[props.alias.colorA, props.alias.colorB]} style={props.alias.style} size={64} />
-				<div className="flex flex-col grow-1">
+				<div className="flex flex-col">
 					<div className="font-bold">{props.alias.name}</div>
 					<div>@{props.alias.tag}</div>
-				</div>
-				<div>
-					<FollowButton userID={props.alias.id} followers={props.followers} following={props.userFollowed || props.selfProfile} disabled={!props.activeUser || props.banned} />
 				</div>
 			</div>
 			{props.alias.bio && <div className="panel-inner">
 				{props.alias.bio}
 			</div>}
 			<div className="flex flex-col gap-2 w-full">
-				<div className="font-bold">Following</div>
+				<div className="flex flex-row items-center">
+					<div className="font-bold grow-1">Following</div>
+					<FollowButton userID={props.alias.id} followers={props.followers} following={props.userFollowed || props.selfProfile} disabled={!props.activeUser || props.selfProfile || props.banned} />
+				</div>
 				<UserList aliases={props.following} />
 			</div>
 		</div>
