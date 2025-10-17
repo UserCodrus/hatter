@@ -18,7 +18,8 @@ export default async function Page(props: { params: Promise<{ id: string }> })
 		<div className="flex flex-col lg:flex-row w-full items-center lg:items-start lg:justify-center gap-4 mt-4">
 			<UserProfile
 				alias={alias}
-				followers={alias.followers}
+				followers={alias.followers.length}
+				following={alias.following}
 				userFollowed={alias._count ? alias._count.followers > 0 : false}
 				selfProfile={user_data.alias?.id === alias.id}
 				activeUser={user_data.alias !== null && !user_data.expired}

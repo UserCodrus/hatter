@@ -26,7 +26,7 @@ export default async function Page()
 		<div className="flex flex-col lg:flex-row w-full items-center lg:items-start lg:justify-center gap-4 mt-4">
 			<UserProfile
 				alias={user_data.alias}
-				followers={followers} following={following}
+				followers={followers.length} following={following}
 				selfProfile={true} activeUser={true} userFollowed={true}
 				banned={user_data.banned !== null}
 			/>

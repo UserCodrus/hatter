@@ -13,19 +13,16 @@ export function UserAvatar(props: { icon: string, colors: string[], style: strin
 export function UserName(props: { id: string, tag: string, name: string, icon: string, colors: string[], style: string }): ReactElement
 {
 	return (
-		<a className="flex flex-row gap-2 items-center cursor-pointer" href={pages.user(props.tag)}>
-			<UserAvatar icon={props.icon} colors={props.colors} style={props.style} size={32} />
-			<div>{props.name}</div>
+		<a className="flex flex-row gap-2 items-center flex-1 min-w-40 cursor-pointer" href={pages.user(props.tag)}>
+			<div className="w-[32px]"><UserAvatar icon={props.icon} colors={props.colors} style={props.style} size={32} /></div>
+			<div className="text-nowrap overflow-hidden overflow-ellipsis">{props.name}</div>
 		</a>
 	);
 }
 
 /** Display a user's full profile, including their name, icon and follower count */
-export function UserProfile(props: { alias: Alias, followers: Alias[], following?: Alias[] | null, userFollowed: boolean, selfProfile: boolean, activeUser: boolean, banned: boolean }): ReactElement
+export function UserProfile(props: { alias: Alias, followers: number, following?: Alias[] | null, userFollowed: boolean, selfProfile: boolean, activeUser: boolean, banned: boolean }): ReactElement
 {
-	const follower_component = (props.followers && props.followers.length > 0) ? <UserList aliases={props.followers} /> : <div>None</div>;
-	const following_component = (props.following && props.following.length > 0) ? <UserList aliases={props.following} /> : <div>None</div>;
-
 	return (
 		<div className="flex flex-col p-4 gap-2 w-200 max-w-[90vw] panel">
 			<div className="flex flex-row gap-2 items-center w-full">
@@ -35,40 +32,40 @@ export function UserProfile(props: { alias: Alias, followers: Alias[], following
 					<div>@{props.alias.tag}</div>
 				</div>
 				<div>
-					<FollowButton userID={props.alias.id} followers={props.followers.length} following={props.userFollowed || props.selfProfile} disabled={!props.activeUser || props.banned} />
+					<FollowButton userID={props.alias.id} followers={props.followers} following={props.userFollowed || props.selfProfile} disabled={!props.activeUser || props.banned} />
 				</div>
 			</div>
 			{props.alias.bio && <div className="panel-inner">
 				{props.alias.bio}
 			</div>}
-			<div className="flex flex-row justify-stretch gap-2 w-full panel-inner">
-				<div className="flex flex-col grow-1">
-					<div className="font-bold">Following</div>
-					{following_component}
-				</div>
-				<div className="flex flex-col grow-1">
-					<div className="font-bold">Followers</div>
-					{follower_component}
-				</div>
+			<div className="flex flex-col gap-2 w-full">
+				<div className="font-bold">Following</div>
+				<UserList aliases={props.following} />
 			</div>
 		</div>
 	);
 }
 
 /** A list of users */
-export function UserList(props: { aliases: Alias[] }): ReactElement
+export function UserList(props: { aliases: Alias[] | null | undefined }): ReactElement
 {
-	const components: ReactElement[] = [];
-	let key = 0;
-	for (const alias of props.aliases) {
-		components.push(<UserName id={alias.id} tag={alias.tag} icon={alias.icon} colors={[alias.colorA, alias.colorB]} style={alias.style} name={alias.name} key={key} />);
-		++key;
+	if (props.aliases && props.aliases.length > 0) {
+		const components: ReactElement[] = [];
+		let key = 0;
+		for (const alias of props.aliases) {
+			components.push(<UserName id={alias.id} tag={alias.tag} icon={alias.icon} colors={[alias.colorA, alias.colorB]} style={alias.style} name={alias.name} key={key} />);
+			++key;
+		}
+
+		return (
+			<div className="flex flex-row flex-wrap gap-2 max-h-[20vh] overflow-y-auto panel-inner">
+				{components}
+			</div>
+		);
 	}
 
 	return (
-		<div className="flex flex-col gap-1">
-			{components}
-		</div>
+		<div>None</div>
 	);
 }
 
