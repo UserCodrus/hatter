@@ -42,7 +42,6 @@ input, textarea {
 input[type=submit] {
 	background: var(--interactive);
 	cursor: pointer;
-	padding: 0.5rem;
 }
 
 @layer components {

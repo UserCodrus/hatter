@@ -56,8 +56,6 @@ export function CreatePost(props: { replyID?: string }): ReactElement
 			setValidMedia(false);
 	}
 
-	// Hide the title field if the post is a reply - the title will be set automatically when a reply post is created
-	const hide_title = props.replyID ? "hidden" : "";
 	const hide_media = validMedia ? "" : " hidden";
 
 	return (
@@ -173,7 +171,7 @@ function SelectAvatar(props: { avatar: AvatarSettings, base: string, selectCallb
 	}
 
 	// Create components for the dropdown menu
-	const dropdown_main = <div className="bg-input p-1 min-w-20 text-center">{props.avatar.style}</div>
+	const dropdown_main = <div className="bg-input p-1 min-w-20 text-center panel-inner">{props.avatar.style}</div>
 	const dropdown: ReactElement[] = [];
 	key = 0;
 	for (const option of avatar_options) {
@@ -262,8 +260,8 @@ export function CreateAlias(props: { defaultAvatar: AvatarSettings }): ReactElem
 					value={bio}
 					onChange={(e) => setBio(e.target.value)}
 				/>
-				<div className="flex items-center justify-center m-2">
-					<input className="w-20 button" disabled={!tag || !name} type="submit" value="Create" />
+				<div className="flex items-center justify-center">
+					<input className="button" disabled={!tag || !name} type="submit" value="Create" />
 				</div>
 				{error && <div className="text-center text-alert">{error}</div>}
 			</form>
