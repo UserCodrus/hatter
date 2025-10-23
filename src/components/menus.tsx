@@ -1,23 +1,40 @@
 'use client';
 
-import { MouseEvent, ReactElement, ReactNode, useState } from "react";
+import { MouseEvent as ReactMouseEvent, ReactElement, ReactNode, useEffect, useRef, useState } from "react";
 
 /** A dropdown menu that displays when the user hovers over its main element */
 export function DropDownMenu(props: { above?: boolean, fill?: boolean, disabled?: boolean, className?: string, main: ReactNode, children: ReactNode }): ReactElement
 {
 	const [open, setOpen] = useState(false);
+	const ref = useRef<HTMLDivElement>(null);
 
-	function handleClick(e: MouseEvent) {
+	function handleClick(e: ReactMouseEvent) {
 		e.preventDefault();
 		setOpen(false);
 	}
+
+	// Add an event handler to close the menu when users click outside of the menu
+	useEffect(() => {
+		const handleOutsideClick = (e: MouseEvent) => {
+			if (!ref.current?.contains(e.target as Node))
+				setOpen(false);
+		}
+
+		document.addEventListener("click", handleOutsideClick);
+		document.addEventListener("contextmenu", handleOutsideClick);
+
+		return () => {
+			document.removeEventListener("click", handleOutsideClick);
+			document.removeEventListener("contextmenu", handleOutsideClick);
+		}
+	}, []);
 
 	const position_style = props.above ? " bottom-full" : "";
 	const size_style = props.fill ? " w-full" : "";
 	const additional_style = props.className ? " " + props.className : "";
 
 	return (
-		<div className={"relative origin-top" + additional_style} onMouseLeave={() => setOpen(false)}>
+		<div className={"relative origin-top" + additional_style} onMouseLeave={() => setOpen(false)} ref={ref}>
 			<div onMouseOver={() => setOpen(true)} onClick={() => setOpen(true)}>
 				{props.main}
 			</div>
