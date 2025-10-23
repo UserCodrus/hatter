@@ -39,7 +39,7 @@ export function Post(props: { post: PostData, author: Alias, reply?: PostData | 
 
 	// Activate the reply component when the user clicks the reply button
 	function reply() {
-		setReplyOpen(true);
+		setReplyOpen(!replyOpen);
 	}
 
 	return (
