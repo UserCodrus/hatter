@@ -221,18 +221,13 @@ export function AvatarSelector(props: { icon: string, colors: string[], style: A
 }
 
 /** A component that allows the user to select a color */
-export function ColorSelector(props: { color: string, onChange: (new_color: string) => void }): ReactElement
+export function ColorSelector(props: { color: string, selected: boolean, onChange: (new_color: string) => void, onSelect: Function }): ReactElement
 {
-	/*return (
-		<div className="flex flex-col gap-2 items-center">
-			<HexColorPicker color={props.color} onChange={props.onChange} />
-			<HexColorInput color={props.color} onChange={props.onChange} prefixed className="bg-input text-center w-1/2" />
-		</div>
-	);*/
+	const selection_style = props.selected ? " border-highlight" : " border-interactive";
 
 	return (
 		<div className="flex flex-row gap-2 items-center justify-center">
-			<div className="w-8 h-8" style={{background: props.color}}></div>
+			<div className={"w-8 h-8 border-2 cursor-pointer" +  selection_style} style={{background: props.color}} onClick={() => props.onSelect()}></div>
 			<HexColorInput color={props.color} onChange={props.onChange} prefixed className="bg-input text-center w-1/2" />
 		</div>
 	);

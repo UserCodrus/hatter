@@ -6,6 +6,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { FormEvent, ReactElement, useRef, useState } from "react";
 import { DropDownMenu } from "./menus";
 import { AvatarSelector, ColorSelector, MenuButton } from "./interactive";
+import { HexColorPicker } from "react-colorful";
 
 /** A form that allows the user to submit a post */
 export function CreatePost(props: { replyID?: string }): ReactElement
@@ -102,9 +103,15 @@ const avatar_options = [
 	"marble",
 ] as const;
 
+const enum ColorSelection {
+	left,
+	right
+}
+
 /** A modal popup that gives the user a set of icons to choose from */
 function SelectAvatar(props: { avatar: AvatarSettings, base: string, selectCallback: (settings: AvatarSettings) => void }): ReactElement
 {
+	const [selectedColor, setSelectedColor] = useState<ColorSelection>(ColorSelection.left);
 	const [lastSelection, setLastSelection] = useState(props.avatar.icon);
 	const [salt, setSalt] = useState<number | null>(null);
 
@@ -132,6 +139,21 @@ function SelectAvatar(props: { avatar: AvatarSettings, base: string, selectCallb
 			...props.avatar,
 			colorB: new_color,
 		});
+	}
+
+	function setSelected(new_color: string) {
+		console.log("Selection changed")
+		if (selectedColor === ColorSelection.left) {
+			submit({
+				...props.avatar,
+				colorA: new_color,
+			});
+		} else {
+			submit({
+				...props.avatar,
+				colorB: new_color,
+			});
+		}
 	}
 
 	function setStyle(new_style: string) {
@@ -181,10 +203,22 @@ function SelectAvatar(props: { avatar: AvatarSettings, base: string, selectCallb
 
 	return (
 		<div className="flex flex-col justify-center items-center overflow-auto p-4 gap-4 panel fit-width">
+			<div className="text-lg font-bold text-center">Avatar</div>
 			<div className="flex flex-row justify-center w-full">
-				<ColorSelector color={props.avatar.colorA} onChange={setColorA} />
-				<ColorSelector color={props.avatar.colorB} onChange={setColorB} />
+				<ColorSelector
+					color={props.avatar.colorA}
+					onChange={setColorA}
+					onSelect={() => setSelectedColor(ColorSelection.left)}
+					selected={selectedColor === ColorSelection.left}
+				/>
+				<ColorSelector
+					color={props.avatar.colorB}
+					onChange={setColorB}
+					onSelect={() => setSelectedColor(ColorSelection.right)}
+					selected={selectedColor === ColorSelection.right}
+				/>
 			</div>
+			<HexColorPicker color={selectedColor === ColorSelection.left ? props.avatar.colorA : props.avatar.colorB} onChange={setSelected} />
 			<div className="flex flex-row justify-center gap-2 flex-wrap max-h-[50vh] overflow-auto">
 				{components}
 			</div>
@@ -232,8 +266,9 @@ export function CreateAlias(props: { defaultAvatar: AvatarSettings }): ReactElem
 	}
 
 	return (
-		<div className="flex flex-row flex-wrap items-start justify-center gap-2">
+		<div className="flex flex-col flex-wrap items-center justify-center gap-2">
 			<form className="flex flex-col p-4 gap-2 items-stretch panel fit-width" onSubmit={submitForm}>
+				<div className="text-lg font-bold text-center">Account Info</div>
 				<div className="flex flex-row items-center">
 					<label className="flex-1">ID</label>
 					<input
