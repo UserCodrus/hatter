@@ -1,16 +1,17 @@
 @import "tailwindcss";
 
 :root {
-	--background: #333527;
+	--background: #375035;
 	--foreground: #dddddd;
+	--foreground-dark: #111111;
 
 	--panel-outer: #ffffff20;
 	--panel-inner: #00000030;
-
 	--input-area: #00000030;
-	--interactive: #D494FF;
-	--alert: #ff0000;
-	--highlight: #00ff00;
+
+	--interactive: #2BCF23;
+	--alert: #2BCF23;
+	--highlight: #407A3D;
 	--disabled: #aaaaaa;
 }
 
@@ -34,16 +35,6 @@ body {
 	font-family: Arial, Helvetica, sans-serif;
 }
 
-input, textarea {
-	background: var(--input-area);
-	padding: 0.25rem;
-}
-
-input[type=submit] {
-	background: var(--interactive);
-	cursor: pointer;
-}
-
 @layer components {
 	.panel {
 		background: var(--panel-outer);
@@ -61,10 +52,16 @@ input[type=submit] {
 
 	.button {
 		background: var(--interactive);
+		color: var(--foreground-dark);
 		cursor: pointer;
 		padding: 0.25rem;
 		min-width: 6rem;
 		text-align: center;
+	}
+
+	.input {
+		background: var(--input-area);
+		padding: 0.25rem;
 	}
 
 	.header {
@@ -90,6 +87,11 @@ input[type=submit] {
 
 	.disabled {
 		color: var(--disabled);
+	}
+
+	.button.disabled {
+		background: var(--background);
+		cursor: default;
 	}
 
 	.fit-width {

@@ -3,6 +3,7 @@ import { ReactNode } from "react";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Silk from "@/components/silk";
+import { AnimatedBackground } from "@/components/background";
 
 const geistSans = Geist({
 	variable: "--font-geist-sans",
@@ -26,15 +27,7 @@ export default function RootLayout(props: { children: ReactNode }) {
 				<div className="flex flex-col items-center justify-items-center min-h-screen">
 					{props.children}
 				</div>
-				<div className="fixed top-0 left-0 w-screen h-screen -z-10">
-					<Silk
-						speed={2}
-						scale={0.5}
-						color="#313A14"
-						noiseIntensity={0.5}
-						rotation={0}
-					/>
-				</div>
+				<AnimatedBackground />
 			</body>
 		</html>
 	);

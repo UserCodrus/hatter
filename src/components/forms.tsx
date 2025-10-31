@@ -58,6 +58,8 @@ export function CreatePost(props: { replyID?: string }): ReactElement
 	}
 
 	const hide_media = validMedia ? "" : " hidden";
+	const disabled = !content && !validMedia;
+	const disabled_style = disabled ? " disabled" : "";
 
 	return (
 		<form className="flex flex-col p-4 gap-2" onSubmit={submitForm}>
@@ -71,18 +73,20 @@ export function CreatePost(props: { replyID?: string }): ReactElement
 				/>
 			</div>
 			<input
+				className="input"
 				placeholder={"Image URL (optional)"}
 				value={media}
 				onChange={(e) => setMedia(e.target.value)}
 				type="text"
 			/>
 			<textarea
+				className="input"
 				placeholder={"Write your post here"}
 				value={content}
 				onChange={(e) => setContent(e.target.value)}
 			/>
 			<div className="flex items-center justify-center">
-				<input className="w-20 button" disabled={!content && !validMedia} type="submit" value="Post" />
+				<input className={"w-20 button" + disabled_style} disabled={disabled} type="submit" value="Post" />
 			</div>
 		</form>
 	);
@@ -226,7 +230,7 @@ function SelectAvatar(props: { avatar: AvatarSettings, base: string, selectCallb
 				<div className="flex flex-row gap-2 items-center">
 					<div>Style:</div>
 					<DropDownMenu main={dropdown_main} fill above>
-						<div className="flex flex-col gap-2 p-2 bg-menu text-center">
+						<div className="flex flex-col gap-2 p-2 panel-inner text-center">
 							{dropdown}
 						</div>
 					</DropDownMenu>
@@ -272,7 +276,7 @@ export function CreateAlias(props: { defaultAvatar: AvatarSettings }): ReactElem
 				<div className="flex flex-row items-center">
 					<label className="flex-1">ID</label>
 					<input
-						className="w-2/3 lowercase"
+						className="w-2/3 lowercase input"
 						placeholder={""}
 						value={tag}
 						onChange={(e) => setTag(e.target.value)}
@@ -282,7 +286,7 @@ export function CreateAlias(props: { defaultAvatar: AvatarSettings }): ReactElem
 				<div className="flex flex-row items-center">
 					<label className="flex-1">Name</label>
 					<input
-						className="w-2/3"
+						className="w-2/3 input"
 						placeholder={""}
 						value={name}
 						onChange={(e) => setName(e.target.value)}
@@ -291,6 +295,7 @@ export function CreateAlias(props: { defaultAvatar: AvatarSettings }): ReactElem
 				</div>
 				<div className="text-center">Bio</div>
 				<textarea
+					className="input"
 					placeholder={"Write your account's bio here"}
 					value={bio}
 					onChange={(e) => setBio(e.target.value)}
