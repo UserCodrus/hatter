@@ -125,8 +125,8 @@ export function LikeButton(props: { postID: string, likeCount: number, likedPost
 	const style = props.selfPost || props.disabled ? "" : " cursor-pointer";
 
 	return (
-		<button onClick={() => handleClick()} className={"flex flex-row items-center text-interactive" + style}>
-			<Icon size={16} id={icon} />+{counter}
+		<button onClick={() => handleClick()} className={"flex flex-row items-center gap-2 text-interactive" + style}>
+			<Icon size={16} id={icon} />{counter}
 		</button>
 	);
 }

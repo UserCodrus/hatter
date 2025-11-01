@@ -80,7 +80,7 @@ export function CreatePost(props: { replyID?: string }): ReactElement
 				type="text"
 			/>
 			<textarea
-				className="input"
+				className="input h-52"
 				placeholder={"Write your post here"}
 				value={content}
 				onChange={(e) => setContent(e.target.value)}
@@ -269,6 +269,9 @@ export function CreateAlias(props: { defaultAvatar: AvatarSettings }): ReactElem
 		setAvatar(avatar);
 	}
 
+	const disabled = !tag || !name;
+	const disabled_style = disabled ? " disabled" : "";
+
 	return (
 		<div className="flex flex-col flex-wrap items-center justify-center gap-2">
 			<form className="flex flex-col p-4 gap-2 items-stretch panel fit-width" onSubmit={submitForm}>
@@ -281,6 +284,7 @@ export function CreateAlias(props: { defaultAvatar: AvatarSettings }): ReactElem
 						value={tag}
 						onChange={(e) => setTag(e.target.value)}
 						type="text" pattern="^([a-zA-Z]+)$"
+						minLength={4} maxLength={32}
 					/>
 				</div>
 				<div className="flex flex-row items-center">
@@ -291,17 +295,19 @@ export function CreateAlias(props: { defaultAvatar: AvatarSettings }): ReactElem
 						value={name}
 						onChange={(e) => setName(e.target.value)}
 						type="text"
+						minLength={1} maxLength={56}
 					/>
 				</div>
-				<div className="text-center">Bio</div>
+				<div className="text-center">Description</div>
 				<textarea
 					className="input"
-					placeholder={"Write your account's bio here"}
+					placeholder={"Write a description of the alias here"}
 					value={bio}
 					onChange={(e) => setBio(e.target.value)}
+					maxLength={1024}
 				/>
 				<div className="flex items-center justify-center">
-					<input className="button" disabled={!tag || !name} type="submit" value="Create" />
+					<input className={"button" + disabled_style} disabled={disabled} type="submit" value="Create" />
 				</div>
 				{error && <div className="text-center text-alert">{error}</div>}
 			</form>
