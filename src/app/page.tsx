@@ -1,6 +1,7 @@
 import { CustomFeed, FeedWrapper, GlobalFeed } from "@/components/feed";
 import { Header } from "@/components/header";
 import { ContentPanel } from "@/components/info";
+import { LinkButton } from "@/components/navigation";
 import { getUser } from "@/lib/db";
 import { pages } from "@/lib/utils";
 import Link from "next/link";
@@ -11,7 +12,10 @@ function NotifyExpired(): ReactElement
 {
 	return (
 		<ContentPanel>
-			Your current account has expired. Go to the <Link href={pages.account}>account page</Link> to acquire a new one.
+			<div className="flex flex-col gap-4 items-center">
+				<div>Your current alias has expired. Get a new alias to continue using Hatter!</div>
+				<LinkButton target={pages.account} label="New Identity" />
+			</div>
 		</ContentPanel>
 	);
 }
@@ -21,7 +25,10 @@ function NotifyUnregistered(): ReactElement
 {
 	return (
 		<ContentPanel>
-			You have not registered with Hatter. Go to the <Link href={pages.account}>account page</Link> to create an alias and start posting!
+			<div className="flex flex-col gap-4 items-center">
+				<div>You have not registered with Hatter. Create a new alias to start posting.</div>
+				<LinkButton target={pages.account} label="Register" />
+			</div>
 		</ContentPanel>
 	);
 }
@@ -31,7 +38,10 @@ function NotifySignout(): ReactElement
 {
 	return (
 		<ContentPanel>
-			You aren't currently signed in. Go to the <Link href={pages.api.signin}>signin page</Link> to sign in with Google and register for Hatter.
+			<div className="flex flex-col gap-4 items-center">
+				<div>You aren't currently signed in. Sign in with Google and register with Hatter to start posting.</div>
+				<LinkButton target={pages.api.signin} label="Sign In" />
+			</div>
 		</ContentPanel>
 	);
 }

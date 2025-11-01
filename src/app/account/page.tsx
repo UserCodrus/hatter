@@ -22,9 +22,16 @@ function Signup(): ReactElement
 		<div className="flex flex-col flex-1 p-2 gap-2 items-center justify-center w-full">
 			<ContentPanel>
 				<div className="text-center">
+					<p>On Hatter, user accounts (known as aliases) are traded between users every 24 hours.</p>
+					<p>As you register for Hatter, you will create an alias which you will trade with other users at the end of the day.</p>
+					<p>Try to create a fun alias that others may enjoy roleplaying, and play each role you are given to the best of your ability.</p>
+				</div>
+			</ContentPanel>
+			<ContentPanel>
+				<div className="text-center">
 					<p>Fill out the boxes below to create a new alias.</p>
 					<p>Your alias will be available until {expires.toLocaleString()}.</p>
-					<p>A different user will receive your alias at this time and you will be unable to change the information below.</p>
+					<p>A different user will receive your alias at this time and you will be unable to change the information below, so choose wisely.</p>
 				</div>
 			</ContentPanel>
 			<div className="flex flex-col justify-center w-full">

@@ -228,7 +228,7 @@ export function ColorSelector(props: { color: string, selected: boolean, onChang
 	return (
 		<div className="flex flex-row gap-2 items-center justify-center">
 			<div className={"w-8 h-8 border-2 cursor-pointer" +  selection_style} style={{background: props.color}} onClick={() => props.onSelect()}></div>
-			<HexColorInput color={props.color} onChange={props.onChange} prefixed className="bg-input text-center w-1/2" />
+			<HexColorInput color={props.color} onChange={props.onChange} prefixed className="input text-center w-1/2" />
 		</div>
 	);
 }

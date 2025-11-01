@@ -258,7 +258,7 @@ export function PostFeed(props: { currentUser: string | undefined, post: PostDat
 	);
 }
 
-/** A feed showing user the current user is following */
+/** A feed showing users the current user is following */
 export function CustomFeed(props: { currentUser: string | undefined, viewerID: string | undefined, banned: boolean }): ReactElement
 {
 	const [posts, setPosts] = useState<Awaited<ReturnType<typeof getAll>>>([]);
