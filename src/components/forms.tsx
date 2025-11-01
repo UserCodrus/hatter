@@ -57,8 +57,8 @@ export function CreatePost(props: { replyID?: string }): ReactElement
 			setValidMedia(false);
 	}
 
-	const hide_media = validMedia ? "" : " hidden";
-	const disabled = !content && !validMedia;
+	const hide_media = validMedia && media ? "" : " hidden";
+	const disabled = !content && (!validMedia || !media);
 	const disabled_style = disabled ? " disabled" : "";
 
 	return (

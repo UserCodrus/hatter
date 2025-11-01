@@ -16,6 +16,10 @@ export async function POST(req: NextRequest)
 	const user = await getUser();
 
 	if (user.user && user.alias && user.banned === null) {
+		// Make sure the post has content
+		if (!data.media && !data.content)
+			return new Response("Missing post data", { status: 422 });
+
 		// Check media links to ensure they are valid
 		if (data.media) {
 			try {

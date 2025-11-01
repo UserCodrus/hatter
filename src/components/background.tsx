@@ -8,6 +8,7 @@ export function AnimatedBackground(): ReactElement
 {
 	const [color, setColor] = useState<string>("");
 
+	// Get the color of the background after the page loads
 	useEffect(() => {
 		const styles = getComputedStyle(document.body);
 		setColor(styles.getPropertyValue("--background"));
