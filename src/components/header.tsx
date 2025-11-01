@@ -11,43 +11,28 @@ import { ExpireAliasButton, UnregisterUserButton } from "./interactive";
 function UserComponent(props: { user: SessionUser | null, alias: Alias | null, admin?: boolean, expired: boolean, banned: boolean }): ReactElement
 {
 	if (props.user) {
-		let dropdown: ReactElement[] = [];
-		let main = <div className="flex flex-row items-center">Not Registered</div>
-		if (props.banned) {
-			// Display a banned
-			main = <div className="flex flex-row items-center gap-2 text-center">
-					<div className="text-nowrap">Account Banned</div>
-					<div className="text-alert"><Icon size={16} id={"tdesign--notification-error-filled"} /></div>
-				</div>;
+		// Create the main component for the dropdown menu
+		const show_alert = props.expired || props.banned || !props.alias;
+		let name = props.alias ? props.alias.name : "Not Registered";
+		if (props.banned)
+			name = "Account Banned";
 
-			dropdown = [
-				<MenuItem label="Account" target={pages.account} key={1} />,
-				<MenuItem label="Sign Out" target={pages.api.signout} key={2} />,
-			];
-		} else if (props.alias) {
-			// Display the user's current alias as the dropdown element
-			main = <div className="flex flex-row items-center gap-2 text-center">
-				<div className="text-nowrap">{props.alias.name}</div>
-				{props.expired && <div className="text-alert"><Icon size={16} id={"tdesign--notification-error-filled"} /></div>}
-				<UserAvatar icon={props.alias.icon} colors={[props.alias.colorA, props.alias.colorB]} style={props.alias.style} size={32} />
-			</div>;
+		const main = <div className="flex flex-row items-center gap-2 text-center">
+			<div className="text-nowrap">{name}</div>
+			{show_alert && <div className="text-alert"><Icon size={16} id={"tdesign--notification-error-filled"} /></div>}
+			{props.alias && !props.banned && <UserAvatar icon={props.alias.icon} colors={[props.alias.colorA, props.alias.colorB]} style={props.alias.style} size={32} />}
+		</div>
 
-			dropdown = [
-				<MenuItem label="Account" target={pages.account} key={1} />,
+		// Add basic options to the dropdown menu
+		const dropdown: ReactElement[] = [
+				<MenuItem label={props.alias ? "Account" : "Register"} target={pages.account} key={1} />,
 				<MenuItem label="Sign Out" target={pages.api.signout} key={2} />,
 			];
 
-			// Add admin options to the menu
-			if (props.admin) {
-				dropdown.push(<ExpireAliasButton key={3} />);
-				dropdown.push(<UnregisterUserButton key={4} />);
-			}
-		} else {
-			// Display a button to create an account if the user doesn't have an alias yet
-			dropdown = [
-				<MenuItem label="Register" target={pages.account} key={1} />,
-				<MenuItem label="Sign Out" target={pages.api.signout} key={2} />,
-			];
+		// Add admin options to the menu
+		if (props.admin) {
+			dropdown.push(<ExpireAliasButton key={3} />);
+			dropdown.push(<UnregisterUserButton key={4} />);
 		}
 
 		return (
@@ -59,6 +44,7 @@ function UserComponent(props: { user: SessionUser | null, alias: Alias | null, a
 		);
 	}
 
+	// Fallback to a simple sign in button
 	return <LinkButton label="Sign In" target={pages.api.signin} />;
 }
 
