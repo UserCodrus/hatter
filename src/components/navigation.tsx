@@ -9,7 +9,7 @@ import { ReactElement } from "react";
 export function ImageButton(props: { src: string, target: string }): ReactElement
 {
 	return (
-		<Link href={props.target} className="p-1 h-2 flex flex-row items-center">
+		<Link href={props.target} className="h-[24px] w-[24px]">
 			<Image width={24} height={24} src={props.src} alt="Home" />
 		</Link>
 	);

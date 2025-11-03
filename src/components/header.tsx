@@ -17,8 +17,8 @@ function UserComponent(props: { user: SessionUser | null, alias: Alias | null, a
 		if (props.banned)
 			name = "Account Banned";
 
-		const main = <div className="flex flex-row items-center gap-2 text-center">
-			<div className="text-nowrap">{name}</div>
+		const main = <div className="flex flex-row flex-1 items-center gap-2 text-center">
+			<div className="text-nowrap overflow-ellipsis overflow-hidden max-w-[33vw]">{name}</div>
 			{show_alert && <div className="text-alert"><Icon size={16} id={"tdesign--notification-error-filled"} /></div>}
 			{props.alias && !props.banned && <UserAvatar icon={props.alias.icon} colors={[props.alias.colorA, props.alias.colorB]} style={props.alias.style} size={32} />}
 		</div>
@@ -52,8 +52,9 @@ function UserComponent(props: { user: SessionUser | null, alias: Alias | null, a
 function NavigationBar(props: { alias: Alias | null }): ReactElement
 {
 	return (
-		<div className="flex flex-row gap-2 font-bold flex-1">
+		<div className="flex flex-row items-center gap-2 font-bold flex-1">
 			<ImageButton src="/logo.png" target={pages.root} />
+			<div className="hidden sm:inline"><NavigationButton label="Home" target={pages.root} /></div>
 			{props.alias && <NavigationButton label="All" target={pages.global} />}
 			{props.alias && <NavigationButton label="Me" target={pages.history} />}
 			{props.alias && <NavigationButton label="Create" target={pages.create} />}
