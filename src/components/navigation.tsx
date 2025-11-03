@@ -1,8 +1,19 @@
 'use client';
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { ReactElement } from "react";
+
+/** A button made with an image */
+export function ImageButton(props: { src: string, target: string }): ReactElement
+{
+	return (
+		<Link href={props.target} className="p-1 h-2 flex flex-row items-center">
+			<Image width={24} height={24} src={props.src} alt="Home" />
+		</Link>
+	);
+}
 
 /** A low-profile navigation button that will be disabled if the link corresponds to the current page */
 export function NavigationButton(props: { label: string, target: string }): ReactElement
